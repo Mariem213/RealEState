@@ -1,0 +1,118 @@
+/* Custom dropdown – site primary blue border & highlight */
+.custom-select {
+  position: relative;
+  width: 100%;
+}
+
+.custom-select__trigger {
+  width: 100%;
+  min-height: 44px;
+  padding: 12px 12px 12px 14px;
+  font-size: 16px;
+  font-family: inherit;
+  color: #1f2937;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.custom-select__trigger:hover {
+  border-color: #d1d5db;
+}
+
+.custom-select--open .custom-select__trigger,
+.custom-select__trigger:focus-visible {
+  outline: none;
+  border-color: #1a365d;
+  box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.15);
+}
+
+.custom-select__value {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.custom-select__placeholder {
+  color: #9ca3af;
+}
+
+.custom-select__chevron {
+  flex-shrink: 0;
+  color: #6b7280;
+  transition: transform 0.25s ease, color 0.2s ease;
+}
+
+.custom-select--open .custom-select__chevron {
+  transform: rotate(180deg);
+  color: #1a365d;
+}
+
+/* Panel */
+.custom-select__panel {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: #fff;
+  border: 1px solid #1a365d;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(26, 54, 93, 0.12);
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  visibility: hidden;
+  transition:
+    max-height 0.25s ease,
+    opacity 0.2s ease,
+    visibility 0.2s ease;
+}
+
+.custom-select--open .custom-select__panel {
+  max-height: min(280px, 60vh);
+  opacity: 1;
+  visibility: visible;
+  overflow-y: auto;
+}
+
+.custom-select__option {
+  padding: 12px 14px;
+  font-size: 16px;
+  color: #1f2937;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+@media (min-width: 480px) {
+  .custom-select__trigger {
+    font-size: 15px;
+  }
+
+  .custom-select__option {
+    font-size: 15px;
+  }
+}
+
+.custom-select__option:hover,
+.custom-select__option--highlight {
+  background-color: rgba(26, 54, 93, 0.06);
+}
+
+.custom-select__option--selected,
+.custom-select__option--selected.custom-select__option--highlight {
+  background-color: rgba(26, 54, 93, 0.12);
+}
+
+.custom-select__option:not(:last-child) {
+  border-bottom: 1px solid #e5e7eb;
+}

@@ -1,0 +1,955 @@
+/* Sell Property page – dark blue hero, white form card, professional layout */
+:root {
+  --sell-primary: #1a365d;
+  --sell-primary-hover: #2c4872;
+  --sell-hero-bg: linear-gradient(135deg, #1E3A5F 0%, #1E3A8A 100%);
+  --sell-card-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  --sell-border: #e5e7eb;
+  --sell-text: #374151;
+  --sell-muted: #6b7280;
+  --sell-upload-accent: #d97706;
+}
+
+.sell-property-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #f3f4f6;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* ----- Hero ----- */
+.sell-property-hero {
+  background: var(--sell-hero-bg);
+  color: #fff;
+  padding: 40px 16px 56px;
+  position: relative;
+  text-align: left;
+}
+
+.sell-property-hero__inner {
+  width: 100%;
+  margin: 0 auto;
+  padding-left: 0;
+}
+
+@media (min-width: 768px) {
+  .sell-property-hero__inner {
+    max-width: 60%;
+  }
+}
+
+.sell-property-hero__title {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 12px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+.sell-property-hero__subtitle {
+  font-size: 15px;
+  font-weight: 400;
+  margin: 0 0 16px;
+  color: #e0e0e0;
+  line-height: 1.4;
+}
+
+.sell-property-hero__desc {
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0;
+  color: #b8b8c0;
+  font-weight: 400;
+  width: 100%;
+  max-width: 100%;
+}
+
+@media (min-width: 480px) {
+  .sell-property-hero {
+    padding: 48px 24px 64px;
+  }
+
+  .sell-property-hero__title {
+    font-size: 30px;
+  }
+
+  .sell-property-hero__subtitle {
+    font-size: 16px;
+  }
+
+  .sell-property-hero__desc {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 640px) {
+  .sell-property-hero {
+    padding: 64px 40px 80px;
+  }
+
+  .sell-property-hero__title {
+    font-size: 40px;
+    margin-bottom: 16px;
+  }
+
+  .sell-property-hero__subtitle {
+    font-size: 18px;
+    margin-bottom: 24px;
+  }
+
+  .sell-property-hero__desc {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 768px) {
+  .sell-property-hero__desc {
+    max-width: 80%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sell-property-hero__title {
+    font-size: 44px;
+  }
+}
+
+/* ----- Main content ----- */
+.sell-property-main {
+  flex: 1;
+  width: 100%;
+  max-width: 900px;
+  margin: 16px auto 0;
+  padding: 0 12px 40px;
+  box-sizing: border-box;
+}
+
+@media (min-width: 480px) {
+  .sell-property-main {
+    padding: 0 16px 48px;
+  }
+}
+
+@media (min-width: 640px) {
+  .sell-property-main {
+    margin-top: 20px;
+    padding: 0 24px 56px;
+  }
+}
+
+/* ----- White form card ----- */
+.sell-property-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: var(--sell-card-shadow);
+  overflow: hidden;
+  padding: 24px 16px 32px;
+}
+
+@media (min-width: 480px) {
+  .sell-property-card {
+    padding: 28px 20px 36px;
+    border-radius: 16px;
+  }
+}
+
+@media (min-width: 640px) {
+  .sell-property-card {
+    padding: 40px 36px 48px;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  }
+}
+
+/* ----- Form sections ----- */
+.sell-property-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.sell-property-section {
+  padding-bottom: 22px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--sell-border);
+}
+
+@media (min-width: 480px) {
+  .sell-property-section {
+    padding-bottom: 26px;
+    margin-bottom: 26px;
+  }
+}
+
+@media (min-width: 640px) {
+  .sell-property-section {
+    padding-bottom: 28px;
+    margin-bottom: 28px;
+  }
+}
+
+.sell-property-section:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.sell-property-section__title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--sell-primary);
+  margin: 0 0 16px;
+}
+
+@media (min-width: 480px) {
+  .sell-property-section__title {
+    font-size: 17px;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+}
+
+.sell-property-section__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--sell-primary);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+  .sell-property-section__title {
+    font-size: 18px;
+    margin-bottom: 24px;
+  }
+
+  .sell-property-section__badge {
+    min-width: 30px;
+    height: 30px;
+    font-size: 15px;
+  }
+}
+
+/* ----- Form rows ----- */
+.sell-property-form__row {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+@media (min-width: 480px) {
+  .sell-property-form__row {
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+}
+
+.sell-property-form__row:last-child {
+  margin-bottom: 0;
+}
+
+.sell-property-form__row--full .sell-property-form__label {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .sell-property-form__row:not(.sell-property-form__row--full):not(.sell-property-form__row--toggle) {
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .sell-property-form__row:not(.sell-property-form__row--full) .sell-property-form__label {
+    flex: 1;
+  }
+}
+
+.sell-property-form__row--toggle {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.sell-property-form__label-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--sell-text);
+}
+
+/* ----- Labels & inputs ----- */
+.sell-property-form__label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1f2937;
+  text-align: start;
+}
+
+.sell-property-form__label-line {
+  display: inline;
+}
+
+.sell-property-form__required {
+  color: #dc2626;
+}
+
+.sell-property-form__input,
+.sell-property-form__select,
+.sell-property-form__textarea {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 16px;
+  border: 1px solid var(--sell-border);
+  border-radius: 10px;
+  background: #fff;
+  color: #1f2937;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  min-height: 44px;
+  font-family: inherit;
+}
+
+@media (min-width: 480px) {
+  .sell-property-form__input,
+  .sell-property-form__select,
+  .sell-property-form__textarea {
+    font-size: 15px;
+  }
+}
+
+.sell-property-form__input:hover,
+.sell-property-form__select:hover,
+.sell-property-form__textarea:hover {
+  border-color: #d1d5db;
+}
+
+.sell-property-form__input:focus,
+.sell-property-form__select:focus,
+.sell-property-form__textarea:focus {
+  border-color: var(--sell-primary);
+  box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.15);
+}
+
+.sell-property-form__input::placeholder,
+.sell-property-form__textarea::placeholder {
+  color: #9ca3af;
+}
+
+.sell-property-form__select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 40px;
+}
+
+.sell-property-form__textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.sell-property-form__textarea::placeholder {
+  font-style: italic;
+}
+
+.sell-property-form__label--desc {
+  font-weight: 400;
+  color: var(--sell-primary);
+}
+
+/* Price input with prefix */
+.sell-property-form__price-wrap {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--sell-border);
+  border-radius: 10px;
+  background: #fff;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sell-property-form__price-wrap:focus-within {
+  border-color: var(--sell-primary);
+  box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.15);
+}
+
+.sell-property-form__price-prefix {
+  padding: 0 14px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--sell-muted);
+  background: #f9fafb;
+  border-right: 1px solid var(--sell-border);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.sell-property-form__input--price {
+  border: none;
+  min-height: 44px;
+}
+
+.sell-property-form__input--price:focus {
+  box-shadow: none;
+}
+
+/* ----- Grid for specs ----- */
+.sell-property-form__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Grid children can shrink on small screens to prevent overflow */
+.sell-property-form__grid .sell-property-form__label {
+  min-width: 0;
+}
+
+.sell-property-form__label--full {
+  grid-column: 1 / -1;
+}
+
+/* Specs grid: 1 col mobile, 2 col small tablet, 3 col desktop. Year Built always full width. */
+.sell-property-form__grid--specs .sell-property-form__label--full {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 480px) {
+  .sell-property-form__grid:not(.sell-property-form__grid--specs) {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 20px;
+  }
+
+  /* Specs: stay 1 column until 576px for comfortable touch targets on phones */
+  .sell-property-form__grid--specs {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 20px;
+  }
+}
+
+@media (min-width: 576px) {
+  .sell-property-form__grid--specs {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px 20px;
+  }
+
+  .sell-property-form__grid--specs .sell-property-form__label--full {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 640px) {
+  .sell-property-form__grid:not(.sell-property-form__grid--specs) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .sell-property-form__grid:not(.sell-property-form__grid--specs) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .sell-property-form__grid:not(.sell-property-form__grid--specs) .sell-property-form__label--full {
+    grid-column: span 1;
+  }
+}
+
+/* ----- Toggle ----- */
+.sell-property-toggle {
+  position: relative;
+  width: 48px;
+  height: 26px;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sell-property-toggle__track {
+  position: absolute;
+  inset: 0;
+  background: #d1d5db;
+  border-radius: 13px;
+  transition: background 0.2s ease;
+}
+
+.sell-property-toggle--on .sell-property-toggle__track {
+  background: var(--sell-primary);
+}
+
+.sell-property-toggle__thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.sell-property-toggle--on .sell-property-toggle__thumb {
+  transform: translateX(22px);
+}
+
+/* ----- Image upload zone ----- */
+.sell-property-upload {
+  position: relative;
+  border: 2px dashed var(--sell-border);
+  border-radius: 10px;
+  padding: 24px 16px;
+  min-height: 160px;
+  text-align: center;
+  background: #fafafa;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 480px) {
+  .sell-property-upload {
+    padding: 32px 20px;
+    min-height: 180px;
+    border-radius: 12px;
+  }
+}
+
+@media (min-width: 640px) {
+  .sell-property-upload {
+    padding: 40px 24px;
+    min-height: 200px;
+  }
+}
+
+.sell-property-upload:hover,
+.sell-property-upload--dragging {
+  border-color: var(--sell-upload-accent);
+  background: #fffbeb;
+}
+
+.sell-property-upload__input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  font-size: 0;
+}
+
+.sell-property-upload__icon {
+  color: var(--sell-upload-accent);
+  margin-bottom: 12px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sell-property-upload__text {
+  font-size: 15px;
+  font-weight: 700;
+  color: #374151;
+  margin: 0 0 4px;
+}
+
+.sell-property-upload__sub {
+  font-size: 13px;
+  color: var(--sell-muted);
+  margin: 0 0 16px;
+}
+
+.sell-property-upload__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--sell-primary);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.sell-property-upload__btn:hover {
+  background: var(--sell-primary-hover);
+}
+
+.sell-property-upload__hint {
+  font-size: 11px;
+  color: var(--sell-muted);
+  margin: 0 0 16px;
+  text-align: center;
+}
+
+/* ----- Image previews ----- */
+.sell-property-previews {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.sell-property-preview {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  flex-shrink: 0;
+}
+
+@media (min-width: 480px) {
+  .sell-property-preview {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+  }
+}
+
+.sell-property-preview__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.sell-property-preview__remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background 0.2s;
+}
+
+.sell-property-preview__remove:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+/* ----- Checkbox ----- */
+.sell-property-form__checkbox-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.sell-property-form__checkbox {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  accent-color: var(--sell-primary);
+  cursor: pointer;
+}
+
+.sell-property-form__checkbox-label {
+  font-size: 13px;
+  color: var(--sell-text);
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+@media (min-width: 480px) {
+  .sell-property-form__checkbox-label {
+    font-size: 14px;
+  }
+}
+
+.sell-property-form__checkbox-line {
+  display: block;
+  text-align: start;
+}
+
+.sell-property-form__terms-link {
+  color: #1a365d;
+  font-weight: 700;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.sell-property-form__terms-link:hover {
+  color: #2c4872;
+}
+
+.sell-property-form__checkbox-sub {
+  font-size: 13px;
+  color: #637381;
+  line-height: 1.4;
+}
+
+/* ----- Form actions ----- */
+.sell-property-form__actions {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 12px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--sell-border);
+}
+
+.sell-property-form__actions .sell-property-form__submit,
+.sell-property-form__actions .sell-property-form__draft {
+  width: 100%;
+}
+
+@media (min-width: 480px) {
+  .sell-property-form__actions {
+    flex-direction: row;
+    align-items: center;
+    margin-top: 32px;
+    padding-top: 24px;
+  }
+
+  .sell-property-form__actions .sell-property-form__submit,
+  .sell-property-form__actions .sell-property-form__draft {
+    width: auto;
+  }
+}
+
+.sell-property-form__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--sell-primary);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  min-height: 48px;
+  transition: background 0.2s ease, transform 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sell-property-form__submit:hover {
+  background: var(--sell-primary-hover);
+  transform: translateY(-1px);
+}
+
+.sell-property-form__submit:active {
+  transform: translateY(0);
+}
+
+.sell-property-form__submit:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.4);
+}
+
+.sell-property-form__draft {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #212b36;
+  background: #e9edf1;
+  border: 1px solid #dfe3e8;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.sell-property-form__draft:hover {
+  background: #dfe3e8;
+  color: #1f2937;
+}
+
+/* ----- Footer ----- */
+.sell-property-footer {
+  background: var(--sell-primary);
+  color: #fff;
+  padding: 32px 16px 20px;
+  margin-top: auto;
+}
+
+.sell-property-footer__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px 32px;
+}
+
+@media (min-width: 480px) {
+  .sell-property-footer {
+    padding: 36px 20px 24px;
+  }
+
+  .sell-property-footer__inner {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px 24px;
+  }
+}
+
+@media (min-width: 640px) {
+  .sell-property-footer {
+    padding: 40px 24px 24px;
+  }
+
+  .sell-property-footer__inner {
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 32px 24px;
+  }
+}
+
+.sell-property-footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sell-property-footer__brand span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.sell-property-footer__brand p {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.sell-property-footer__muted {
+  opacity: 0.75 !important;
+  font-size: 13px !important;
+}
+
+.sell-property-footer__links h3,
+.sell-property-footer__social h3 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.95;
+}
+
+.sell-property-footer__links ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sell-property-footer__links li {
+  margin-bottom: 8px;
+}
+
+.sell-property-footer__links a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+}
+
+.sell-property-footer__links a:hover {
+  opacity: 1;
+}
+
+.sell-property-footer__icons {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.sell-property-footer__icons a {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.sell-property-footer__icons a:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.sell-property-footer__copy {
+  max-width: 1200px;
+  margin: 20px auto 0;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 11px;
+  opacity: 0.8;
+  text-align: center;
+  line-height: 1.5;
+}
+
+@media (min-width: 480px) {
+  .sell-property-footer__copy {
+    font-size: 12px;
+    margin-top: 24px;
+    padding-top: 20px;
+  }
+}
+
+@media (min-width: 640px) {
+  .sell-property-footer__copy {
+    text-align: left;
+  }
+}

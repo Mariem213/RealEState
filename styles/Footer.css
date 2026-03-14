@@ -1,0 +1,162 @@
+/* Footer – dark blue background, light text, multi-column layout */
+.footer {
+  width: 100%;
+  background: #1a365d;
+  color: #fff;
+  margin-top: auto;
+}
+
+.footer__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 24px 32px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 48px 32px;
+  align-items: start;
+}
+
+/* Brand block – spans first column */
+.footer__brand {
+  min-width: 0;
+}
+
+.footer__logo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-bottom: 12px;
+}
+
+.footer__logo-link:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.footer__logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer__brand-name {
+  letter-spacing: 0.02em;
+}
+
+.footer__slogan {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Column headings */
+.footer__heading {
+  margin: 0 0 16px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+
+.footer__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer__links li {
+  margin-bottom: 10px;
+}
+
+.footer__link {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.footer__link:hover {
+  color: #fff;
+}
+
+/* Social icons */
+.footer__social {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.footer__social-link {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.footer__social-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+/* Divider */
+.footer__divider {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 0;
+  border-top: 1px solid rgba(100, 160, 220, 0.4);
+}
+
+/* Copyright */
+.footer__bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 24px 24px;
+  text-align: center;
+}
+
+.footer__copyright {
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Tablet: 2x2 grid */
+@media (max-width: 992px) {
+  .footer__inner {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px 24px;
+    padding: 40px 24px 28px;
+  }
+}
+
+/* Mobile: single column grid */
+@media (max-width: 576px) {
+  .footer__inner {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 32px 20px 24px;
+  }
+
+  .footer__bottom {
+    padding: 16px 20px 20px;
+  }
+
+  .footer__copyright {
+    font-size: 0.8rem;
+  }
+}

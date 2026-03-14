@@ -1,0 +1,314 @@
+/* Register page – full viewport with background image */
+.register-page {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: #1e1e1e;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 12px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+@media (min-width: 375px) {
+  .register-page {
+    padding: 24px 16px;
+  }
+}
+
+@media (min-width: 640px) {
+  .register-page {
+    padding: 40px 20px;
+  }
+}
+
+/* Card container */
+.register-card {
+  background: #f8f8f8;
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 420px;
+  padding: 32px 20px 28px;
+  margin: auto;
+}
+
+@media (min-width: 375px) {
+  .register-card {
+    border-radius: 22px;
+    padding: 36px 24px 32px;
+  }
+}
+
+@media (min-width: 640px) {
+  .register-card {
+    border-radius: 24px;
+    padding: 48px 40px 44px;
+  }
+}
+
+/* User icon circle */
+.register-card__icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1e3a5f;
+  background: #e5e5e5;
+  border-radius: 50%;
+}
+
+.register-card__icon svg {
+  width: 36px;
+  height: 36px;
+}
+
+@media (min-width: 640px) {
+  .register-card__icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 20px;
+  }
+
+  .register-card__icon svg {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* Title */
+.register-card__title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1e3a5f;
+  text-align: center;
+  margin: 0 0 10px;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 375px) {
+  .register-card__title {
+    font-size: 24px;
+    margin: 0 0 12px;
+  }
+}
+
+@media (min-width: 640px) {
+  .register-card__title {
+    font-size: 26px;
+    margin: 0 0 12px;
+  }
+}
+
+/* Subtitle and log in link */
+.register-card__subtitle {
+  font-size: 13px;
+  color: #6c7b8a;
+  text-align: center;
+  margin: 0 0 24px;
+}
+
+@media (min-width: 375px) {
+  .register-card__subtitle {
+    font-size: 14px;
+    margin: 0 0 28px;
+  }
+}
+
+@media (min-width: 640px) {
+  .register-card__subtitle {
+    margin: 0 0 32px;
+  }
+}
+
+.register-card__subtitle a {
+  color: #1e3a5f;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.register-card__subtitle a:hover {
+  color: #243d5f;
+  opacity: 1;
+}
+
+.register-card__subtitle a:focus-visible {
+  outline: 2px solid #2c4872;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Form layout */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: start;
+}
+
+@media (min-width: 640px) {
+  .register-form {
+    gap: 12px;
+  }
+}
+
+/* Labels */
+.register-form__label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #6c7b8a;
+  display: block;
+  text-align: start;
+}
+
+@media (min-width: 640px) {
+  .register-form__label {
+    font-size: 14px;
+  }
+}
+
+/* Inputs – 16px font-size prevents zoom on iOS */
+.register-form__input {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1e3a5f;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  min-height: 44px;
+}
+
+.register-form__input:hover {
+  border-color: #c5cbd3;
+}
+
+.register-form__input:focus {
+  border-color: #2c4872;
+  box-shadow: 0 0 0 3px rgba(44, 72, 114, 0.2);
+}
+
+@media (min-width: 640px) {
+  .register-form__input {
+    padding: 12px 16px;
+  }
+}
+
+.register-form__input::placeholder {
+  color: #9ca3af;
+}
+
+/* Password row: label + Show/Hide on same line */
+.register-form__password-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.register-form__password-label-row .register-form__label {
+  margin-bottom: 0;
+}
+
+@media (min-width: 640px) {
+  .register-form__password-label-row {
+    gap: 12px;
+  }
+}
+
+/* Show/Hide password button – touch-friendly on mobile */
+.register-form__toggle-password {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: #1e3a5f;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 8px 0;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+  border-radius: 6px;
+  transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+@media (min-width: 640px) {
+  .register-form__toggle-password {
+    font-size: 14px;
+    padding: 4px 0;
+    min-height: auto;
+  }
+}
+
+.register-form__toggle-password:hover {
+  color: #243d5f;
+  /* background: rgba(44, 72, 114, 0.06); */
+}
+
+.register-form__toggle-password:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #2c4872;
+}
+
+.register-form__toggle-password svg {
+  flex-shrink: 0;
+}
+
+/* Submit button – touch-friendly min height on mobile */
+.register-form__submit {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  background: #2c4872;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.7s ease;
+  min-height: 48px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (min-width: 640px) {
+  .register-form__submit {
+    padding: 16px 24px;
+    border-radius: 12px;
+    margin-top: 12px;
+    min-height: auto;
+  }
+}
+
+.register-form__submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(44, 72, 114, 0.35);
+  background: transparent;
+  color: #2c4872;
+}
+
+.register-form__submit:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(44, 72, 114, 0.4);
+}
+
+.register-form__submit:active {
+  transform: translateY(0) scale(0.99);
+  box-shadow: 0 2px 6px rgba(44, 72, 114, 0.25);
+}

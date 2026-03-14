@@ -1,0 +1,93 @@
+/* Number stepper – input with custom up/down arrows */
+.number-stepper {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  min-height: 44px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.number-stepper:hover {
+  border-color: #d1d5db;
+}
+
+.number-stepper:focus-within {
+  border-color: #1a365d;
+  box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.15);
+}
+
+.number-stepper__input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 14px;
+  font-size: 16px;
+  font-family: inherit;
+  color: #1f2937;
+  background: transparent;
+  border: none;
+  outline: none;
+  -moz-appearance: textfield;
+}
+
+.number-stepper__input::-webkit-outer-spin-button,
+.number-stepper__input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.number-stepper__input::placeholder {
+  color: #9ca3af;
+}
+
+.number-stepper__arrows {
+  display: flex;
+  flex-direction: column;
+  width: 36px;
+  flex-shrink: 0;
+  background: #1a365d;
+  border-left: 1px solid #e5e7eb;
+}
+
+.number-stepper__btn {
+  flex: 1;
+  min-height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.number-stepper__btn:hover:not(:disabled) {
+  background: #2c4872;
+  color: #fff;
+}
+
+.number-stepper__btn:active:not(:disabled) {
+  background: #1e3a5f;
+  color: #fff;
+}
+
+.number-stepper__btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.number-stepper__btn--up {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+@media (min-width: 480px) {
+  .number-stepper__input {
+    font-size: 15px;
+  }
+}
