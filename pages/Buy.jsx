@@ -53,7 +53,7 @@ function Buy() {
         if (!cancelled) {
           setProducts(list)
         }
-      } catch (err) {
+      } catch (error) {
         if (!cancelled) {
           setError('Unable to load properties. Please try again later.')
         }
@@ -204,228 +204,227 @@ function Buy() {
       <div className="buy-page__header">
         <div className="buy-page__header-inner">
           <div>
-            <p className="buy-page__eyebrow">Buy</p>
+            {/* <p className="buy-page__eyebrow">Buy</p> */}
             <h1 className="buy-page__title">Buy Properties</h1>
             <p className="buy-page__subtitle">
-              Find your ideal property from verified listings. Use filters to refine your search.
+              Find your ideal property from verified listings
             </p>
           </div>
-          <div className="buy-page__badge">
+          {/* <div className="buy-page__badge">
             <MapPin size={18} aria-hidden />
             <span>Property Listings</span>
-          </div>
+          </div> */}
         </div>
       </div>
 
       <div className="buy-page__content">
-      <div className="buy-page__layout">
-        <aside className="buy-filters">
-          <div className="buy-filters__header">
-            <h2 className="buy-filters__title">Filters</h2>
-            <button type="button" className="buy-filters__reset" onClick={handleReset}>
-              Reset
-            </button>
-          </div>
-
-          <form className="buy-filters__form" onSubmit={handleSubmit}>
-            <div className="buy-filters__group">
-              <label htmlFor="location" className="buy-filters__label">
-                Location
-              </label>
-              <CustomSelect
-                id="location"
-                name="location"
-                value={formFilters.location}
-                onChange={handleSelectChange}
-                options={ALL_LOCATIONS}
-                placeholder="All Locations"
-              />
+        <div className="buy-page__layout">
+          <aside className="buy-filters">
+            <div className="buy-filters__header">
+              <h2 className="buy-filters__title">Filters</h2>
+              <button type="button" className="buy-filters__reset" onClick={handleReset}>
+                Reset
+              </button>
             </div>
 
-            <div className="buy-filters__group">
-              <label className="buy-filters__label">Property Type</label>
-              <div className="buy-filters__checkboxes">
-                {PROPERTY_TYPE_OPTIONS.map((type) => (
-                  <label key={type} className="buy-filters__checkbox-wrap">
-                    <input
-                      type="checkbox"
-                      checked={formFilters.propertyTypes.includes(type)}
-                      onChange={() => handlePropertyTypeChange(type)}
-                      className="buy-filters__checkbox"
-                    />
-                    <span className="buy-filters__checkbox-label">{type}</span>
-                  </label>
+            <form className="buy-filters__form" onSubmit={handleSubmit}>
+              <div className="buy-filters__group">
+                <label htmlFor="location" className="buy-filters__label">
+                  Location
+                </label>
+                <CustomSelect
+                  id="location"
+                  name="location"
+                  value={formFilters.location}
+                  onChange={handleSelectChange}
+                  options={ALL_LOCATIONS}
+                  placeholder="All Locations"
+                />
+              </div>
+
+              <div className="buy-filters__group">
+                <label className="buy-filters__label">Property Type</label>
+                <div className="buy-filters__checkboxes">
+                  {PROPERTY_TYPE_OPTIONS.map((type) => (
+                    <label key={type} className="buy-filters__checkbox-wrap">
+                      <input
+                        type="checkbox"
+                        checked={formFilters.propertyTypes.includes(type)}
+                        onChange={() => handlePropertyTypeChange(type)}
+                        className="buy-filters__checkbox"
+                      />
+                      <span className="buy-filters__checkbox-label">{type}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div className="buy-filters__group">
+                <label className="buy-filters__label">Price Range</label>
+                <div className="buy-filters__slider-wrap">
+                  <div className="buy-filters__slider-track" aria-hidden style={priceTrackStyle} />
+                  <input
+                    type="range"
+                    min={PRICE_SLIDER_MIN}
+                    max={PRICE_SLIDER_MAX}
+                    step={PRICE_SLIDER_STEP}
+                    value={priceSliderMin}
+                    onChange={handlePriceSliderMin}
+                    className="buy-filters__slider buy-filters__slider--min"
+                    aria-label="Minimum price"
+                  />
+                  <input
+                    type="range"
+                    min={PRICE_SLIDER_MIN}
+                    max={PRICE_SLIDER_MAX}
+                    step={PRICE_SLIDER_STEP}
+                    value={priceSliderMax}
+                    onChange={handlePriceSliderMax}
+                    className="buy-filters__slider buy-filters__slider--max"
+                    aria-label="Maximum price"
+                  />
+                </div>
+                <div className="buy-filters__range buy-filters__range--two">
+                  <CustomSelect
+                    name="minPrice"
+                    value={formFilters.minPrice === '' ? '' : String(formFilters.minPrice)}
+                    onChange={handleSelectChange}
+                    options={PRICE_OPTIONS.map((o) => ({ value: String(o.value), label: o.label }))}
+                    placeholder="Any"
+                    className="buy-filters__price-select"
+                  />
+                  <CustomSelect
+                    name="maxPrice"
+                    value={formFilters.maxPrice === '' ? '' : String(formFilters.maxPrice)}
+                    onChange={handleSelectChange}
+                    options={PRICE_OPTIONS.map((o) => ({ value: String(o.value), label: o.label }))}
+                    placeholder="Any"
+                    className="buy-filters__price-select"
+                  />
+                </div>
+              </div>
+
+              <div className="buy-filters__group">
+                <label className="buy-filters__label">Area (sqm)</label>
+                <div className="buy-filters__range buy-filters__range--two">
+                  <input
+                    type="number"
+                    name="minArea"
+                    value={formFilters.minArea === '' ? '' : formFilters.minArea}
+                    onChange={handleNumberChange}
+                    placeholder="Any"
+                    min={0}
+                    className="buy-filters__input"
+                  />
+                  <input
+                    type="number"
+                    name="maxArea"
+                    value={formFilters.maxArea === '' ? '' : formFilters.maxArea}
+                    onChange={handleNumberChange}
+                    placeholder="Any"
+                    min={0}
+                    className="buy-filters__input"
+                  />
+                </div>
+              </div>
+
+              <button type="submit" className="buy-filters__submit">
+                <SlidersHorizontal size={18} aria-hidden />
+                <span>Apply Filters</span>
+              </button>
+            </form>
+          </aside>
+
+          <section className="buy-results">
+            <div className="buy-results__header">
+              <p className="buy-results__count">
+                {loading
+                  ? 'Loading properties...'
+                  : `Showing ${sortedProperties.length} properties`}
+              </p>
+              <div className="buy-results__sort-wrap">
+                <span className="buy-results__sort-label">Sort by price</span>
+                <CustomSelect
+                  name="sortBy"
+                  id="sort-price"
+                  value={sortBy}
+                  onChange={(e) => {
+                    setSortBy(e.target.value)
+                    setCurrentPage(1)
+                  }}
+                  options={[
+                    { value: 'low-high', label: 'Low to High' },
+                    { value: 'high-low', label: 'High to Low' },
+                  ]}
+                  placeholder="Choose order"
+                  className="buy-results__sort-dropdown"
+                />
+              </div>
+            </div>
+
+            {error && <p className="buy-results__error">{error}</p>}
+
+            {!loading && !error && sortedProperties.length > 0 && (
+              <div className="buy-results__grid">
+                {paginatedProducts.map((product) => (
+                  <article key={product.id} className="property-card">
+                    <div className="property-card__image-wrap">
+                      <img
+                        src={product.thumbnail || product.image}
+                        alt={product.name || product.title}
+                        className="property-card__image"
+                        loading="lazy"
+                      />
+                      {product.tag && <span className="property-card__tag">{product.tag}</span>}
+                    </div>
+                    <div className="property-card__body">
+                      <h3 className="property-card__title">{product.name || product.title}</h3>
+                      <p className="property-card__location">
+                        <MapPin size={14} aria-hidden />
+                        <span>{product.location}</span>
+                      </p>
+                      <p className="property-card__price">
+                        ${product.price.toLocaleString()}
+                      </p>
+                      <p className="property-card__meta">
+                        {product.type} · {product.area} m²
+                      </p>
+                      <p className="property-card__description">
+                        {product.shortDescription || product.description}
+                      </p>
+                      <button
+                        type="button"
+                        className="property-card__cta"
+                        onClick={() => navigate(`/buy/${product.propertyId ?? product.id}`)}
+                      >
+                        View Details
+                      </button>
+                    </div>
+                  </article>
                 ))}
               </div>
-            </div>
+            )}
 
-            <div className="buy-filters__group">
-              <label className="buy-filters__label">Price Range</label>
-              <div className="buy-filters__slider-wrap">
-                <div className="buy-filters__slider-track" aria-hidden style={priceTrackStyle} />
-                <input
-                  type="range"
-                  min={PRICE_SLIDER_MIN}
-                  max={PRICE_SLIDER_MAX}
-                  step={PRICE_SLIDER_STEP}
-                  value={priceSliderMin}
-                  onChange={handlePriceSliderMin}
-                  className="buy-filters__slider buy-filters__slider--min"
-                  aria-label="Minimum price"
-                />
-                <input
-                  type="range"
-                  min={PRICE_SLIDER_MIN}
-                  max={PRICE_SLIDER_MAX}
-                  step={PRICE_SLIDER_STEP}
-                  value={priceSliderMax}
-                  onChange={handlePriceSliderMax}
-                  className="buy-filters__slider buy-filters__slider--max"
-                  aria-label="Maximum price"
-                />
-              </div>
-              <div className="buy-filters__range buy-filters__range--two">
-                <CustomSelect
-                  name="minPrice"
-                  value={formFilters.minPrice === '' ? '' : String(formFilters.minPrice)}
-                  onChange={handleSelectChange}
-                  options={PRICE_OPTIONS.map((o) => ({ value: String(o.value), label: o.label }))}
-                  placeholder="Any"
-                  className="buy-filters__price-select"
-                />
-                <CustomSelect
-                  name="maxPrice"
-                  value={formFilters.maxPrice === '' ? '' : String(formFilters.maxPrice)}
-                  onChange={handleSelectChange}
-                  options={PRICE_OPTIONS.map((o) => ({ value: String(o.value), label: o.label }))}
-                  placeholder="Any"
-                  className="buy-filters__price-select"
-                />
-              </div>
-            </div>
-
-            <div className="buy-filters__group">
-              <label className="buy-filters__label">Area (sqm)</label>
-              <div className="buy-filters__range buy-filters__range--two">
-                <input
-                  type="number"
-                  name="minArea"
-                  value={formFilters.minArea === '' ? '' : formFilters.minArea}
-                  onChange={handleNumberChange}
-                  placeholder="Any"
-                  min={0}
-                  className="buy-filters__input"
-                />
-                <input
-                  type="number"
-                  name="maxArea"
-                  value={formFilters.maxArea === '' ? '' : formFilters.maxArea}
-                  onChange={handleNumberChange}
-                  placeholder="Any"
-                  min={0}
-                  className="buy-filters__input"
-                />
-              </div>
-            </div>
-
-            <button type="submit" className="buy-filters__submit">
-              <SlidersHorizontal size={18} aria-hidden />
-              <span>Apply Filters</span>
-            </button>
-          </form>
-        </aside>
-
-        <section className="buy-results">
-          <div className="buy-results__header">
-            <p className="buy-results__count">
-              {loading
-                ? 'Loading properties...'
-                : `Showing ${sortedProperties.length} properties`}
-            </p>
-            <div className="buy-results__sort-wrap">
-              <span className="buy-results__sort-label">Sort by price</span>
-              <CustomSelect
-                name="sortBy"
-                id="sort-price"
-                value={sortBy}
-                onChange={(e) => {
-                  setSortBy(e.target.value)
-                  setCurrentPage(1)
-                }}
-                options={[
-                  { value: 'low-high', label: 'Low to High' },
-                  { value: 'high-low', label: 'High to Low' },
-                ]}
-                placeholder="Choose order"
-                className="buy-results__sort-dropdown"
-              />
-            </div>
-          </div>
-
-          {error && <p className="buy-results__error">{error}</p>}
-
-          {!loading && !error && sortedProperties.length > 0 && (
-            <div className="buy-results__grid">
-              {paginatedProducts.map((product) => (
-                <article key={product.id} className="property-card">
-                  <div className="property-card__image-wrap">
-                    <img
-                      src={product.thumbnail || product.image}
-                      alt={product.name || product.title}
-                      className="property-card__image"
-                      loading="lazy"
-                    />
-                    {product.tag && <span className="property-card__tag">{product.tag}</span>}
-                  </div>
-                  <div className="property-card__body">
-                    <h3 className="property-card__title">{product.name || product.title}</h3>
-                    <p className="property-card__location">
-                      <MapPin size={14} aria-hidden />
-                      <span>{product.location}</span>
-                    </p>
-                    <p className="property-card__price">
-                      ${product.price.toLocaleString()}
-                    </p>
-                    <p className="property-card__meta">
-                      {product.type} · {product.area} m²
-                    </p>
-                    <p className="property-card__description">
-                      {product.shortDescription || product.description}
-                    </p>
+            {sortedProperties.length > 0 && (
+              <div className="buy-results__pagination">
+                {Array.from({ length: totalPages }, (_, i) => {
+                  const page = i + 1
+                  return (
                     <button
+                      key={page}
                       type="button"
-                      className="property-card__cta"
-                      onClick={() => navigate(`/buy/${product.propertyId ?? product.id}`)}
+                      className={`buy-results__page ${page === currentPage ? 'buy-results__page--active' : ''
+                        }`}
+                      onClick={() => setCurrentPage(page)}
                     >
-                      View Details
+                      {page}
                     </button>
-                  </div>
-                </article>
-              ))}
-            </div>
-          )}
-
-          {sortedProperties.length > 0 && (
-            <div className="buy-results__pagination">
-              {Array.from({ length: totalPages }, (_, i) => {
-                const page = i + 1
-                return (
-                  <button
-                    key={page}
-                    type="button"
-                    className={`buy-results__page ${
-                      page === currentPage ? 'buy-results__page--active' : ''
-                    }`}
-                    onClick={() => setCurrentPage(page)}
-                  >
-                    {page}
-                  </button>
-                )
-              })}
-            </div>
-          )}
-        </section>
-      </div>
+                  )
+                })}
+              </div>
+            )}
+          </section>
+        </div>
       </div>
     </div>
   )
