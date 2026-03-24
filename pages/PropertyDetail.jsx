@@ -12,6 +12,19 @@ import {
 import { fetchProperties } from '../data/properties'
 import { fetchProducts } from '../data/products'
 import { useLanguage } from '../context/LanguageContext'
+import {
+  propertyDescription,
+  propertyHighlights,
+  propertyLocationDisplay,
+  propertyTag,
+  propertyTitle,
+} from '../utils/propertyLocale'
+import {
+  productDisplayName,
+  productLocationDisplay,
+  productShortDescription,
+  productStatusDisplay,
+} from '../utils/productLocale'
 import Reveal from '../components/Reveal'
 import '../styles/Home.css'
 import '../styles/PropertyDetail.css'
@@ -44,8 +57,15 @@ function titleWithAccent(title) {
   )
 }
 
+function displayPropertyType(item, t) {
+  if (!item?.type) return ''
+  const key = `home.propertyTypes.${item.type}`
+  const label = t(key)
+  return label === key ? item.type : label
+}
+
 function PropertyDetail() {
-  const { t } = useLanguage()
+  const { t, locale } = useLanguage()
   const { id } = useParams()
   const navigate = useNavigate()
   const [properties, setProperties] = useState([])
@@ -83,14 +103,20 @@ function PropertyDetail() {
     }
   }, [])
 
+  const listing = useMemo(
+    () => products.find((p) => String(p.id) === String(id)),
+    [id, products],
+  )
+
   const property = useMemo(() => {
-    const listing = products.find((p) => String(p.id) === String(id))
     if (listing) {
       const pid = listing.propertyId ?? listing.id
       return properties.find((p) => String(p.id) === String(pid))
     }
     return properties.find((p) => String(p.id) === String(id))
-  }, [id, properties, products])
+  }, [id, listing, properties])
+
+  const hasDetail = Boolean(listing || property)
 
   if (loading) {
     return (
@@ -120,7 +146,7 @@ function PropertyDetail() {
     )
   }
 
-  if (error || !property) {
+  if (error || !hasDetail) {
     return (
       <div className="landing-page property-detail-page">
         <div className="landing-container property-detail__shell">
@@ -156,6 +182,32 @@ function PropertyDetail() {
     )
   }
 
+  const title = listing
+    ? productDisplayName(listing, locale)
+    : propertyTitle(property, locale)
+  const locationLabel = listing
+    ? productLocationDisplay(listing, locale)
+    : propertyLocationDisplay(property, locale)
+  const price = listing ? listing.price : property.price
+  const areaDisplay = listing ? listing.area : property.area
+  const heroImage = listing
+    ? listing.thumbnail || listing.image || property?.image
+    : property.image
+  const typeSource = listing || property
+  const tagLabel = property
+    ? propertyTag(property, locale)
+    : listing
+      ? productStatusDisplay(listing, locale)
+      : ''
+  const highlights = property ? propertyHighlights(property, locale) : []
+  const longDesc = property ? propertyDescription(property, locale).trim() : ''
+  const description =
+    longDesc !== ''
+      ? longDesc
+      : listing
+        ? productShortDescription(listing, locale)
+        : propertyDescription(property, locale)
+
   return (
     <div className="landing-page property-detail-page">
       <div className="landing-container property-detail__shell">
@@ -172,21 +224,21 @@ function PropertyDetail() {
 
         <header className="property-detail__header">
           <Reveal className="property-detail__header-main" delay={60}>
-            <p className="property-detail__eyebrow">{property.type}</p>
+            <p className="property-detail__eyebrow">{displayPropertyType(typeSource, t)}</p>
             <h1 className="property-detail__title landing-hero__title">
-              {titleWithAccent(property.title)}
+              {titleWithAccent(title)}
             </h1>
             <p className="property-detail__location">
               <MapPin size={18} aria-hidden className="property-detail__location-icon" />
-              <span>{property.location}</span>
+              <span>{locationLabel}</span>
             </p>
           </Reveal>
           <Reveal className="property-detail__header-aside" delay={120}>
             <div className="property-detail__price-card">
               <p className="property-detail__price-label">{t('propertyDetail.askingPrice')}</p>
-              <p className="property-detail__price">{formatSar(property.price, t)}</p>
+              <p className="property-detail__price">{formatSar(price, t)}</p>
               <p className="property-detail__area">
-                {t('propertyDetail.totalArea', { area: property.area })}
+                {t('propertyDetail.totalArea', { area: areaDisplay })}
               </p>
               <div className="property-detail__price-actions">
                 <button
@@ -212,59 +264,65 @@ function PropertyDetail() {
           <Reveal className="property-detail__media" delay={100}>
             <div className="property-detail__image-frame landing-hero__image-frame">
               <img
-                src={property.image}
+                src={heroImage}
                 alt=""
                 className="property-detail__image"
                 loading="lazy"
                 decoding="async"
               />
-              <span className="property-detail__tag">{property.tag}</span>
+              {tagLabel ? <span className="property-detail__tag">{tagLabel}</span> : null}
             </div>
           </Reveal>
 
           <aside className="property-detail__sidebar">
-            <Reveal delay={140}>
-              <div className="property-detail__stats">
-                <div className="property-detail__stat-item">
-                  <Bed size={20} aria-hidden className="property-detail__stat-icon" />
-                  <span className="property-detail__stat-label">{t('propertyDetail.bedrooms')}</span>
-                  <span className="property-detail__stat-value">{property.bedrooms}</span>
+            {property ? (
+              <Reveal delay={140}>
+                <div className="property-detail__stats">
+                  <div className="property-detail__stat-item">
+                    <Bed size={20} aria-hidden className="property-detail__stat-icon" />
+                    <span className="property-detail__stat-label">{t('propertyDetail.bedrooms')}</span>
+                    <span className="property-detail__stat-value">{property.bedrooms}</span>
+                  </div>
+                  <div className="property-detail__stat-item">
+                    <Bath size={20} aria-hidden className="property-detail__stat-icon" />
+                    <span className="property-detail__stat-label">{t('propertyDetail.bathrooms')}</span>
+                    <span className="property-detail__stat-value">{property.bathrooms}</span>
+                  </div>
+                  <div className="property-detail__stat-item">
+                    <Car size={20} aria-hidden className="property-detail__stat-icon" />
+                    <span className="property-detail__stat-label">{t('propertyDetail.parking')}</span>
+                    <span className="property-detail__stat-value">{property.parking}</span>
+                  </div>
+                  <div className="property-detail__stat-item">
+                    <Maximize2 size={20} aria-hidden className="property-detail__stat-icon" />
+                    <span className="property-detail__stat-label">{t('propertyDetail.area')}</span>
+                    <span className="property-detail__stat-value">
+                      {t('propertyDetail.areaSqm', {
+                        area: listing ? areaDisplay : property.area,
+                      })}
+                    </span>
+                  </div>
                 </div>
-                <div className="property-detail__stat-item">
-                  <Bath size={20} aria-hidden className="property-detail__stat-icon" />
-                  <span className="property-detail__stat-label">{t('propertyDetail.bathrooms')}</span>
-                  <span className="property-detail__stat-value">{property.bathrooms}</span>
-                </div>
-                <div className="property-detail__stat-item">
-                  <Car size={20} aria-hidden className="property-detail__stat-icon" />
-                  <span className="property-detail__stat-label">{t('propertyDetail.parking')}</span>
-                  <span className="property-detail__stat-value">{property.parking}</span>
-                </div>
-                <div className="property-detail__stat-item">
-                  <Maximize2 size={20} aria-hidden className="property-detail__stat-icon" />
-                  <span className="property-detail__stat-label">{t('propertyDetail.area')}</span>
-                  <span className="property-detail__stat-value">
-                    {t('propertyDetail.areaSqm', { area: property.area })}
-                  </span>
-                </div>
-              </div>
-            </Reveal>
+              </Reveal>
+            ) : null}
 
-            <Reveal delay={200}>
-              <div className="property-detail__highlights">
-                <h2 className="property-detail__highlights-title">{t('propertyDetail.highlights')}</h2>
-                <ul className="property-detail__highlights-list">
-                  {property.highlights?.map((item) => (
-                    <li key={item} className="property-detail__highlight-item">
-                      <span className="property-detail__highlight-check" aria-hidden>
-                        <Check size={16} strokeWidth={3} />
-                      </span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
+            {highlights.length > 0 ? (
+              <Reveal delay={200}>
+                <div className="property-detail__highlights">
+                  <h2 className="property-detail__highlights-title">{t('propertyDetail.highlights')}</h2>
+                  <ul className="property-detail__highlights-list">
+                    {highlights.map((item, idx) => (
+                      <li key={`${idx}-${item}`} className="property-detail__highlight-item">
+                        <span className="property-detail__highlight-check" aria-hidden>
+                          <Check size={16} strokeWidth={3} />
+                        </span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+            ) : null}
           </aside>
         </div>
 
@@ -273,7 +331,7 @@ function PropertyDetail() {
             <h2 id="property-about-heading" className="property-detail__section-title">
               {t('propertyDetail.aboutTitle')}
             </h2>
-            <p className="property-detail__section-body">{property.description}</p>
+            <p className="property-detail__section-body">{description}</p>
           </section>
         </Reveal>
       </div>

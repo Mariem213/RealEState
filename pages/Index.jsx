@@ -14,6 +14,7 @@ import Reveal from '../components/Reveal'
 import { useLanguage } from '../context/LanguageContext'
 import '../styles/Home.css'
 import { fetchProducts } from '../data/products'
+import { productDisplayName, productLocationDisplay } from '../utils/productLocale'
 import { ALL_LOCATIONS } from '../data/properties'
 
 const HERO_VILLA = '../../public/hero.png'
@@ -98,7 +99,7 @@ function specsLine(type, area, t) {
 }
 
 function Index() {
-  const { t } = useLanguage()
+  const { t, locale } = useLanguage()
   const navigate = useNavigate()
   const [featured, setFeatured] = useState([])
   const [featuredLoading, setFeaturedLoading] = useState(true)
@@ -269,13 +270,13 @@ function Index() {
                         </span>
                       </div>
                       <div className="landing-property-card__body">
-                        <h3 className="landing-property-card__name">{p.name}</h3>
+                        <h3 className="landing-property-card__name">{productDisplayName(p, locale)}</h3>
                         <p className="landing-property-card__specs">
                           {specsLine(p.type, p.area, t)}
                         </p>
                         <p className="landing-property-card__loc">
                           <MapPin size={16} aria-hidden />
-                          {p.location}
+                          {productLocationDisplay(p, locale)}
                         </p>
                         <Link to={`/buy/${p.id}`} className="landing-property-card__btn">
                           {t('home.featured.viewDetails')}

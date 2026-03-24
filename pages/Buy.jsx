@@ -7,6 +7,11 @@ import { useLanguage } from '../context/LanguageContext'
 import '../styles/Buy.css'
 import { ALL_LOCATIONS } from '../data/properties'
 import { fetchProducts } from '../data/products'
+import {
+  productDisplayName,
+  productLocationDisplay,
+  productShortDescription,
+} from '../utils/productLocale'
 
 const PROPERTY_TYPE_VALUES = ['Apartment', 'Villa', 'Studio']
 
@@ -36,7 +41,7 @@ const initialFilterState = {
 }
 
 function Buy() {
-  const { t } = useLanguage()
+  const { t, locale } = useLanguage()
   const [formFilters, setFormFilters] = useState(initialFilterState)
   const [appliedFilters, setAppliedFilters] = useState(initialFilterState)
   const [products, setProducts] = useState([])
@@ -415,24 +420,24 @@ function Buy() {
                       <div className="property-card__image-wrap">
                         <img
                           src={product.thumbnail || product.image}
-                          alt={product.name || product.title}
+                          alt={productDisplayName(product, locale)}
                           className="property-card__image"
                           loading="lazy"
                         />
                         {product.tag && <span className="property-card__tag">{product.tag}</span>}
                       </div>
                       <div className="property-card__body">
-                        <h3 className="property-card__title">{product.name || product.title}</h3>
+                        <h3 className="property-card__title">{productDisplayName(product, locale)}</h3>
                         <p className="property-card__location">
                           <MapPin size={14} aria-hidden />
-                          <span>{product.location}</span>
+                          <span>{productLocationDisplay(product, locale)}</span>
                         </p>
                         <p className="property-card__price">${product.price.toLocaleString()}</p>
                         <p className="property-card__meta">
                           {displayPropertyType(product.type)} · {product.area} m²
                         </p>
                         <p className="property-card__description">
-                          {product.shortDescription || product.description}
+                          {productShortDescription(product, locale)}
                         </p>
                         <button
                           type="button"

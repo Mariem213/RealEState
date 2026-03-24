@@ -88,7 +88,10 @@
       "Apartment": "شقة",
       "Villa": "فيلا",
       "Studio": "استوديو",
-      "Penthouse": "بنتهاوس"
+      "Penthouse": "بنتهاوس",
+      "Condo": "شقة ملكية",
+      "Townhouse": "منزل متلاصق",
+      "House": "منزل"
     },
     "featured": {
       "title": "عقارات مميزة",
