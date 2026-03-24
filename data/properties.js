@@ -10,7 +10,7 @@ export const ALL_LOCATIONS = [
 export const PROPERTY_TYPES = ['Any', 'Apartment', 'Villa', 'Studio', 'Penthouse']
 
 export async function fetchProperties() {
-  const response = await fetch('/properties.json')
+  const response = await fetch('/properties.json', { cache: 'no-store' })
   if (!response.ok) {
     throw new Error('Failed to load properties')
   }

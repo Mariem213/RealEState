@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { CircleDollarSign, User, TrendingUp, Send } from 'lucide-react'
+import CustomSelect from '../components/CustomSelect'
 import '../styles/InvestmentApplication.css'
 
 const INVESTOR_TYPES = ['Individual', 'Institutional', 'Family Office', 'Other']
@@ -137,84 +138,69 @@ function InvestmentApplication() {
               <div className="investment-application-form__row">
                 <label className="investment-application-form__label">
                   Investor Type <span className="investment-application-form__required">*</span>
-                  <select
+                  <CustomSelect
                     name="investorType"
                     value={formData.investorType}
                     onChange={handleChange}
+                    options={INVESTOR_TYPES}
+                    placeholder="Select an option"
                     className="investment-application-form__select"
                     required
-                  >
-                    <option value="">Select an option</option>
-                    {INVESTOR_TYPES.map((opt) => (
-                      <option key={opt} value={opt}>{opt}</option>
-                    ))}
-                  </select>
+                  />
                 </label>
                 <label className="investment-application-form__label">
                   Expertise <span className="investment-application-form__required">*</span>
-                  <select
+                  <CustomSelect
                     name="expertise"
                     value={formData.expertise}
                     onChange={handleChange}
+                    options={EXPERTISE_OPTIONS}
+                    placeholder="Select here"
                     className="investment-application-form__select"
                     required
-                  >
-                    <option value="">Select here</option>
-                    {EXPERTISE_OPTIONS.map((opt) => (
-                      <option key={opt} value={opt}>{opt}</option>
-                    ))}
-                  </select>
+                  />
                 </label>
               </div>
 
               <div className="investment-application-form__row investment-application-form__row--full">
                 <label className="investment-application-form__label">
                   What type of opportunity are you looking for? <span className="investment-application-form__required">*</span>
-                  <select
+                  <CustomSelect
                     name="opportunityType"
                     value={formData.opportunityType}
                     onChange={handleChange}
+                    options={OPPORTUNITY_TYPES}
+                    placeholder="Select an option"
                     className="investment-application-form__select"
                     required
-                  >
-                    <option value="">Select an option</option>
-                    {OPPORTUNITY_TYPES.map((opt) => (
-                      <option key={opt} value={opt}>{opt}</option>
-                    ))}
-                  </select>
+                  />
                 </label>
               </div>
 
               <div className="investment-application-form__row">
                 <label className="investment-application-form__label">
                   Preferred Investment Method <span className="investment-application-form__required">*</span>
-                  <select
+                  <CustomSelect
                     name="investmentMethod"
                     value={formData.investmentMethod}
                     onChange={handleChange}
+                    options={INVESTMENT_METHODS}
+                    placeholder="Select here"
                     className="investment-application-form__select"
                     required
-                  >
-                    <option value="">Select here</option>
-                    {INVESTMENT_METHODS.map((opt) => (
-                      <option key={opt} value={opt}>{opt}</option>
-                    ))}
-                  </select>
+                  />
                 </label>
                 <label className="investment-application-form__label">
                   Ticket size (SAR) <span className="investment-application-form__required">*</span>
-                  <select
+                  <CustomSelect
                     name="ticketSize"
                     value={formData.ticketSize}
                     onChange={handleChange}
+                    options={TICKET_SIZES}
+                    placeholder="Your ticket size in SAR"
                     className="investment-application-form__select"
                     required
-                  >
-                    <option value="">Your ticket size in SAR</option>
-                    {TICKET_SIZES.map((opt) => (
-                      <option key={opt} value={opt}>{opt}</option>
-                    ))}
-                  </select>
+                  />
                 </label>
               </div>
             </section>

@@ -246,8 +246,7 @@
   color: #dc2626;
 }
 
-.investment-application-form__input,
-.investment-application-form__select {
+.investment-application-form__input {
   width: 100%;
   padding: 12px 14px;
   font-size: 16px;
@@ -261,21 +260,11 @@
   min-height: 44px;
 }
 
-.investment-application-form__select {
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  padding-right: 40px;
-}
-
-.investment-application-form__input:hover,
-.investment-application-form__select:hover {
+.investment-application-form__input:hover {
   border-color: #d1d5db;
 }
 
-.investment-application-form__input:focus,
-.investment-application-form__select:focus {
+.investment-application-form__input:focus {
   border-color: #1a365d;
   box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.2);
 }
@@ -284,8 +273,14 @@
   color: #9ca3af;
 }
 
-.investment-application-form__select option {
-  color: #1f2937;
+/* Sell-style CustomSelect (see CustomSelect.css) */
+.investment-application-form__label .investment-application-form__select {
+  width: 100%;
+}
+
+.investment-application-form__row .investment-application-form__select.custom-select--open {
+  position: relative;
+  z-index: 20;
 }
 
 /* Submit button */

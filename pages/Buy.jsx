@@ -395,7 +395,7 @@ function Buy() {
                       <button
                         type="button"
                         className="property-card__cta"
-                        onClick={() => navigate(`/buy/${product.propertyId ?? product.id}`)}
+                        onClick={() => navigate(`/buy/${product.id}`)}
                       >
                         View Details
                       </button>
