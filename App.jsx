@@ -7,6 +7,8 @@ import Register from './pages/Register'
 import JobApplication from './pages/JobApplication'
 import InvestmentApplication from './pages/InvestmentApplication'
 import SellProperty from './pages/SellProperty'
+import Buy from './pages/Buy'
+import PropertyDetail from './pages/PropertyDetail'
 
 const AUTH_PATHS = ['/login', '/signup']
 
@@ -24,6 +26,8 @@ function AppContent() {
           <Route path="/careers" element={<JobApplication />} />
           <Route path="/investment" element={<InvestmentApplication />} />
           <Route path="/sell" element={<SellProperty />} />
+          <Route path="/buy" element={<Buy />} />
+          <Route path="/buy/:id" element={<PropertyDetail />} />
           <Route path="/" element={<Index />} />
         </Routes>
       </main>
