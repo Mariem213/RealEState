@@ -11,16 +11,18 @@ import InvestmentApplication from './pages/InvestmentApplication'
 import SellProperty from './pages/SellProperty'
 import Buy from './pages/Buy'
 import PropertyDetail from './pages/PropertyDetail'
+import Dashboard from './pages/Dashboard'
 
 const AUTH_PATHS = ['/login', '/signup']
 
 function AppContent() {
   const location = useLocation()
-  const isAuthPage = AUTH_PATHS.includes(location.pathname)
+  const hideNavbar =
+    AUTH_PATHS.includes(location.pathname) || location.pathname === '/admin'
 
   return (
     <div className="app-layout">
-      {!isAuthPage && <Navbar />}
+      {!hideNavbar && <Navbar />}
       <main className="app-main">
         <Routes>
           <Route path="/login" element={<Login />} />
@@ -66,6 +68,14 @@ function AppContent() {
             }
           />
           <Route path="/" element={<Index />} />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </main>
       <Footer />

@@ -22,9 +22,9 @@ function displayNameFromUser(user) {
 
 function Navbar() {
   const { user, signOut } = useAuth()
+  const location = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
   const [lang, setLang] = useState('EN')
-  const location = useLocation()
 
   const navLinks = user ? allNavLinks : allNavLinks.filter((l) => l.to === '/')
 
