@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Building2, PlusCircle } from 'lucide-react'
+import { Building2 } from 'lucide-react'
 import '../styles/Navbar.css'
 
 const navLinks = [
@@ -81,9 +81,14 @@ function Navbar() {
               AR
             </button>
           </div>
-          <Link to="/login" className="navbar__login" onClick={() => setMenuOpen(false)}>
-            Login
-          </Link>
+          <div className="navbar__auth">
+            <Link to="/signup" className="navbar__signup" onClick={() => setMenuOpen(false)}>
+              Sign up
+            </Link>
+            <Link to="/login" className="navbar__login" onClick={() => setMenuOpen(false)}>
+              Login
+            </Link>
+          </div>
         </div>
       </div>
     </header>

@@ -181,6 +181,13 @@ function Index() {
                 Learn More
               </Link>
             </div>
+            <p className="landing-hero__account">
+              <Link to="/login">Log in</Link>
+              <span className="landing-hero__account-sep" aria-hidden>
+                ·
+              </span>
+              <Link to="/signup">Create an account</Link>
+            </p>
           </Reveal>
           <Reveal className="landing-hero__col landing-hero__col--visual" delay={80}>
             <div className="landing-hero__image-frame">

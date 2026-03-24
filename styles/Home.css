@@ -91,6 +91,28 @@
 	gap: 0.875rem;
 }
 
+.landing-hero__account {
+	margin: 1rem 0 0;
+	font-size: 0.9375rem;
+	color: var(--landing-gray);
+}
+
+.landing-hero__account a {
+	color: #1e3a5f;
+	font-weight: 600;
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.landing-hero__account a:hover {
+	color: #2c4872;
+}
+
+.landing-hero__account-sep {
+	margin: 0 0.5rem;
+	opacity: 0.55;
+}
+
 .landing-btn {
 	display: inline-flex;
 	align-items: center;

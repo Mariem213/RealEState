@@ -197,6 +197,32 @@
   background: #2c4872;
 }
 
+.navbar__auth {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.navbar__signup {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #1a365d;
+  background: transparent;
+  border: 1px solid #1a365d;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.navbar__signup:hover {
+  background: rgba(26, 54, 93, 0.08);
+  color: #2c4872;
+}
+
 .navbar__login {
   display: inline-flex;
   align-items: center;
@@ -278,5 +304,11 @@
 
   .navbar__brand-text {
     font-size: 1rem;
+  }
+
+  .navbar__signup,
+  .navbar__login {
+    padding: 8px 12px;
+    font-size: 0.8125rem;
   }
 }
