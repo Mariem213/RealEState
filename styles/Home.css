@@ -640,11 +640,19 @@
 	transform: scale(1.03);
 }
 
-/* Testimonials */
+/* Testimonials — equal row heights only; inner content styles unchanged */
 .landing-testimonials-grid {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	gap: 1.75rem;
+	align-items: stretch;
+}
+
+.landing-testimonials-grid > .landing-reveal {
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+	height: 100%;
 }
 
 @media (max-width: 900px) {
@@ -658,6 +666,9 @@
 .landing-quote-card {
 	margin: 0;
 	padding: 1.5rem;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
 	background: #fff;
 	border-radius: var(--landing-radius);
 	border: 1px solid var(--landing-border);
@@ -711,6 +722,7 @@
 .landing-quote-card__stars {
 	display: flex;
 	gap: 0.2rem;
+	margin-top: auto;
 	color: var(--landing-gold);
 }
 
