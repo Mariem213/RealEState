@@ -1,0 +1,499 @@
+{
+  "brand": {
+    "name": "ريل إستيت",
+    "adminTitle": "إدارة ريل إستيت"
+  },
+  "common": {
+    "user": "مستخدم",
+    "language": "اللغة",
+    "toggleMenu": "فتح وإغلاق القائمة",
+    "homeAria": "الصفحة الرئيسية لريل إستيت",
+    "introduction": "مقدمة",
+    "starsRating": "5 من 5 نجوم",
+    "loading": "جاري التحميل…",
+    "backHome": "← العودة للرئيسية",
+    "back": "رجوع",
+    "showPassword": "إظهار كلمة المرور",
+    "hidePassword": "إخفاء كلمة المرور",
+    "show": "إظهار",
+    "hide": "إخفاء",
+    "requiredFieldsHint": "يرجى تعبئة جميع الحقول المطلوبة المعلّمة بـ *",
+    "formFooterLegal": "بإرسال هذا النموذج، أنت توافق على الشروط. سنراجع طلبك خلال 24 ساعة.",
+    "sendForm": "إرسال النموذج",
+    "browseProperties": "تصفح العقارات",
+    "viewDetails": "عرض التفاصيل",
+    "any": "أي",
+    "yes": "نعم",
+    "no": "لا"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "buy": "شراء",
+    "sell": "بيع",
+    "investment": "استثمار",
+    "careers": "وظائف",
+    "signup": "إنشاء حساب",
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج"
+  },
+  "footer": {
+    "homeAria": "الصفحة الرئيسية لإستيت هب",
+    "slogan": "شريكك الموثوق في معاملات العقارات.",
+    "quickLinks": "روابط سريعة",
+    "support": "الدعم",
+    "connect": "تواصل",
+    "aboutUs": "من نحن",
+    "properties": "العقارات",
+    "agents": "الوسطاء",
+    "blog": "المدونة",
+    "helpCenter": "مركز المساعدة",
+    "contactUs": "اتصل بنا",
+    "privacyPolicy": "سياسة الخصوصية",
+    "termsOfService": "شروط الخدمة",
+    "facebook": "فيسبوك",
+    "twitter": "تويتر",
+    "instagram": "إنستغرام",
+    "linkedin": "لينكد إن",
+    "copyright": "© 2024 إستيت هب. جميع الحقوق محفوظة. مشروع أكاديمي."
+  },
+  "home": {
+    "hero": {
+      "titleBefore": "اعثر على",
+      "titleAccent": "عقار أحلامك",
+      "titleAfter": "اليوم",
+      "lead": "اكتشف فرصاً عقارية مميزة عبر منصتنا الشاملة. سواء كنت تشتري أو تبيع أو تستثمر، نقدم حلولاً موثوقة لاحتياجاتك العقارية.",
+      "ctaSearch": "ابدأ البحث",
+      "ctaLearn": "اعرف المزيد"
+    },
+    "search": {
+      "sectionAria": "بحث عن عقار",
+      "formAria": "بحث عقاري ذكي",
+      "title": "بحث عقاري ذكي",
+      "location": "الموقع",
+      "propertyType": "نوع العقار",
+      "priceRange": "نطاق السعر",
+      "placeholderArea": "جميع المناطق",
+      "placeholderType": "أي نوع",
+      "placeholderPrice": "أي سعر",
+      "submit": "بحث"
+    },
+    "priceOptions": {
+      "any": "أي سعر",
+      "upTo500k": "حتى 500 ألف ريال",
+      "500kTo1m": "500 ألف – 1 مليون ريال",
+      "1mTo2m": "1 – 2 مليون ريال",
+      "over2m": "أكثر من 2 مليون ريال"
+    },
+    "propertyTypes": {
+      "Apartment": "شقة",
+      "Villa": "فيلا",
+      "Studio": "استوديو",
+      "Penthouse": "بنتهاوس"
+    },
+    "featured": {
+      "title": "عقارات مميزة",
+      "subtitle": "اكتشف مجموعتنا المختارة من العقارات الراقية",
+      "empty": "العقارات غير متاحة حالياً.",
+      "browseAll": "تصفح جميع القوائم",
+      "viewDetails": "عرض التفاصيل"
+    },
+    "specs": {
+      "studio": "غرفة نوم واحدة • حمام واحد • {area} م²",
+      "line": "{beds} غرف نوم • {baths} حمامات • {area} م²"
+    },
+    "services": {
+      "sectionTitle": "خدماتنا",
+      "sectionSubtitle": "حلول عقارية شاملة لجميع احتياجاتك",
+      "buyingTitle": "شراء العقارات",
+      "buyingText": "اعثر على منزلك المثالي عبر قاعدة بيانات واسعة وإرشاد من الخبراء.",
+      "sellingTitle": "بيع العقارات",
+      "sellingText": "حقق أقصى قيمة لعقارك مع تسويق ومبيعات احترافية.",
+      "investTitle": "استشارات استثمارية",
+      "investText": "فرص استثمارية استراتيجية مع تحليل للسوق وتوقعات للعائد."
+    },
+    "why": {
+      "title": "لماذا تختار ريل إستيت؟",
+      "point1Title": "خبرة في السوق",
+      "point1Text": "فهم عميق للأسواق المحلية مع رؤى مبنية على البيانات.",
+      "point2Title": "شبكة موثوقة",
+      "point2Text": "علاقات راسخة مع مشترين وبائعين ومستثمرين موثقين.",
+      "point3Title": "خدمة متكاملة",
+      "point3Text": "دعم كامل من الاستشارة الأولى حتى إتمام الصفقة."
+    },
+    "testimonials": {
+      "title": "ماذا يقول عملاؤنا",
+      "subtitle": "تجارب حقيقية من مالكي عقارات ومستثمرين راضين",
+      "t1Name": "سارة أحمد",
+      "t1Role": "مستثمرة عقارية",
+      "t1Quote": "خدمة ممتازة ورؤى سوقية. وجدت عقاراً استثمارياً مثالياً بعائد ممتاز.",
+      "t2Name": "محمد الراشد",
+      "t2Role": "مشتري منزل",
+      "t2Quote": "فريق محترف فهم احتياجاتنا تماماً. جعل عملية الشراء سلسة وخالية من التوتر.",
+      "t3Name": "حدا الزهراء",
+      "t3Role": "بائعة عقار",
+      "t3Quote": "بعت عقاري فوق السعر المطلوب خلال أسابيع. استراتيجية التسويق والتفاوض ممتازة."
+    },
+    "cta": {
+      "title": "مستعد لبدء رحلتك العقارية؟",
+      "text": "انضم لآلاف العملاء الراضين الذين يثقون بنا في احتياجاتهم العقارية",
+      "button": "ابدأ اليوم"
+    },
+    "priceFormat": {
+      "million": "{n} مليون ريال",
+      "thousand": "{n} ألف ريال",
+      "full": "{n} ريال"
+    }
+  },
+  "dashboard": {
+    "adminSections": "أقسام الإدارة",
+    "last7Days": "آخر 7 أيام",
+    "title": "لوحة التحكم",
+    "subtitle": "راقب أداء منصتك العقارية ونشاط المستخدمين.",
+    "sidebar": {
+      "dashboard": "لوحة التحكم",
+      "home": "الرئيسية",
+      "buyRequests": "طلبات الشراء",
+      "sellRequests": "طلبات البيع",
+      "investmentRequests": "طلبات الاستثمار",
+      "jobApplications": "طلبات التوظيف"
+    },
+    "metrics": {
+      "totalProperties": "إجمالي العقارات",
+      "forSale": "معروض للبيع",
+      "buyRequests": "طلبات الشراء",
+      "sellRequests": "طلبات البيع",
+      "investmentRequests": "طلبات الاستثمار",
+      "jobApplications": "طلبات التوظيف",
+      "registeredUsers": "المستخدمون المسجلون",
+      "avgPropertyPrice": "متوسط سعر العقار",
+      "avgInvestment": "متوسط الاستثمار",
+      "conversionRate": "معدل التحويل"
+    },
+    "charts": {
+      "propertyTypeDistribution": "توزيع أنواع العقارات",
+      "pieAria": "مخطط دائري لأنواع العقارات",
+      "pieTitle": "توزيع أنواع العقارات",
+      "userRegistrations": "تسجيلات المستخدمين عبر الزمن",
+      "lineAria": "اتجاه تسجيلات المستخدمين",
+      "popularLocations": "أشهر المواقع",
+      "investmentTrend": "اتجاه طلبات الاستثمار"
+    },
+    "pie": {
+      "apartments": "شقق",
+      "houses": "منازل",
+      "commercial": "تجاري",
+      "land": "أراضي",
+      "villas": "فلل"
+    },
+    "locations": {
+      "marina": "حي المارينا",
+      "downtown": "وسط المدينة",
+      "bayView": "إطلالة الخليج",
+      "hillside": "التلال",
+      "oldTown": "البلدة القديمة"
+    },
+    "monthsShort": {
+      "jan": "يناير",
+      "feb": "فبراير",
+      "mar": "مارس",
+      "apr": "أبريل",
+      "may": "مايو",
+      "jun": "يونيو",
+      "jul": "يوليو"
+    },
+    "insights": {
+      "topProperty": "أبرز عقار",
+      "topPropertyTitle": "فيلا فاخرة وسط المدينة",
+      "hotLocation": "موقع ساخن",
+      "hotLocationTitle": "حي المارينا",
+      "hotLocationMeta": "+45% طلب",
+      "growthSegment": "قطاع نمو",
+      "growthTitle": "شقق سكنية",
+      "growthMeta": "+28% نمو"
+    },
+    "lists": {
+      "recentProperties": "عقارات حديثة",
+      "recentApplications": "طلبات حديثة",
+      "prop1Title": "شقة حديثة",
+      "prop1Sub": "وسط المدينة · 420 ألف دولار",
+      "prop2Title": "منزل عائلي",
+      "prop2Sub": "المارينا · 890 ألف دولار",
+      "prop3Title": "مساحة مكتبية",
+      "prop3Sub": "بيزنس باي · 1.1 مليون دولار",
+      "badgeActive": "نشط",
+      "badgePending": "قيد الانتظار",
+      "badgeSold": "مباع",
+      "app1Name": "سارة جونسون",
+      "app1Role": "مندوبة مبيعات",
+      "app2Name": "مايك تشين",
+      "app2Role": "محلل استثمار",
+      "app3Name": "ليزا رودريغيز",
+      "app3Role": "مديرة عقارات",
+      "badgeApproved": "موافق",
+      "badgeReview": "مراجعة",
+      "badgeRejected": "مرفوض"
+    }
+  },
+  "auth": {
+    "validation": {
+      "emailRequired": "البريد الإلكتروني مطلوب.",
+      "emailInvalid": "أدخل بريداً إلكترونياً صالحاً.",
+      "passwordRequired": "كلمة المرور مطلوبة.",
+      "passwordMin": "يجب أن تكون كلمة المرور {min} أحرف على الأقل.",
+      "confirmRequired": "يرجى تأكيد كلمة المرور.",
+      "passwordMismatch": "كلمتا المرور غير متطابقتين.",
+      "usernameRequired": "اسم المستخدم مطلوب.",
+      "usernameMin": "اسم المستخدم حرفان على الأقل.",
+      "usernameMax": "اسم المستخدم 40 حرفاً كحد أقصى."
+    },
+    "firebase": {
+      "emailInUse": "هذا البريد مسجّل مسبقاً. جرّب تسجيل الدخول.",
+      "invalidEmail": "أدخل بريداً إلكترونياً صالحاً.",
+      "weakPassword": "كلمة المرور ضعيفة. استخدم كلمة أقوى.",
+      "userDisabled": "تم تعطيل هذا الحساب.",
+      "invalidCredentials": "البريد أو كلمة المرور غير صحيحة.",
+      "tooManyRequests": "محاولات كثيرة. حاول لاحقاً.",
+      "network": "خطأ في الشبكة. تحقق من الاتصال.",
+      "generic": "حدث خطأ. حاول مرة أخرى."
+    },
+    "login": {
+      "title": "تسجيل الدخول",
+      "subtitleBefore": "ليس لديك حساب؟",
+      "emailLabel": "بريدك الإلكتروني",
+      "passwordLabel": "كلمة المرور",
+      "forgotPassword": "نسيت كلمة المرور؟",
+      "submit": "تسجيل الدخول",
+      "submitting": "جاري تسجيل الدخول…"
+    },
+    "register": {
+      "title": "إنشاء حساب",
+      "subtitleBefore": "لديك حساب بالفعل؟",
+      "username": "اسم المستخدم",
+      "emailLabel": "بريدك الإلكتروني",
+      "passwordLabel": "كلمة المرور",
+      "repeatPassword": "أعد إدخال كلمة المرور",
+      "submit": "إنشاء حساب",
+      "submitting": "جاري إنشاء الحساب…"
+    }
+  },
+  "buy": {
+    "title": "شراء عقارات",
+    "subtitle": "اعثر على عقارك المثالي من قوائم موثوقة",
+    "allLocations": "كل المواقع",
+    "filtersTitle": "عوامل التصفية",
+    "reset": "إعادة تعيين",
+    "location": "الموقع",
+    "propertyType": "نوع العقار",
+    "priceRange": "نطاق السعر",
+    "minPriceAria": "الحد الأدنى للسعر",
+    "maxPriceAria": "الحد الأقصى للسعر",
+    "areaSqm": "المساحة (م²)",
+    "applyFilters": "تطبيق التصفية",
+    "loading": "جاري تحميل العقارات...",
+    "showingCount": "عرض {count} عقار",
+    "loadError": "تعذر تحميل العقارات. حاول لاحقاً.",
+    "sortLabel": "ترتيب حسب السعر",
+    "sortLowHigh": "من الأقل للأعلى",
+    "sortHighLow": "من الأعلى للأقل",
+    "sortPlaceholder": "اختر الترتيب",
+    "priceOptions": {
+      "any": "أي",
+      "100k": "100,000 $",
+      "200k": "200,000 $",
+      "500k": "500,000 $",
+      "750k": "750,000 $",
+      "1m": "1,000,000 $",
+      "1_5m": "1,500,000 $",
+      "2m": "2,000,000 $",
+      "3m": "3,000,000 $"
+    }
+  },
+  "propertyDetail": {
+    "backToResults": "العودة للنتائج",
+    "loadError": "تعذر تحميل العقار. ارجع وحاول مرة أخرى.",
+    "notFoundTitle": "العقار غير موجود",
+    "notFoundText": "العقار الذي تبحث عنه غير موجود أو قد يكون قد أزيل.",
+    "askingPrice": "السعر المطلوب",
+    "totalArea": "{area} م² إجمالي المساحة",
+    "requestDetails": "طلب التفاصيل",
+    "moreListings": "المزيد من القوائم",
+    "bedrooms": "غرف النوم",
+    "bathrooms": "الحمامات",
+    "parking": "المواقف",
+    "area": "المساحة",
+    "areaSqm": "{area} م²",
+    "highlights": "أبرز المزايا",
+    "aboutTitle": "عن هذا العقار",
+    "priceFormat": {
+      "million": "{n} مليون ريال",
+      "thousand": "{n} ألف ريال",
+      "full": "{n} ريال"
+    }
+  },
+  "job": {
+    "title": "طلب توظيف",
+    "intro": "تقدّم لوظيفة ضمن فريقنا. أخبرنا عن خبرتك ومؤهلاتك. سنراجع طلبك ونرد خلال 24 ساعة.",
+    "sectionTitle": "تفاصيل الوظيفة",
+    "personalInfo": "المعلومات الشخصية",
+    "firstName": "الاسم الأول",
+    "lastName": "اسم العائلة",
+    "company": "الشركة",
+    "tel": "الهاتف",
+    "email": "البريد الإلكتروني",
+    "address": "العنوان",
+    "pincode": "الرمز البريدي",
+    "uploadCv": "رفع السيرة الذاتية",
+    "placeholders": {
+      "firstName": "اسمك الأول",
+      "lastName": "اسم عائلتك",
+      "company": "اسم شركتك",
+      "tel": "+966 123456789",
+      "email": "بريدك يتضمن @",
+      "address": "عنوانك",
+      "pincode": "رمزك البريدي",
+      "cv": "اختر ملفاً (PDF أو DOC)"
+    }
+  },
+  "investmentForm": {
+    "title": "طلب استثمار",
+    "intro": "أخبرنا عن أهدافك وتفضيلاتك الاستثمارية. سنراجع طلبك ونرد خلال 24 ساعة.",
+    "sectionTitle": "تفاصيل الاستثمار",
+    "personalInfo": "المعلومات الشخصية",
+    "preferencesTitle": "تفضيلات الاستثمار",
+    "firstName": "الاسم الأول",
+    "lastName": "اسم العائلة",
+    "company": "الشركة",
+    "tel": "الهاتف",
+    "email": "البريد الإلكتروني",
+    "investorType": "نوع المستثمر",
+    "expertise": "الخبرة",
+    "opportunityType": "ما نوع الفرصة التي تبحث عنها؟",
+    "investmentMethod": "طريقة الاستثمار المفضلة",
+    "ticketSize": "حجم الصفقة (ريال)",
+    "placeholders": {
+      "firstName": "اسمك الأول",
+      "lastName": "اسم عائلتك",
+      "company": "اسم شركتك",
+      "tel": "+966 123456789",
+      "email": "بريدك يتضمن @",
+      "selectOption": "اختر خياراً",
+      "selectHere": "اختر هنا",
+      "ticketSize": "حجم صفقتك بالريال"
+    },
+    "options": {
+      "investorType": {
+        "Individual": "فرد",
+        "Institutional": "مؤسسي",
+        "Family Office": "مكتب عائلي",
+        "Other": "أخرى"
+      },
+      "expertise": {
+        "Real Estate": "عقارات",
+        "Stocks": "أسهم",
+        "Bonds": "سندات",
+        "Private Equity": "أسهم خاصة",
+        "Mixed": "مختلط",
+        "Other": "أخرى"
+      },
+      "opportunityType": {
+        "Residential": "سكني",
+        "Commercial": "تجاري",
+        "Mixed-Use": "متعدد الاستخدام",
+        "Land": "أراضي",
+        "Development": "تطوير",
+        "Other": "أخرى"
+      },
+      "investmentMethod": {
+        "Direct": "مباشر",
+        "Fund": "صندوق",
+        "Syndication": "تحالف",
+        "REIT": "صندوق استثمار عقاري",
+        "Other": "أخرى"
+      },
+      "ticketSize": {
+        "Under 500K SAR": "أقل من 500 ألف ريال",
+        "500K - 1M SAR": "500 ألف – 1 مليون ريال",
+        "1M - 5M SAR": "1 – 5 مليون ريال",
+        "5M - 10M SAR": "5 – 10 مليون ريال",
+        "10M+ SAR": "أكثر من 10 مليون ريال"
+      }
+    }
+  },
+  "sell": {
+    "heroTitle": "بيع عقارك",
+    "heroSubtitle": "أدرج عقارك وتواصل مع مشترين جادين",
+    "heroDesc": "أكمل النموذج لإرسال إعلانك. سيراجع فريقنا الطلب وينشره لآلاف المشترين.",
+    "section1": "معلومات أساسية عن العقار",
+    "section2": "مواصفات العقار",
+    "section3": "التسعير",
+    "section4": "وصف العقار",
+    "section5": "صور العقار",
+    "section6": "معلومات التواصل",
+    "propertyTitle": "عنوان العقار",
+    "propertyType": "نوع العقار",
+    "locationCity": "الموقع (المدينة / المنطقة)",
+    "fullAddress": "العنوان الكامل",
+    "propertyStatus": "حالة العقار",
+    "bedrooms": "غرف النوم",
+    "bathrooms": "الحمامات",
+    "areaSqm": "المساحة (م²)",
+    "floorNumber": "رقم الطابق",
+    "parkingAvailability": "موقف سيارات",
+    "furnished": "مفروش",
+    "yearBuilt": "سنة البناء",
+    "askingPrice": "السعر المطلوب",
+    "paymentOptions": "خيارات الدفع",
+    "priceNegotiable": "السعر قابل للتفاوض",
+    "describeProperty": "صف عقارك",
+    "uploadAria": "رفع صور العقار",
+    "uploadDrop": "اسحب وأفلت الصور هنا",
+    "uploadSub": "أو انقر للتصفح من جهازك",
+    "uploadBtn": "رفع الصور",
+    "uploadHint": "الصيغ: JPG، PNG | الحد الأقصى 5 ميجابايت لكل صورة",
+    "removeImage": "إزالة الصورة",
+    "fullName": "الاسم الكامل",
+    "email": "البريد الإلكتروني",
+    "phone": "رقم الجوال",
+    "preferredContact": "طريقة التواصل المفضلة",
+    "agreeTermsLine": "أوافق على ",
+    "termsLink": "الشروط والأحكام",
+    "agreeTermsSub": "وأؤكد أن المعلومات دقيقة وكاملة.",
+    "submitProperty": "إرسال العقار",
+    "saveDraft": "حفظ كمسودة",
+    "placeholders": {
+      "propertyTitle": "مثال: شقة 3 غرف حديثة وسط المدينة",
+      "selectPropertyType": "اختر نوع العقار",
+      "location": "مثال: دبي مارينا",
+      "address": "الشارع، المبنى، المنطقة",
+      "description": "صف العقار والمزايا والمرافق القريبة وما يميزه...",
+      "fullName": "الاسم",
+      "email": "you@example.com",
+      "phone": "+971 50 123 4567"
+    },
+    "previewAlt": "معاينة {n}",
+    "types": {
+      "Apartment": "شقة",
+      "Villa": "فيلا",
+      "Townhouse": "منزل صفّي",
+      "Penthouse": "بنتهاوس",
+      "Land": "أرض",
+      "Commercial": "تجاري",
+      "Other": "أخرى"
+    },
+    "status": {
+      "For Sale": "معروض للبيع",
+      "For Rent": "معروض للإيجار",
+      "Both": "كلاهما"
+    },
+    "payment": {
+      "Cash": "نقداً",
+      "Installments": "أقساط",
+      "Cash or Installments": "نقد أو أقساط"
+    },
+    "contact": {
+      "Email": "بريد",
+      "Call": "اتصال",
+      "Both": "كلاهما"
+    }
+  }
+}

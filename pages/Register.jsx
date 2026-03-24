@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { User, Eye, EyeOff } from 'lucide-react'
 import Reveal from '../components/Reveal'
+import { useLanguage } from '../context/LanguageContext'
 import { auth } from '../firebase'
 import {
   validateEmail,
@@ -11,11 +12,13 @@ import {
   validateUsername,
 } from '../utils/authValidation'
 import { mapFirebaseAuthError } from '../utils/firebaseAuthErrors'
+import { formatValidationError } from '../utils/validationMessage'
 import '../styles/Register.css'
 
 const AUTH_BG_URL = '../../auth-bg.jpg'
 
 function Register() {
+  const { t } = useLanguage()
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const [showRepeatPassword, setShowRepeatPassword] = useState(false)
@@ -24,17 +27,17 @@ function Register() {
   const [password, setPassword] = useState('')
   const [repeatPassword, setRepeatPassword] = useState('')
   const [errors, setErrors] = useState({
-    username: '',
-    email: '',
-    password: '',
-    repeatPassword: '',
+    username: null,
+    email: null,
+    password: null,
+    repeatPassword: null,
   })
-  const [authError, setAuthError] = useState('')
+  const [authErrorKey, setAuthErrorKey] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setAuthError('')
+    setAuthErrorKey('')
     const usernameErr = validateUsername(username)
     const emailErr = validateEmail(email)
     const passwordErr = validatePassword(password)
@@ -55,7 +58,7 @@ function Register() {
       navigate('/', { replace: true })
     } catch (err) {
       const code = err?.code ?? ''
-      setAuthError(mapFirebaseAuthError(code))
+      setAuthErrorKey(mapFirebaseAuthError(code))
     } finally {
       setSubmitting(false)
     }
@@ -69,22 +72,22 @@ function Register() {
       }}
     >
       <Link to="/" className="auth-back-home">
-        ← Back to home
+        {t('common.backHome')}
       </Link>
       <Reveal delay={40}>
         <div className="register-card">
           <div className="register-card__icon">
             <User size={36} aria-hidden />
           </div>
-          <h1 className="register-card__title">Sign up</h1>
+          <h1 className="register-card__title">{t('auth.register.title')}</h1>
           <p className="register-card__subtitle">
-            Already have an account? <Link to="/login">Log in</Link>
+            {t('auth.register.subtitleBefore')} <Link to="/login">{t('nav.login')}</Link>
           </p>
 
           <form className="register-form" onSubmit={handleSubmit} noValidate>
             <div className="register-form__field">
               <label className="register-form__label" htmlFor="username">
-                Username
+                {t('auth.register.username')}
               </label>
               <input
                 id="username"
@@ -97,9 +100,9 @@ function Register() {
                 onChange={(e) => {
                   const v = e.target.value
                   setUsername(v)
-                  setAuthError('')
+                  setAuthErrorKey('')
                   setErrors((prev) =>
-                    prev.username ? { ...prev, username: validateUsername(v) } : prev,
+                    prev.username != null ? { ...prev, username: validateUsername(v) } : prev,
                   )
                 }}
                 onBlur={(e) =>
@@ -113,14 +116,14 @@ function Register() {
               />
               {errors.username ? (
                 <p id="register-username-error" className="register-form__error" role="alert">
-                  {errors.username}
+                  {formatValidationError(errors.username, t)}
                 </p>
               ) : null}
             </div>
 
             <div className="register-form__field">
               <label className="register-form__label" htmlFor="email">
-                Your email
+                {t('auth.register.emailLabel')}
               </label>
               <input
                 id="email"
@@ -133,9 +136,9 @@ function Register() {
                 onChange={(e) => {
                   const v = e.target.value
                   setEmail(v)
-                  setAuthError('')
+                  setAuthErrorKey('')
                   setErrors((prev) =>
-                    prev.email ? { ...prev, email: validateEmail(v) } : prev,
+                    prev.email != null ? { ...prev, email: validateEmail(v) } : prev,
                   )
                 }}
                 onBlur={(e) =>
@@ -146,7 +149,7 @@ function Register() {
               />
               {errors.email ? (
                 <p id="register-email-error" className="register-form__error" role="alert">
-                  {errors.email}
+                  {formatValidationError(errors.email, t)}
                 </p>
               ) : null}
             </div>
@@ -154,16 +157,16 @@ function Register() {
             <div className="register-form__field">
               <div className="register-form__password-label-row">
                 <label className="register-form__label" htmlFor="password">
-                  Your password
+                  {t('auth.register.passwordLabel')}
                 </label>
                 <button
                   type="button"
                   className="register-form__toggle-password"
                   onClick={() => setShowPassword(!showPassword)}
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  aria-label={showPassword ? t('common.hidePassword') : t('common.showPassword')}
                 >
                   {showPassword ? <Eye size={20} aria-hidden /> : <EyeOff size={20} aria-hidden />}
-                  <span>{showPassword ? 'Hide' : 'Show'}</span>
+                  <span>{showPassword ? t('common.hide') : t('common.show')}</span>
                 </button>
               </div>
               <input
@@ -177,11 +180,11 @@ function Register() {
                 onChange={(e) => {
                   const v = e.target.value
                   setPassword(v)
-                  setAuthError('')
+                  setAuthErrorKey('')
                   setErrors((prev) => {
                     const next = { ...prev }
-                    if (prev.password) next.password = validatePassword(v)
-                    if (prev.repeatPassword)
+                    if (prev.password != null) next.password = validatePassword(v)
+                    if (prev.repeatPassword != null)
                       next.repeatPassword = validatePasswordMatch(v, repeatPassword)
                     return next
                   })
@@ -197,7 +200,7 @@ function Register() {
               />
               {errors.password ? (
                 <p id="register-password-error" className="register-form__error" role="alert">
-                  {errors.password}
+                  {formatValidationError(errors.password, t)}
                 </p>
               ) : null}
             </div>
@@ -205,16 +208,22 @@ function Register() {
             <div className="register-form__field">
               <div className="register-form__password-label-row">
                 <label className="register-form__label" htmlFor="repeat-password">
-                  Repeat Your password
+                  {t('auth.register.repeatPassword')}
                 </label>
                 <button
                   type="button"
                   className="register-form__toggle-password"
                   onClick={() => setShowRepeatPassword(!showRepeatPassword)}
-                  aria-label={showRepeatPassword ? 'Hide password' : 'Show password'}
+                  aria-label={
+                    showRepeatPassword ? t('common.hidePassword') : t('common.showPassword')
+                  }
                 >
-                  {showRepeatPassword ? <Eye size={20} aria-hidden /> : <EyeOff size={20} aria-hidden />}
-                  <span>{showRepeatPassword ? 'Hide' : 'Show'}</span>
+                  {showRepeatPassword ? (
+                    <Eye size={20} aria-hidden />
+                  ) : (
+                    <EyeOff size={20} aria-hidden />
+                  )}
+                  <span>{showRepeatPassword ? t('common.hide') : t('common.show')}</span>
                 </button>
               </div>
               <input
@@ -228,9 +237,9 @@ function Register() {
                 onChange={(e) => {
                   const v = e.target.value
                   setRepeatPassword(v)
-                  setAuthError('')
+                  setAuthErrorKey('')
                   setErrors((prev) =>
-                    prev.repeatPassword
+                    prev.repeatPassword != null
                       ? { ...prev, repeatPassword: validatePasswordMatch(password, v) }
                       : prev,
                   )
@@ -252,14 +261,14 @@ function Register() {
                   className="register-form__error"
                   role="alert"
                 >
-                  {errors.repeatPassword}
+                  {formatValidationError(errors.repeatPassword, t)}
                 </p>
               ) : null}
             </div>
 
-            {authError ? (
+            {authErrorKey ? (
               <p className="register-form__error register-form__error--banner" role="alert">
-                {authError}
+                {t(authErrorKey)}
               </p>
             ) : null}
 
@@ -269,7 +278,7 @@ function Register() {
               disabled={submitting}
               aria-busy={submitting}
             >
-              {submitting ? 'Creating account…' : 'Sign up'}
+              {submitting ? t('auth.register.submitting') : t('auth.register.submit')}
             </button>
           </form>
         </div>

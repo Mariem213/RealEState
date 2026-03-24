@@ -24,7 +24,7 @@
   min-height: min(100vh, 100dvh);
   background: var(--dash-bg);
   color: var(--dash-text);
-  text-align: left;
+  text-align: start;
   font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
 }
 
@@ -263,32 +263,65 @@
 }
 
 .dashboard__pill-lang {
+  --pill-reveal-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  position: relative;
   display: inline-flex;
   border-radius: 999px;
   overflow: hidden;
   border: 1px solid var(--dash-border);
-  background: #f3f4f6;
+  background: #fff;
+}
+
+.dashboard__pill-lang-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: var(--dash-primary);
+  border-radius: 999px;
+  z-index: 0;
+  pointer-events: none;
+  transition: transform 0.5s var(--pill-reveal-ease);
+}
+
+.dashboard__pill-lang[data-locale='ar'] .dashboard__pill-lang-slider {
+  transform: translateX(100%);
 }
 
 .dashboard__pill-lang button {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 50%;
+  min-width: 44px;
   padding: 8px 16px;
   border: none;
   background: transparent;
   font-size: 0.8125rem;
   font-weight: 600;
+  letter-spacing: 0.04em;
   color: var(--dash-text-muted);
   cursor: pointer;
   font-family: inherit;
-  transition: background 0.25s var(--ease-out), color 0.25s var(--ease-out);
+  transition: color 0.35s var(--pill-reveal-ease);
 }
 
-.dashboard__pill-lang button.is-active {
-  background: var(--dash-primary);
+.dashboard__pill-lang button.is-on {
   color: #fff;
 }
 
-.dashboard__pill-lang button:not(.is-active):hover {
+.dashboard__pill-lang button:not(.is-on):hover {
   color: var(--dash-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard__pill-lang-slider {
+    transition: none;
+  }
+
+  .dashboard__pill-lang button {
+    transition: none;
+  }
 }
 
 .dashboard__profile {

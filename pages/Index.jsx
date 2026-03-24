@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   Check,
@@ -11,6 +11,7 @@ import {
 } from 'lucide-react'
 import CustomSelect from '../components/CustomSelect'
 import Reveal from '../components/Reveal'
+import { useLanguage } from '../context/LanguageContext'
 import '../styles/Home.css'
 import { fetchProducts } from '../data/products'
 import { ALL_LOCATIONS } from '../data/properties'
@@ -19,93 +20,72 @@ const HERO_VILLA = '../../public/hero.png'
 const WHY_IMAGE = '../../public/reason.png'
 
 const LOCATION_OPTIONS = ALL_LOCATIONS.filter((l) => l !== 'All Locations')
-const PROPERTY_TYPE_OPTIONS = ['Apartment', 'Villa', 'Studio', 'Penthouse']
-const PRICE_OPTIONS = [
-  { value: '', label: 'Any price' },
-  { value: '0-500000', label: 'Up to 500K SAR' },
-  { value: '500000-1000000', label: '500K – 1M SAR' },
-  { value: '1000000-2000000', label: '1M – 2M SAR' },
-  { value: '2000000-', label: '2M+ SAR' },
-]
+const PROPERTY_TYPE_VALUES = ['Apartment', 'Villa', 'Studio', 'Penthouse']
 
-const SERVICES = [
+const SERVICE_DEFS = [
   {
-    title: 'Property Buying',
-    text: 'Find your perfect home with our extensive property database and expert guidance.',
+    titleKey: 'home.services.buyingTitle',
+    textKey: 'home.services.buyingText',
     Icon: Home,
     variant: 'landing-service-card--blue',
   },
   {
-    title: 'Property Selling',
-    text: 'Maximize your property value with our professional marketing and sales expertise.',
+    titleKey: 'home.services.sellingTitle',
+    textKey: 'home.services.sellingText',
     Icon: DollarSign,
     variant: 'landing-service-card--gold',
   },
   {
-    title: 'Investment Advisory',
-    text: 'Strategic investment opportunities with detailed market analysis and ROI projections.',
+    titleKey: 'home.services.investTitle',
+    textKey: 'home.services.investText',
     Icon: TrendingUp,
     variant: 'landing-service-card--green',
   },
 ]
 
-const WHY_POINTS = [
+const WHY_DEFS = [
+  { titleKey: 'home.why.point1Title', textKey: 'home.why.point1Text' },
+  { titleKey: 'home.why.point2Title', textKey: 'home.why.point2Text' },
+  { titleKey: 'home.why.point3Title', textKey: 'home.why.point3Text' },
+]
+
+const TESTIMONIAL_DEFS = [
   {
-    title: 'Expert Market Knowledge',
-    text: 'Deep understanding of local markets with data-driven insights.',
+    nameKey: 'home.testimonials.t1Name',
+    roleKey: 'home.testimonials.t1Role',
+    quoteKey: 'home.testimonials.t1Quote',
+    avatar: '../../public/reviewer1.jpg',
   },
   {
-    title: 'Trusted Network',
-    text: 'Established relationships with verified buyers, sellers, and investors.',
+    nameKey: 'home.testimonials.t2Name',
+    roleKey: 'home.testimonials.t2Role',
+    quoteKey: 'home.testimonials.t2Quote',
+    avatar: '../../public/reviewer2.jpg',
   },
   {
-    title: 'End-to-End Service',
-    text: 'Complete support from initial consultation to final transaction.',
+    nameKey: 'home.testimonials.t3Name',
+    roleKey: 'home.testimonials.t3Role',
+    quoteKey: 'home.testimonials.t3Quote',
+    avatar: '../../public/reviewer3.jpg',
   },
 ]
 
-const TESTIMONIALS = [
-  {
-    name: 'Sarah Ahmed',
-    role: 'Property Investor',
-    quote:
-      'Exceptional service and market insights. Found the perfect investment property with excellent ROI potential.',
-    avatar:
-      '../../public/reviewer1.jpg',
-  },
-  {
-    name: 'Mohammed Al-Rashid',
-    role: 'Home Buyer',
-    quote:
-      'Professional team that understood our needs perfectly.Made the buying process smooth and stress- free.',
-    avatar:
-      '../../public/reviewer2.jpg',
-  },
-  {
-    name: 'Haddad Al-Zahra',
-    role: 'Property Seller',
-    quote:
-      'Sold my property above asking price within weeks.Their marketing strategy and negotiation skills are outstanding.',
-    avatar:
-      '../../public/reviewer3.jpg',
-  },
-]
-
-function formatSar(price) {
+function formatSar(price, t) {
   if (price >= 1_000_000) {
     const m = price / 1_000_000
-    const s = m >= 10 ? m.toFixed(0) : m.toFixed(1).replace(/\.0$/, '')
-    return `${s}M SAR`
+    const n = m >= 10 ? m.toFixed(0) : m.toFixed(1).replace(/\.0$/, '')
+    return t('home.priceFormat.million', { n })
   }
   if (price >= 1000) {
-    return `${Math.round(price / 1000)}K SAR`
+    const n = Math.round(price / 1000)
+    return t('home.priceFormat.thousand', { n })
   }
-  return `${price} SAR`
+  return t('home.priceFormat.full', { n: price })
 }
 
-function specsLine(type, area) {
+function specsLine(type, area, t) {
   if (type === 'Studio') {
-    return `1 Bed • 1 Bath • ${area} sqm`
+    return t('home.specs.studio', { area })
   }
   const beds =
     type === 'Villa'
@@ -114,10 +94,11 @@ function specsLine(type, area) {
         ? 4
         : Math.max(2, Math.round(area / 50))
   const baths = Math.max(2, Math.min(5, beds - 1))
-  return `${beds} Beds • ${baths} Baths • ${area} sqm`
+  return t('home.specs.line', { beds, baths, area })
 }
 
 function Index() {
+  const { t } = useLanguage()
   const navigate = useNavigate()
   const [featured, setFeatured] = useState([])
   const [featuredLoading, setFeaturedLoading] = useState(true)
@@ -159,26 +140,43 @@ function Index() {
     else if (name === 'searchPrice') setSearchPrice(value)
   }
 
+  const priceOptions = useMemo(
+    () => [
+      { value: '', label: t('home.priceOptions.any') },
+      { value: '0-500000', label: t('home.priceOptions.upTo500k') },
+      { value: '500000-1000000', label: t('home.priceOptions.500kTo1m') },
+      { value: '1000000-2000000', label: t('home.priceOptions.1mTo2m') },
+      { value: '2000000-', label: t('home.priceOptions.over2m') },
+    ],
+    [t],
+  )
+
+  const propertyTypeOptions = useMemo(
+    () =>
+      PROPERTY_TYPE_VALUES.map((value) => ({
+        value,
+        label: t(`home.propertyTypes.${value}`),
+      })),
+    [t],
+  )
+
   return (
     <div className="landing-page">
-      <section className="landing-hero-wrap" aria-label="Introduction">
+      <section className="landing-hero-wrap" aria-label={t('common.introduction')}>
         <div className="landing-hero landing-container">
           <Reveal className="landing-hero__col landing-hero__col--text">
             <h1 className="landing-hero__title">
-              Find Your Dream{' '}
-              <span className="landing-hero__title-accent">Property</span> Today
+              {t('home.hero.titleBefore')}{' '}
+              <span className="landing-hero__title-accent">{t('home.hero.titleAccent')}</span>{' '}
+              {t('home.hero.titleAfter')}
             </h1>
-            <p className="landing-hero__lead">
-              Discover premium real estate opportunities with our comprehensive
-              platform. Whether buying, selling, or investing, we provide trusted
-              solutions for your property needs.
-            </p>
+            <p className="landing-hero__lead">{t('home.hero.lead')}</p>
             <div className="landing-hero__ctas">
               <Link to="/buy" className="landing-btn landing-btn--primary">
-                Start Searching
+                {t('home.hero.ctaSearch')}
               </Link>
               <Link to="/investment" className="landing-btn landing-btn--outline">
-                Learn More
+                {t('home.hero.ctaLearn')}
               </Link>
             </div>
           </Reveal>
@@ -195,47 +193,47 @@ function Index() {
         </div>
       </section>
 
-      <section className="landing-search-section" aria-label="Property search">
+      <section className="landing-search-section" aria-label={t('home.search.sectionAria')}>
         <form
           className="landing-search landing-container"
           onSubmit={onSearch}
-          aria-label="Smart property search"
+          aria-label={t('home.search.formAria')}
         >
-          <h2 className="landing-search__title">Smart Property Search</h2>
+          <h2 className="landing-search__title">{t('home.search.title')}</h2>
           <div className="landing-search__row">
             <label className="landing-search__field">
-              <span className="landing-search__label">Location</span>
+              <span className="landing-search__label">{t('home.search.location')}</span>
               <CustomSelect
                 name="searchLocation"
                 value={searchLocation}
                 onChange={handleSearchSelectChange}
                 options={LOCATION_OPTIONS}
-                placeholder="All areas"
+                placeholder={t('home.search.placeholderArea')}
               />
             </label>
             <label className="landing-search__field">
-              <span className="landing-search__label">Property Type</span>
+              <span className="landing-search__label">{t('home.search.propertyType')}</span>
               <CustomSelect
                 name="searchType"
                 value={searchType}
                 onChange={handleSearchSelectChange}
-                options={PROPERTY_TYPE_OPTIONS}
-                placeholder="Any type"
+                options={propertyTypeOptions}
+                placeholder={t('home.search.placeholderType')}
               />
             </label>
             <label className="landing-search__field">
-              <span className="landing-search__label">Price Range</span>
+              <span className="landing-search__label">{t('home.search.priceRange')}</span>
               <CustomSelect
                 name="searchPrice"
                 value={searchPrice}
                 onChange={handleSearchSelectChange}
-                options={PRICE_OPTIONS}
-                placeholder="Any price"
+                options={priceOptions}
+                placeholder={t('home.search.placeholderPrice')}
               />
             </label>
             <button type="submit" className="landing-search__submit">
               <Search size={20} aria-hidden />
-              <span>Search</span>
+              <span>{t('home.search.submit')}</span>
             </button>
           </div>
         </form>
@@ -245,10 +243,8 @@ function Index() {
         <div className="landing-container">
           <Reveal>
             <header className="landing-section__head">
-              <h2 className="landing-section__title">Featured Properties</h2>
-              <p className="landing-section__subtitle">
-                Discover our handpicked selection of premium properties
-              </p>
+              <h2 className="landing-section__title">{t('home.featured.title')}</h2>
+              <p className="landing-section__subtitle">{t('home.featured.subtitle')}</p>
             </header>
           </Reveal>
           <div className="landing-cards-grid">
@@ -259,8 +255,8 @@ function Index() {
               : featured.length === 0
                 ? (
                   <p className="landing-cards-empty">
-                    Properties are unavailable right now.{' '}
-                    <Link to="/buy">Browse all listings</Link>
+                    {t('home.featured.empty')}{' '}
+                    <Link to="/buy">{t('home.featured.browseAll')}</Link>
                   </p>
                 )
                 : featured.map((p, i) => (
@@ -269,20 +265,20 @@ function Index() {
                       <div className="landing-property-card__media">
                         <img src={p.thumbnail} alt="" decoding="async" />
                         <span className="landing-property-card__price">
-                          {formatSar(p.price)}
+                          {formatSar(p.price, t)}
                         </span>
                       </div>
                       <div className="landing-property-card__body">
                         <h3 className="landing-property-card__name">{p.name}</h3>
                         <p className="landing-property-card__specs">
-                          {specsLine(p.type, p.area)}
+                          {specsLine(p.type, p.area, t)}
                         </p>
                         <p className="landing-property-card__loc">
                           <MapPin size={16} aria-hidden />
                           {p.location}
                         </p>
                         <Link to={`/buy/${p.id}`} className="landing-property-card__btn">
-                          View Details
+                          {t('home.featured.viewDetails')}
                         </Link>
                       </div>
                     </article>
@@ -296,21 +292,19 @@ function Index() {
         <div className="landing-container">
           <Reveal>
             <header className="landing-section__head">
-              <h2 className="landing-section__title">Our Services</h2>
-              <p className="landing-section__subtitle">
-                Comprehensive real estate solutions for all your needs
-              </p>
+              <h2 className="landing-section__title">{t('home.services.sectionTitle')}</h2>
+              <p className="landing-section__subtitle">{t('home.services.sectionSubtitle')}</p>
             </header>
           </Reveal>
           <div className="landing-services-grid">
-            {SERVICES.map(({ title, text, Icon, variant }, i) => (
-              <Reveal key={title} delay={i * 60}>
+            {SERVICE_DEFS.map(({ titleKey, textKey, Icon, variant }, i) => (
+              <Reveal key={titleKey} delay={i * 60}>
                 <article className={`landing-service-card ${variant}`}>
                   <div className="landing-service-card__icon">
                     <Icon size={28} aria-hidden />
                   </div>
-                  <h3 className="landing-service-card__title">{title}</h3>
-                  <p className="landing-service-card__text">{text}</p>
+                  <h3 className="landing-service-card__title">{t(titleKey)}</h3>
+                  <p className="landing-service-card__text">{t(textKey)}</p>
                 </article>
               </Reveal>
             ))}
@@ -323,17 +317,17 @@ function Index() {
           <Reveal>
             <div className="landing-why__copy">
               <h2 className="landing-section__title landing-section__title--left">
-                Why Choose RealEstate?
+                {t('home.why.title')}
               </h2>
               <ul className="landing-why__list">
-                {WHY_POINTS.map(({ title, text }) => (
-                  <li key={title} className="landing-why__item">
+                {WHY_DEFS.map(({ titleKey, textKey }) => (
+                  <li key={titleKey} className="landing-why__item">
                     <span className="landing-why__check" aria-hidden>
                       <Check size={18} strokeWidth={3} />
                     </span>
                     <div>
-                      <h3 className="landing-why__item-title">{title}</h3>
-                      <p className="landing-why__item-text">{text}</p>
+                      <h3 className="landing-why__item-title">{t(titleKey)}</h3>
+                      <p className="landing-why__item-text">{t(textKey)}</p>
                     </div>
                   </li>
                 ))}
@@ -352,25 +346,23 @@ function Index() {
         <div className="landing-container">
           <Reveal>
             <header className="landing-section__head">
-              <h2 className="landing-section__title">What Our Clients Say</h2>
-              <p className="landing-section__subtitle">
-                Real experiences from satisfied property owners and investors
-              </p>
+              <h2 className="landing-section__title">{t('home.testimonials.title')}</h2>
+              <p className="landing-section__subtitle">{t('home.testimonials.subtitle')}</p>
             </header>
           </Reveal>
           <div className="landing-testimonials-grid">
-            {TESTIMONIALS.map((t, i) => (
-              <Reveal key={t.name} delay={i * 70}>
+            {TESTIMONIAL_DEFS.map((item, i) => (
+              <Reveal key={item.nameKey} delay={i * 70}>
                 <blockquote className="landing-quote-card">
                   <div className="landing-quote-card__head">
-                    <img src={t.avatar} alt="" className="landing-quote-card__avatar" />
+                    <img src={item.avatar} alt="" className="landing-quote-card__avatar" />
                     <div>
-                      <cite className="landing-quote-card__name">{t.name}</cite>
-                      <p className="landing-quote-card__role">{t.role}</p>
+                      <cite className="landing-quote-card__name">{t(item.nameKey)}</cite>
+                      <p className="landing-quote-card__role">{t(item.roleKey)}</p>
                     </div>
                   </div>
-                  <p className="landing-quote-card__quote">&ldquo;{t.quote}&rdquo;</p>
-                  <div className="landing-quote-card__stars" aria-label="5 out of 5 stars">
+                  <p className="landing-quote-card__quote">&ldquo;{t(item.quoteKey)}&rdquo;</p>
+                  <div className="landing-quote-card__stars" aria-label={t('common.starsRating')}>
                     {Array.from({ length: 5 }).map((_, si) => (
                       <Star
                         key={si}
@@ -391,12 +383,10 @@ function Index() {
       <section className="landing-cta">
         <Reveal>
           <div className="landing-cta__inner">
-            <h2 className="landing-cta__title">Ready to Start Your Real Estate Journey?</h2>
-            <p className="landing-cta__text">
-              Join thousands of satisfied clients who trust us with their property needs
-            </p>
+            <h2 className="landing-cta__title">{t('home.cta.title')}</h2>
+            <p className="landing-cta__text">{t('home.cta.text')}</p>
             <Link to="/buy" className="landing-cta__btn">
-              Get Started Today
+              {t('home.cta.button')}
             </Link>
           </div>
         </Reveal>

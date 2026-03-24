@@ -1,85 +1,82 @@
 import { Link } from 'react-router-dom'
 import { Building2, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'
+import { useLanguage } from '../context/LanguageContext'
 import '../styles/Footer.css'
 
 const quickLinks = [
-  { to: '/about', label: 'About Us' },
-  { to: '/buy', label: 'Properties' },
-  { to: '/agents', label: 'Agents' },
-  { to: '/blog', label: 'Blog' },
+  { to: '/about', labelKey: 'footer.aboutUs' },
+  { to: '/buy', labelKey: 'footer.properties' },
+  { to: '/agents', labelKey: 'footer.agents' },
+  { to: '/blog', labelKey: 'footer.blog' },
 ]
 
 const supportLinks = [
-  { to: '/help', label: 'Help Center' },
-  { to: '/contact', label: 'Contact Us' },
-  { to: '/privacy', label: 'Privacy Policy' },
-  { to: '/terms', label: 'Terms of Service' },
+  { to: '/help', labelKey: 'footer.helpCenter' },
+  { to: '/contact', labelKey: 'footer.contactUs' },
+  { to: '/privacy', labelKey: 'footer.privacyPolicy' },
+  { to: '/terms', labelKey: 'footer.termsOfService' },
 ]
 
 const socialLinks = [
-  { href: 'https://facebook.com', icon: Facebook, label: 'Facebook' },
-  { href: 'https://twitter.com', icon: Twitter, label: 'Twitter' },
-  { href: 'https://instagram.com', icon: Instagram, label: 'Instagram' },
-  { href: 'https://linkedin.com', icon: Linkedin, label: 'LinkedIn' },
+  { href: 'https://facebook.com', icon: Facebook, labelKey: 'footer.facebook' },
+  { href: 'https://twitter.com', icon: Twitter, labelKey: 'footer.twitter' },
+  { href: 'https://instagram.com', icon: Instagram, labelKey: 'footer.instagram' },
+  { href: 'https://linkedin.com', icon: Linkedin, labelKey: 'footer.linkedin' },
 ]
 
 function Footer() {
+  const { t } = useLanguage()
+
   return (
     <footer className="footer">
       <div className="footer__inner">
-        {/* Brand */}
         <div className="footer__brand">
-          <Link to="/" className="footer__logo-link" aria-label="EstateHub home">
+          <Link to="/" className="footer__logo-link" aria-label={t('footer.homeAria')}>
             <span className="footer__logo">
               <Building2 size={24} aria-hidden />
             </span>
-            <span className="footer__brand-name">RealEstate</span>
+            <span className="footer__brand-name">{t('brand.name')}</span>
           </Link>
-          <p className="footer__slogan">
-            Your trusted partner in real estate transactions.
-          </p>
+          <p className="footer__slogan">{t('footer.slogan')}</p>
         </div>
 
-        {/* Quick Links */}
         <div className="footer__column">
-          <h3 className="footer__heading">Quick Links</h3>
+          <h3 className="footer__heading">{t('footer.quickLinks')}</h3>
           <ul className="footer__links">
-            {quickLinks.map(({ to, label }) => (
+            {quickLinks.map(({ to, labelKey }) => (
               <li key={to}>
                 <Link to={to} className="footer__link">
-                  {label}
+                  {t(labelKey)}
                 </Link>
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Support */}
         <div className="footer__column">
-          <h3 className="footer__heading">Support</h3>
+          <h3 className="footer__heading">{t('footer.support')}</h3>
           <ul className="footer__links">
-            {supportLinks.map(({ to, label }) => (
+            {supportLinks.map(({ to, labelKey }) => (
               <li key={to}>
                 <Link to={to} className="footer__link">
-                  {label}
+                  {t(labelKey)}
                 </Link>
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Connect */}
         <div className="footer__column">
-          <h3 className="footer__heading">Connect</h3>
+          <h3 className="footer__heading">{t('footer.connect')}</h3>
           <div className="footer__social">
-            {socialLinks.map(({ href, icon: Icon, label }) => (
+            {socialLinks.map(({ href, icon: Icon, labelKey }) => (
               <a
-                key={label}
+                key={labelKey}
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="footer__social-link"
-                aria-label={label}
+                aria-label={t(labelKey)}
               >
                 <Icon size={20} aria-hidden />
               </a>
@@ -91,9 +88,7 @@ function Footer() {
       <div className="footer__divider" />
 
       <div className="footer__bottom">
-        <p className="footer__copyright">
-          © 2024 EstateHub. All rights reserved. Academic Project.
-        </p>
+        <p className="footer__copyright">{t('footer.copyright')}</p>
       </div>
     </footer>
   )

@@ -25,7 +25,7 @@
   color: #fff;
   padding: 40px 16px 56px;
   position: relative;
-  text-align: left;
+  text-align: start;
 }
 
 .sell-property-hero__inner {
@@ -950,6 +950,6 @@
 
 @media (min-width: 640px) {
   .sell-property-footer__copy {
-    text-align: left;
+    text-align: start;
   }
 }

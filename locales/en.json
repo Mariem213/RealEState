@@ -1,0 +1,499 @@
+{
+  "brand": {
+    "name": "RealEstate",
+    "adminTitle": "RealEstate Admin"
+  },
+  "common": {
+    "user": "User",
+    "language": "Language",
+    "toggleMenu": "Toggle menu",
+    "homeAria": "RealEstate home",
+    "introduction": "Introduction",
+    "starsRating": "5 out of 5 stars",
+    "loading": "Loading…",
+    "backHome": "← Back to home",
+    "back": "Back",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "show": "Show",
+    "hide": "Hide",
+    "requiredFieldsHint": "Please fill out all required fields marked with *",
+    "formFooterLegal": "By submitting this form, you agree to our terms and conditions. We'll review your application within 24 hours.",
+    "sendForm": "Send Form",
+    "browseProperties": "Browse Properties",
+    "viewDetails": "View Details",
+    "any": "Any",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "nav": {
+    "home": "Home",
+    "buy": "Buy",
+    "sell": "Sell",
+    "investment": "Investment",
+    "careers": "Careers",
+    "signup": "Sign up",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "footer": {
+    "homeAria": "EstateHub home",
+    "slogan": "Your trusted partner in real estate transactions.",
+    "quickLinks": "Quick Links",
+    "support": "Support",
+    "connect": "Connect",
+    "aboutUs": "About Us",
+    "properties": "Properties",
+    "agents": "Agents",
+    "blog": "Blog",
+    "helpCenter": "Help Center",
+    "contactUs": "Contact Us",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "facebook": "Facebook",
+    "twitter": "Twitter",
+    "instagram": "Instagram",
+    "linkedin": "LinkedIn",
+    "copyright": "© 2024 EstateHub. All rights reserved. Academic Project."
+  },
+  "home": {
+    "hero": {
+      "titleBefore": "Find Your Dream",
+      "titleAccent": "Property",
+      "titleAfter": "Today",
+      "lead": "Discover premium real estate opportunities with our comprehensive platform. Whether buying, selling, or investing, we provide trusted solutions for your property needs.",
+      "ctaSearch": "Start Searching",
+      "ctaLearn": "Learn More"
+    },
+    "search": {
+      "sectionAria": "Property search",
+      "formAria": "Smart property search",
+      "title": "Smart Property Search",
+      "location": "Location",
+      "propertyType": "Property Type",
+      "priceRange": "Price Range",
+      "placeholderArea": "All areas",
+      "placeholderType": "Any type",
+      "placeholderPrice": "Any price",
+      "submit": "Search"
+    },
+    "priceOptions": {
+      "any": "Any price",
+      "upTo500k": "Up to 500K SAR",
+      "500kTo1m": "500K – 1M SAR",
+      "1mTo2m": "1M – 2M SAR",
+      "over2m": "2M+ SAR"
+    },
+    "propertyTypes": {
+      "Apartment": "Apartment",
+      "Villa": "Villa",
+      "Studio": "Studio",
+      "Penthouse": "Penthouse"
+    },
+    "featured": {
+      "title": "Featured Properties",
+      "subtitle": "Discover our handpicked selection of premium properties",
+      "empty": "Properties are unavailable right now.",
+      "browseAll": "Browse all listings",
+      "viewDetails": "View Details"
+    },
+    "specs": {
+      "studio": "1 Bed • 1 Bath • {area} sqm",
+      "line": "{beds} Beds • {baths} Baths • {area} sqm"
+    },
+    "services": {
+      "sectionTitle": "Our Services",
+      "sectionSubtitle": "Comprehensive real estate solutions for all your needs",
+      "buyingTitle": "Property Buying",
+      "buyingText": "Find your perfect home with our extensive property database and expert guidance.",
+      "sellingTitle": "Property Selling",
+      "sellingText": "Maximize your property value with our professional marketing and sales expertise.",
+      "investTitle": "Investment Advisory",
+      "investText": "Strategic investment opportunities with detailed market analysis and ROI projections."
+    },
+    "why": {
+      "title": "Why Choose RealEstate?",
+      "point1Title": "Expert Market Knowledge",
+      "point1Text": "Deep understanding of local markets with data-driven insights.",
+      "point2Title": "Trusted Network",
+      "point2Text": "Established relationships with verified buyers, sellers, and investors.",
+      "point3Title": "End-to-End Service",
+      "point3Text": "Complete support from initial consultation to final transaction."
+    },
+    "testimonials": {
+      "title": "What Our Clients Say",
+      "subtitle": "Real experiences from satisfied property owners and investors",
+      "t1Name": "Sarah Ahmed",
+      "t1Role": "Property Investor",
+      "t1Quote": "Exceptional service and market insights. Found the perfect investment property with excellent ROI potential.",
+      "t2Name": "Mohammed Al-Rashid",
+      "t2Role": "Home Buyer",
+      "t2Quote": "Professional team that understood our needs perfectly. Made the buying process smooth and stress-free.",
+      "t3Name": "Haddad Al-Zahra",
+      "t3Role": "Property Seller",
+      "t3Quote": "Sold my property above asking price within weeks. Their marketing strategy and negotiation skills are outstanding."
+    },
+    "cta": {
+      "title": "Ready to Start Your Real Estate Journey?",
+      "text": "Join thousands of satisfied clients who trust us with their property needs",
+      "button": "Get Started Today"
+    },
+    "priceFormat": {
+      "million": "{n}M SAR",
+      "thousand": "{n}K SAR",
+      "full": "{n} SAR"
+    }
+  },
+  "dashboard": {
+    "adminSections": "Admin sections",
+    "last7Days": "Last 7 Days",
+    "title": "Admin Dashboard",
+    "subtitle": "Monitor your real estate platform performance and user activity.",
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "home": "Home",
+      "buyRequests": "Buy Requests",
+      "sellRequests": "Sell Requests",
+      "investmentRequests": "Investment Requests",
+      "jobApplications": "Job Applications"
+    },
+    "metrics": {
+      "totalProperties": "Total Properties",
+      "forSale": "For Sale",
+      "buyRequests": "Buy Requests",
+      "sellRequests": "Sell Requests",
+      "investmentRequests": "Investment Requests",
+      "jobApplications": "Job Applications",
+      "registeredUsers": "Registered Users",
+      "avgPropertyPrice": "Avg Property Price",
+      "avgInvestment": "Avg Investment",
+      "conversionRate": "Conversion Rate"
+    },
+    "charts": {
+      "propertyTypeDistribution": "Property Type Distribution",
+      "pieAria": "Property types pie chart",
+      "pieTitle": "Property type distribution",
+      "userRegistrations": "User Registrations Over Time",
+      "lineAria": "User registrations trend",
+      "popularLocations": "Most Popular Locations",
+      "investmentTrend": "Investment Requests Trend"
+    },
+    "pie": {
+      "apartments": "Apartments",
+      "houses": "Houses",
+      "commercial": "Commercial",
+      "land": "Land",
+      "villas": "Villas"
+    },
+    "locations": {
+      "marina": "Marina District",
+      "downtown": "Downtown",
+      "bayView": "Bay View",
+      "hillside": "Hillside",
+      "oldTown": "Old Town"
+    },
+    "monthsShort": {
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul"
+    },
+    "insights": {
+      "topProperty": "Top Property",
+      "topPropertyTitle": "Luxury Villa in Downtown",
+      "hotLocation": "Hot Location",
+      "hotLocationTitle": "Marina District",
+      "hotLocationMeta": "+45% demand",
+      "growthSegment": "Growth Segment",
+      "growthTitle": "Residential Apartments",
+      "growthMeta": "+28% growth"
+    },
+    "lists": {
+      "recentProperties": "Recent Properties",
+      "recentApplications": "Recent Applications",
+      "prop1Title": "Modern Apartment",
+      "prop1Sub": "Downtown · $420K",
+      "prop2Title": "Family House",
+      "prop2Sub": "Marina · $890K",
+      "prop3Title": "Office Space",
+      "prop3Sub": "Business Bay · $1.1M",
+      "badgeActive": "Active",
+      "badgePending": "Pending",
+      "badgeSold": "Sold",
+      "app1Name": "Sarah Johnson",
+      "app1Role": "Sales Associate",
+      "app2Name": "Mike Chen",
+      "app2Role": "Investment Analyst",
+      "app3Name": "Lisa Rodriguez",
+      "app3Role": "Property Manager",
+      "badgeApproved": "Approved",
+      "badgeReview": "Review",
+      "badgeRejected": "Rejected"
+    }
+  },
+  "auth": {
+    "validation": {
+      "emailRequired": "Email is required.",
+      "emailInvalid": "Enter a valid email address.",
+      "passwordRequired": "Password is required.",
+      "passwordMin": "Password must be at least {min} characters.",
+      "confirmRequired": "Please confirm your password.",
+      "passwordMismatch": "Passwords do not match.",
+      "usernameRequired": "Username is required.",
+      "usernameMin": "Username must be at least 2 characters.",
+      "usernameMax": "Username must be 40 characters or fewer."
+    },
+    "firebase": {
+      "emailInUse": "This email is already registered. Try logging in.",
+      "invalidEmail": "Enter a valid email address.",
+      "weakPassword": "Password is too weak. Use a stronger password.",
+      "userDisabled": "This account has been disabled.",
+      "invalidCredentials": "Invalid email or password.",
+      "tooManyRequests": "Too many attempts. Try again later.",
+      "network": "Network error. Check your connection and try again.",
+      "generic": "Something went wrong. Please try again."
+    },
+    "login": {
+      "title": "Log in",
+      "subtitleBefore": "Don't have an account?",
+      "emailLabel": "Your email",
+      "passwordLabel": "Your password",
+      "forgotPassword": "Forget your password",
+      "submit": "Log in",
+      "submitting": "Logging in…"
+    },
+    "register": {
+      "title": "Sign up",
+      "subtitleBefore": "Already have an account?",
+      "username": "Username",
+      "emailLabel": "Your email",
+      "passwordLabel": "Your password",
+      "repeatPassword": "Repeat Your password",
+      "submit": "Sign up",
+      "submitting": "Creating account…"
+    }
+  },
+  "buy": {
+    "title": "Buy Properties",
+    "subtitle": "Find your ideal property from verified listings",
+    "allLocations": "All Locations",
+    "filtersTitle": "Filters",
+    "reset": "Reset",
+    "location": "Location",
+    "propertyType": "Property Type",
+    "priceRange": "Price Range",
+    "minPriceAria": "Minimum price",
+    "maxPriceAria": "Maximum price",
+    "areaSqm": "Area (sqm)",
+    "applyFilters": "Apply Filters",
+    "loading": "Loading properties...",
+    "showingCount": "Showing {count} properties",
+    "loadError": "Unable to load properties. Please try again later.",
+    "sortLabel": "Sort by price",
+    "sortLowHigh": "Low to High",
+    "sortHighLow": "High to Low",
+    "sortPlaceholder": "Choose order",
+    "priceOptions": {
+      "any": "Any",
+      "100k": "$100,000",
+      "200k": "$200,000",
+      "500k": "$500,000",
+      "750k": "$750,000",
+      "1m": "$1,000,000",
+      "1_5m": "$1,500,000",
+      "2m": "$2,000,000",
+      "3m": "$3,000,000"
+    }
+  },
+  "propertyDetail": {
+    "backToResults": "Back to results",
+    "loadError": "Unable to load property. Please go back and try again.",
+    "notFoundTitle": "Property not found",
+    "notFoundText": "The property you are looking for does not exist or may have been removed.",
+    "askingPrice": "Asking price",
+    "totalArea": "{area} m² total area",
+    "requestDetails": "Request details",
+    "moreListings": "More listings",
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms",
+    "parking": "Parking",
+    "area": "Area",
+    "areaSqm": "{area} m²",
+    "highlights": "Highlights",
+    "aboutTitle": "About this property",
+    "priceFormat": {
+      "million": "{n}M SAR",
+      "thousand": "{n}K SAR",
+      "full": "{n} SAR"
+    }
+  },
+  "job": {
+    "title": "Job Application",
+    "intro": "Apply for a role with our team. Tell us about your experience and qualifications. We will review your application and get back to you within 24 hours.",
+    "sectionTitle": "Job Details",
+    "personalInfo": "Personal Information",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "company": "Company",
+    "tel": "Tel",
+    "email": "Email",
+    "address": "Address",
+    "pincode": "Pincode",
+    "uploadCv": "Upload Your CV",
+    "placeholders": {
+      "firstName": "Your first name",
+      "lastName": "Your last name",
+      "company": "Name of your company",
+      "tel": "+966 123456789",
+      "email": "Your email including @",
+      "address": "Your address",
+      "pincode": "Your pincode",
+      "cv": "Choose file (PDF, DOC)"
+    }
+  },
+  "investmentForm": {
+    "title": "Investment Application",
+    "intro": "Tell us about your investment goals and preferences. Our team will review your application and get back to you within 24 hours.",
+    "sectionTitle": "Investment Details",
+    "personalInfo": "Personal Information",
+    "preferencesTitle": "Investment Preferences",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "company": "Company",
+    "tel": "Tel",
+    "email": "Email",
+    "investorType": "Investor Type",
+    "expertise": "Expertise",
+    "opportunityType": "What type of opportunity are you looking for?",
+    "investmentMethod": "Preferred Investment Method",
+    "ticketSize": "Ticket size (SAR)",
+    "placeholders": {
+      "firstName": "Your first name",
+      "lastName": "Your last name",
+      "company": "Name of your company",
+      "tel": "+966 123456789",
+      "email": "Your email including @",
+      "selectOption": "Select an option",
+      "selectHere": "Select here",
+      "ticketSize": "Your ticket size in SAR"
+    },
+    "options": {
+      "investorType": {
+        "Individual": "Individual",
+        "Institutional": "Institutional",
+        "Family Office": "Family Office",
+        "Other": "Other"
+      },
+      "expertise": {
+        "Real Estate": "Real Estate",
+        "Stocks": "Stocks",
+        "Bonds": "Bonds",
+        "Private Equity": "Private Equity",
+        "Mixed": "Mixed",
+        "Other": "Other"
+      },
+      "opportunityType": {
+        "Residential": "Residential",
+        "Commercial": "Commercial",
+        "Mixed-Use": "Mixed-Use",
+        "Land": "Land",
+        "Development": "Development",
+        "Other": "Other"
+      },
+      "investmentMethod": {
+        "Direct": "Direct",
+        "Fund": "Fund",
+        "Syndication": "Syndication",
+        "REIT": "REIT",
+        "Other": "Other"
+      },
+      "ticketSize": {
+        "Under 500K SAR": "Under 500K SAR",
+        "500K - 1M SAR": "500K - 1M SAR",
+        "1M - 5M SAR": "1M - 5M SAR",
+        "5M - 10M SAR": "5M - 10M SAR",
+        "10M+ SAR": "10M+ SAR"
+      }
+    }
+  },
+  "sell": {
+    "heroTitle": "Sell Your Property",
+    "heroSubtitle": "List your property and reach serious buyers",
+    "heroDesc": "Complete the form below to submit your property listing. Our team will review your submission and publish it to thousands of potential buyers actively searching for properties like yours.",
+    "section1": "Property Basic Information",
+    "section2": "Property Specifications",
+    "section3": "Pricing",
+    "section4": "Property Description",
+    "section5": "Property Images",
+    "section6": "Contact Information",
+    "propertyTitle": "Property Title",
+    "propertyType": "Property Type",
+    "locationCity": "Location (City / Area)",
+    "fullAddress": "Full Address",
+    "propertyStatus": "Property Status",
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms",
+    "areaSqm": "Area (sqm)",
+    "floorNumber": "Floor Number",
+    "parkingAvailability": "Parking Availability",
+    "furnished": "Furnished",
+    "yearBuilt": "Year Built",
+    "askingPrice": "Asking Price",
+    "paymentOptions": "Payment Options",
+    "priceNegotiable": "Price Negotiable",
+    "describeProperty": "Describe Your Property",
+    "uploadAria": "Upload property images",
+    "uploadDrop": "Drag & Drop Images Here",
+    "uploadSub": "or click to browse from your device",
+    "uploadBtn": "Upload Images",
+    "uploadHint": "Supported formats: JPG, PNG | Max file size: 5MB per image",
+    "removeImage": "Remove image",
+    "fullName": "Full Name",
+    "email": "Email",
+    "phone": "Phone Number",
+    "preferredContact": "Preferred Contact Method",
+    "agreeTermsLine": "I agree to the ",
+    "termsLink": "Terms & Conditions",
+    "agreeTermsSub": "and confirm that all information provided is accurate and complete.",
+    "submitProperty": "Submit Property",
+    "saveDraft": "Save as draft",
+    "placeholders": {
+      "propertyTitle": "e.g., Modern 3BR Apartment in Downtown",
+      "selectPropertyType": "Select Property Type",
+      "location": "e.g., Dubai Marina",
+      "address": "Street, Building, Area",
+      "description": "Provide detailed information about your property, including key features, amenities, nearby facilities, and any unique selling points...",
+      "fullName": "John Doe",
+      "email": "john@example.com",
+      "phone": "+971 50 123 4567"
+    },
+    "previewAlt": "Preview {n}",
+    "types": {
+      "Apartment": "Apartment",
+      "Villa": "Villa",
+      "Townhouse": "Townhouse",
+      "Penthouse": "Penthouse",
+      "Land": "Land",
+      "Commercial": "Commercial",
+      "Other": "Other"
+    },
+    "status": {
+      "For Sale": "For Sale",
+      "For Rent": "For Rent",
+      "Both": "Both"
+    },
+    "payment": {
+      "Cash": "Cash",
+      "Installments": "Installments",
+      "Cash or Installments": "Cash or Installments"
+    },
+    "contact": {
+      "Email": "Email",
+      "Call": "Call",
+      "Both": "Both"
+    }
+  }
+}

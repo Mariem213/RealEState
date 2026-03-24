@@ -1,17 +1,9 @@
-import { useState, useRef } from 'react'
-import {
-  CloudUpload,
-  Check,
-  Save,
-  Building2,
-  Facebook,
-  Twitter,
-  Instagram,
-  Linkedin,
-} from 'lucide-react'
+import { useState, useRef, useMemo } from 'react'
+import { CloudUpload, Check, Save } from 'lucide-react'
 import CustomSelect from '../components/CustomSelect'
 import NumberStepper from '../components/NumberStepper'
 import Reveal from '../components/Reveal'
+import { useLanguage } from '../context/LanguageContext'
 import '../styles/SellProperty.css'
 
 const PROPERTY_TYPES = ['Apartment', 'Villa', 'Townhouse', 'Penthouse', 'Land', 'Commercial', 'Other']
@@ -24,7 +16,53 @@ const MAX_FILE_SIZE_MB = 10
 const ACCEPTED_TYPES = ['image/jpeg', 'image/jpg', 'image/png']
 
 function SellProperty() {
+  const { t, tSegments } = useLanguage()
   const fileInputRef = useRef(null)
+
+  const propertyTypeOptions = useMemo(
+    () =>
+      PROPERTY_TYPES.map((v) => ({
+        value: v,
+        label: t(`sell.types.${v}`),
+      })),
+    [t],
+  )
+
+  const propertyStatusOptions = useMemo(
+    () =>
+      PROPERTY_STATUSES.map((v) => ({
+        value: v,
+        label: tSegments(['sell', 'status', v]),
+      })),
+    [tSegments],
+  )
+
+  const paymentSelectOptions = useMemo(
+    () =>
+      PAYMENT_OPTIONS.map((v) => ({
+        value: v,
+        label: tSegments(['sell', 'payment', v]),
+      })),
+    [tSegments],
+  )
+
+  const contactSelectOptions = useMemo(
+    () =>
+      CONTACT_METHODS.map((v) => ({
+        value: v,
+        label: tSegments(['sell', 'contact', v]),
+      })),
+    [tSegments],
+  )
+
+  const yesNoOptions = useMemo(
+    () => [
+      { value: 'Yes', label: t('common.yes') },
+      { value: 'No', label: t('common.no') },
+    ],
+    [t],
+  )
+
   const [formData, setFormData] = useState({
     propertyTitle: '',
     propertyType: '',
@@ -116,15 +154,9 @@ function SellProperty() {
       <section className="sell-property-hero">
         <Reveal>
           <div className="sell-property-hero__inner">
-            <h1 className="sell-property-hero__title">Sell Your Property</h1>
-            <p className="sell-property-hero__subtitle">
-              List your property and reach serious buyers
-            </p>
-            <p className="sell-property-hero__desc">
-              Complete the form below to submit your property listing. Our team will review your
-              submission and publish it to thousands of potential buyers actively searching for
-              properties like yours.
-            </p>
+            <h1 className="sell-property-hero__title">{t('sell.heroTitle')}</h1>
+            <p className="sell-property-hero__subtitle">{t('sell.heroSubtitle')}</p>
+            <p className="sell-property-hero__desc">{t('sell.heroDesc')}</p>
           </div>
         </Reveal>
       </section>
@@ -132,383 +164,409 @@ function SellProperty() {
       <main className="sell-property-main">
         <div className="sell-property-card">
           <form className="sell-property-form" onSubmit={handleSubmit}>
-            {/* Section 1: Property Basic Information */}
             <Reveal delay={0}>
-            <section className="sell-property-section">
-              <h2 className="sell-property-section__title">
-                <span className="sell-property-section__badge">1</span>
-                Property Basic Information
-              </h2>
-              <div className="sell-property-form__row sell-property-form__row--full">
-                <label className="sell-property-form__label">
-                  <span className="sell-property-form__label-line">Property Title<span className="sell-property-form__required">*</span></span>
-                  <input
-                    type="text"
-                    name="propertyTitle"
-                    value={formData.propertyTitle}
-                    onChange={handleChange}
-                    placeholder="e.g., Modern 3BR Apartment in Downtown"
-                    className="sell-property-form__input"
-                    required
-                  />
-                </label>
-              </div>
-              <div className="sell-property-form__row">
-                <label className="sell-property-form__label">
-                  <span className="sell-property-form__label-line">Property Type<span className="sell-property-form__required">*</span></span>
-                  <CustomSelect
-                    name="propertyType"
-                    value={formData.propertyType}
-                    onChange={handleChange}
-                    options={PROPERTY_TYPES}
-                    placeholder="Select Property Type"
-                    required
-                  />
-                </label>
-                <label className="sell-property-form__label">
-                  <span className="sell-property-form__label-line">Location (City / Area)<span className="sell-property-form__required">*</span></span>
-                  <input
-                    type="text"
-                    name="location"
-                    value={formData.location}
-                    onChange={handleChange}
-                    placeholder="e.g., Dubai Marina"
-                    className="sell-property-form__input"
-                    required
-                  />
-                </label>
-              </div>
-              <div className="sell-property-form__row sell-property-form__row--full">
-                <label className="sell-property-form__label">
-                  Full Address
-                  <input
-                    type="text"
-                    name="fullAddress"
-                    value={formData.fullAddress}
-                    onChange={handleChange}
-                    placeholder="Street, Building, Area"
-                    className="sell-property-form__input"
-                  />
-                </label>
-              </div>
-              <div className="sell-property-form__row">
-                <label className="sell-property-form__label">
-                  Property Status
-                  <CustomSelect
-                    name="propertyStatus"
-                    value={formData.propertyStatus}
-                    onChange={handleChange}
-                    options={PROPERTY_STATUSES}
-                  />
-                </label>
-              </div>
-            </section>
-            </Reveal>
-
-            {/* Section 2: Property Specifications */}
-            <Reveal delay={55}>
-            <section className="sell-property-section">
-              <h2 className="sell-property-section__title">
-                <span className="sell-property-section__badge">2</span>
-                Property Specifications
-              </h2>
-              <div className="sell-property-form__grid sell-property-form__grid--specs">
-                <label className="sell-property-form__label">
-                  <span className="sell-property-form__label-line">Bedrooms<span className="sell-property-form__required">*</span></span>
-                  <NumberStepper
-                    name="bedrooms"
-                    value={formData.bedrooms === '' ? '' : formData.bedrooms}
-                    onChange={handleNumberChange}
-                    min={0}
-                    required
-                  />
-                </label>
-                <label className="sell-property-form__label">
-                  <span className="sell-property-form__label-line">Bathrooms<span className="sell-property-form__required">*</span></span>
-                  <NumberStepper
-                    name="bathrooms"
-                    value={formData.bathrooms === '' ? '' : formData.bathrooms}
-                    onChange={handleNumberChange}
-                    min={0}
-                    required
-                  />
-                </label>
-                <label className="sell-property-form__label">
-                  <span className="sell-property-form__label-line">Area (sqm)<span className="sell-property-form__required">*</span></span>
-                  <NumberStepper
-                    name="area"
-                    value={formData.area === '' ? '' : formData.area}
-                    onChange={handleNumberChange}
-                    min={0}
-                    required
-                  />
-                </label>
-                <label className="sell-property-form__label">
-                  Floor Number
-                  <NumberStepper
-                    name="floorNumber"
-                    value={formData.floorNumber === '' ? '' : formData.floorNumber}
-                    onChange={handleNumberChange}
-                    min={0}
-                  />
-                </label>
-                <label className="sell-property-form__label">
-                  Parking Availability
-                  <CustomSelect
-                    name="parking"
-                    value={formData.parking}
-                    onChange={handleChange}
-                    options={['Yes', 'No']}
-                  />
-                </label>
-                <label className="sell-property-form__label">
-                  Furnished
-                  <CustomSelect
-                    name="furnished"
-                    value={formData.furnished}
-                    onChange={handleChange}
-                    options={['Yes', 'No']}
-                  />
-                </label>
-                <label className="sell-property-form__label sell-property-form__label--full">
-                  Year Built
-                  <NumberStepper
-                    name="yearBuilt"
-                    value={formData.yearBuilt}
-                    onChange={handleChange}
-                    min={1900}
-                    max={2100}
-                  />
-                </label>
-              </div>
-            </section>
-            </Reveal>
-
-            {/* Section 3: Pricing */}
-            <Reveal delay={110}>
-            <section className="sell-property-section">
-              <h2 className="sell-property-section__title">
-                <span className="sell-property-section__badge">3</span>
-                Pricing
-              </h2>
-              <div className="sell-property-form__row">
-                <label className="sell-property-form__label">
-                  <span className="sell-property-form__label-line">Asking Price<span className="sell-property-form__required">*</span></span>
-                  <div className="sell-property-form__price-wrap">
-                    <span className="sell-property-form__price-prefix">$</span>
+              <section className="sell-property-section">
+                <h2 className="sell-property-section__title">
+                  <span className="sell-property-section__badge">1</span>
+                  {t('sell.section1')}
+                </h2>
+                <div className="sell-property-form__row sell-property-form__row--full">
+                  <label className="sell-property-form__label">
+                    <span className="sell-property-form__label-line">
+                      {t('sell.propertyTitle')}
+                      <span className="sell-property-form__required">*</span>
+                    </span>
                     <input
                       type="text"
-                      name="askingPrice"
-                      value={formData.askingPrice}
+                      name="propertyTitle"
+                      value={formData.propertyTitle}
                       onChange={handleChange}
-                      className="sell-property-form__input sell-property-form__input--price"
+                      placeholder={t('sell.placeholders.propertyTitle')}
+                      className="sell-property-form__input"
                       required
                     />
-                  </div>
-                </label>
-                <label className="sell-property-form__label">
-                  Payment Options
-                  <CustomSelect
-                    name="paymentOptions"
-                    value={formData.paymentOptions}
-                    onChange={handleChange}
-                    options={PAYMENT_OPTIONS}
-                  />
-                </label>
-              </div>
-              <div className="sell-property-form__row sell-property-form__row--toggle">
-                <span className="sell-property-form__label-text">Price Negotiable</span>
-                <button
-                  type="button"
-                  role="switch"
-                  aria-checked={formData.priceNegotiable}
-                  className={`sell-property-toggle ${formData.priceNegotiable ? 'sell-property-toggle--on' : ''}`}
-                  onClick={() => setFormData((p) => ({ ...p, priceNegotiable: !p.priceNegotiable }))}
-                >
-                  <span className="sell-property-toggle__track" />
-                  <span className="sell-property-toggle__thumb" />
-                </button>
-              </div>
-            </section>
-            </Reveal>
-
-            {/* Section 4: Property Description */}
-            <Reveal delay={165}>
-            <section className="sell-property-section">
-              <h2 className="sell-property-section__title">
-                <span className="sell-property-section__badge">4</span>
-                Property Description
-              </h2>
-              <label className="sell-property-form__label sell-property-form__label--desc sell-property-form__row--full">
-                Describe Your Property
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleChange}
-                  placeholder="Provide detailed information about your property, including key features, amenities, nearby facilities, and any unique selling points..."
-                  className="sell-property-form__textarea"
-                  rows={5}
-                />
-              </label>
-            </section>
-            </Reveal>
-
-            {/* Section 5: Property Images */}
-            <Reveal delay={220}>
-            <section className="sell-property-section">
-              <h2 className="sell-property-section__title">
-                <span className="sell-property-section__badge">5</span>
-                Property Images
-              </h2>
-              <div
-                className={`sell-property-upload ${isDragging ? 'sell-property-upload--dragging' : ''}`}
-                onDrop={handleDrop}
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept=".jpeg,.jpg,.png,image/jpeg,image/jpg,image/png"
-                  multiple
-                  onChange={handleFileSelect}
-                  className="sell-property-upload__input"
-                  aria-label="Upload property images"
-                />
-                <CloudUpload size={48} className="sell-property-upload__icon" aria-hidden />
-                <p className="sell-property-upload__text">Drag & Drop Images Here</p>
-                <p className="sell-property-upload__sub">or click to browse from your device</p>
-                <button
-                  type="button"
-                  className="sell-property-upload__btn"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    fileInputRef.current?.click()
-                  }}
-                >
-                  <CloudUpload size={18} aria-hidden />
-                  Upload Images
-                </button>
-              </div>
-              <p className="sell-property-upload__hint">
-                Supported formats: JPG, PNG | Max file size: 5MB per image
-              </p>
-              {images.length > 0 && (
-                <div className="sell-property-previews">
-                  {images.map((file, i) => (
-                    <div key={i} className="sell-property-preview">
-                      <img
-                        src={URL.createObjectURL(file)}
-                        alt={`Preview ${i + 1}`}
-                        className="sell-property-preview__img"
-                      />
-                      <button
-                        type="button"
-                        className="sell-property-preview__remove"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          removeImage(i)
-                        }}
-                        aria-label="Remove image"
-                      >
-                        ×
-                      </button>
-                    </div>
-                  ))}
+                  </label>
                 </div>
-              )}
-            </section>
+                <div className="sell-property-form__row">
+                  <label className="sell-property-form__label">
+                    <span className="sell-property-form__label-line">
+                      {t('sell.propertyType')}
+                      <span className="sell-property-form__required">*</span>
+                    </span>
+                    <CustomSelect
+                      name="propertyType"
+                      value={formData.propertyType}
+                      onChange={handleChange}
+                      options={propertyTypeOptions}
+                      placeholder={t('sell.placeholders.selectPropertyType')}
+                      required
+                    />
+                  </label>
+                  <label className="sell-property-form__label">
+                    <span className="sell-property-form__label-line">
+                      {t('sell.locationCity')}
+                      <span className="sell-property-form__required">*</span>
+                    </span>
+                    <input
+                      type="text"
+                      name="location"
+                      value={formData.location}
+                      onChange={handleChange}
+                      placeholder={t('sell.placeholders.location')}
+                      className="sell-property-form__input"
+                      required
+                    />
+                  </label>
+                </div>
+                <div className="sell-property-form__row sell-property-form__row--full">
+                  <label className="sell-property-form__label">
+                    {t('sell.fullAddress')}
+                    <input
+                      type="text"
+                      name="fullAddress"
+                      value={formData.fullAddress}
+                      onChange={handleChange}
+                      placeholder={t('sell.placeholders.address')}
+                      className="sell-property-form__input"
+                    />
+                  </label>
+                </div>
+                <div className="sell-property-form__row">
+                  <label className="sell-property-form__label">
+                    {t('sell.propertyStatus')}
+                    <CustomSelect
+                      name="propertyStatus"
+                      value={formData.propertyStatus}
+                      onChange={handleChange}
+                      options={propertyStatusOptions}
+                    />
+                  </label>
+                </div>
+              </section>
             </Reveal>
 
-            {/* Section 6: Contact Information */}
+            <Reveal delay={55}>
+              <section className="sell-property-section">
+                <h2 className="sell-property-section__title">
+                  <span className="sell-property-section__badge">2</span>
+                  {t('sell.section2')}
+                </h2>
+                <div className="sell-property-form__grid sell-property-form__grid--specs">
+                  <label className="sell-property-form__label">
+                    <span className="sell-property-form__label-line">
+                      {t('sell.bedrooms')}
+                      <span className="sell-property-form__required">*</span>
+                    </span>
+                    <NumberStepper
+                      name="bedrooms"
+                      value={formData.bedrooms === '' ? '' : formData.bedrooms}
+                      onChange={handleNumberChange}
+                      min={0}
+                      required
+                    />
+                  </label>
+                  <label className="sell-property-form__label">
+                    <span className="sell-property-form__label-line">
+                      {t('sell.bathrooms')}
+                      <span className="sell-property-form__required">*</span>
+                    </span>
+                    <NumberStepper
+                      name="bathrooms"
+                      value={formData.bathrooms === '' ? '' : formData.bathrooms}
+                      onChange={handleNumberChange}
+                      min={0}
+                      required
+                    />
+                  </label>
+                  <label className="sell-property-form__label">
+                    <span className="sell-property-form__label-line">
+                      {t('sell.areaSqm')}
+                      <span className="sell-property-form__required">*</span>
+                    </span>
+                    <NumberStepper
+                      name="area"
+                      value={formData.area === '' ? '' : formData.area}
+                      onChange={handleNumberChange}
+                      min={0}
+                      required
+                    />
+                  </label>
+                  <label className="sell-property-form__label">
+                    {t('sell.floorNumber')}
+                    <NumberStepper
+                      name="floorNumber"
+                      value={formData.floorNumber === '' ? '' : formData.floorNumber}
+                      onChange={handleNumberChange}
+                      min={0}
+                    />
+                  </label>
+                  <label className="sell-property-form__label">
+                    {t('sell.parkingAvailability')}
+                    <CustomSelect
+                      name="parking"
+                      value={formData.parking}
+                      onChange={handleChange}
+                      options={yesNoOptions}
+                    />
+                  </label>
+                  <label className="sell-property-form__label">
+                    {t('sell.furnished')}
+                    <CustomSelect
+                      name="furnished"
+                      value={formData.furnished}
+                      onChange={handleChange}
+                      options={yesNoOptions}
+                    />
+                  </label>
+                  <label className="sell-property-form__label sell-property-form__label--full">
+                    {t('sell.yearBuilt')}
+                    <NumberStepper
+                      name="yearBuilt"
+                      value={formData.yearBuilt}
+                      onChange={handleChange}
+                      min={1900}
+                      max={2100}
+                    />
+                  </label>
+                </div>
+              </section>
+            </Reveal>
+
+            <Reveal delay={110}>
+              <section className="sell-property-section">
+                <h2 className="sell-property-section__title">
+                  <span className="sell-property-section__badge">3</span>
+                  {t('sell.section3')}
+                </h2>
+                <div className="sell-property-form__row">
+                  <label className="sell-property-form__label">
+                    <span className="sell-property-form__label-line">
+                      {t('sell.askingPrice')}
+                      <span className="sell-property-form__required">*</span>
+                    </span>
+                    <div className="sell-property-form__price-wrap">
+                      <span className="sell-property-form__price-prefix">$</span>
+                      <input
+                        type="text"
+                        name="askingPrice"
+                        value={formData.askingPrice}
+                        onChange={handleChange}
+                        className="sell-property-form__input sell-property-form__input--price"
+                        required
+                      />
+                    </div>
+                  </label>
+                  <label className="sell-property-form__label">
+                    {t('sell.paymentOptions')}
+                    <CustomSelect
+                      name="paymentOptions"
+                      value={formData.paymentOptions}
+                      onChange={handleChange}
+                      options={paymentSelectOptions}
+                    />
+                  </label>
+                </div>
+                <div className="sell-property-form__row sell-property-form__row--toggle">
+                  <span className="sell-property-form__label-text">{t('sell.priceNegotiable')}</span>
+                  <button
+                    type="button"
+                    role="switch"
+                    aria-checked={formData.priceNegotiable}
+                    className={`sell-property-toggle ${formData.priceNegotiable ? 'sell-property-toggle--on' : ''}`}
+                    onClick={() => setFormData((p) => ({ ...p, priceNegotiable: !p.priceNegotiable }))}
+                  >
+                    <span className="sell-property-toggle__track" />
+                    <span className="sell-property-toggle__thumb" />
+                  </button>
+                </div>
+              </section>
+            </Reveal>
+
+            <Reveal delay={165}>
+              <section className="sell-property-section">
+                <h2 className="sell-property-section__title">
+                  <span className="sell-property-section__badge">4</span>
+                  {t('sell.section4')}
+                </h2>
+                <label className="sell-property-form__label sell-property-form__label--desc sell-property-form__row--full">
+                  {t('sell.describeProperty')}
+                  <textarea
+                    name="description"
+                    value={formData.description}
+                    onChange={handleChange}
+                    placeholder={t('sell.placeholders.description')}
+                    className="sell-property-form__textarea"
+                    rows={5}
+                  />
+                </label>
+              </section>
+            </Reveal>
+
+            <Reveal delay={220}>
+              <section className="sell-property-section">
+                <h2 className="sell-property-section__title">
+                  <span className="sell-property-section__badge">5</span>
+                  {t('sell.section5')}
+                </h2>
+                <div
+                  className={`sell-property-upload ${isDragging ? 'sell-property-upload--dragging' : ''}`}
+                  onDrop={handleDrop}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".jpeg,.jpg,.png,image/jpeg,image/jpg,image/png"
+                    multiple
+                    onChange={handleFileSelect}
+                    className="sell-property-upload__input"
+                    aria-label={t('sell.uploadAria')}
+                  />
+                  <CloudUpload size={48} className="sell-property-upload__icon" aria-hidden />
+                  <p className="sell-property-upload__text">{t('sell.uploadDrop')}</p>
+                  <p className="sell-property-upload__sub">{t('sell.uploadSub')}</p>
+                  <button
+                    type="button"
+                    className="sell-property-upload__btn"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      fileInputRef.current?.click()
+                    }}
+                  >
+                    <CloudUpload size={18} aria-hidden />
+                    {t('sell.uploadBtn')}
+                  </button>
+                </div>
+                <p className="sell-property-upload__hint">{t('sell.uploadHint')}</p>
+                {images.length > 0 && (
+                  <div className="sell-property-previews">
+                    {images.map((file, i) => (
+                      <div key={i} className="sell-property-preview">
+                        <img
+                          src={URL.createObjectURL(file)}
+                          alt={t('sell.previewAlt', { n: i + 1 })}
+                          className="sell-property-preview__img"
+                        />
+                        <button
+                          type="button"
+                          className="sell-property-preview__remove"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            removeImage(i)
+                          }}
+                          aria-label={t('sell.removeImage')}
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </section>
+            </Reveal>
+
             <Reveal delay={275}>
-            <section className="sell-property-section">
-              <h2 className="sell-property-section__title">
-                <span className="sell-property-section__badge">6</span>
-                Contact Information
-              </h2>
-              <div className="sell-property-form__row">
-                <label className="sell-property-form__label">
-                  <span className="sell-property-form__label-line">Full Name<span className="sell-property-form__required">*</span></span>
+              <section className="sell-property-section">
+                <h2 className="sell-property-section__title">
+                  <span className="sell-property-section__badge">6</span>
+                  {t('sell.section6')}
+                </h2>
+                <div className="sell-property-form__row">
+                  <label className="sell-property-form__label">
+                    <span className="sell-property-form__label-line">
+                      {t('sell.fullName')}
+                      <span className="sell-property-form__required">*</span>
+                    </span>
+                    <input
+                      type="text"
+                      name="fullName"
+                      value={formData.fullName}
+                      onChange={handleChange}
+                      placeholder={t('sell.placeholders.fullName')}
+                      className="sell-property-form__input"
+                      required
+                    />
+                  </label>
+                  <label className="sell-property-form__label">
+                    <span className="sell-property-form__label-line">
+                      {t('sell.email')}
+                      <span className="sell-property-form__required">*</span>
+                    </span>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder={t('sell.placeholders.email')}
+                      className="sell-property-form__input"
+                      required
+                    />
+                  </label>
+                </div>
+                <div className="sell-property-form__row">
+                  <label className="sell-property-form__label">
+                    <span className="sell-property-form__label-line">
+                      {t('sell.phone')}
+                      <span className="sell-property-form__required">*</span>
+                    </span>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder={t('sell.placeholders.phone')}
+                      className="sell-property-form__input"
+                      required
+                    />
+                  </label>
+                  <label className="sell-property-form__label">
+                    {t('sell.preferredContact')}
+                    <CustomSelect
+                      name="preferredContact"
+                      value={formData.preferredContact}
+                      onChange={handleChange}
+                      options={contactSelectOptions}
+                    />
+                  </label>
+                </div>
+                <label className="sell-property-form__checkbox-wrap">
                   <input
-                    type="text"
-                    name="fullName"
-                    value={formData.fullName}
+                    type="checkbox"
+                    name="agreeTerms"
+                    checked={formData.agreeTerms}
                     onChange={handleChange}
-                    placeholder="John Doe"
-                    className="sell-property-form__input"
-                    required
+                    className="sell-property-form__checkbox"
                   />
+                  <span className="sell-property-form__checkbox-label">
+                    <span className="sell-property-form__checkbox-line">
+                      {t('sell.agreeTermsLine')}
+                      <a href="#terms" className="sell-property-form__terms-link">
+                        {t('sell.termsLink')}
+                      </a>
+                    </span>
+                    <span className="sell-property-form__checkbox-sub">{t('sell.agreeTermsSub')}</span>
+                  </span>
                 </label>
-                <label className="sell-property-form__label">
-                  <span className="sell-property-form__label-line">Email<span className="sell-property-form__required">*</span></span>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="john@example.com"
-                    className="sell-property-form__input"
-                    required
-                  />
-                </label>
-              </div>
-              <div className="sell-property-form__row">
-                <label className="sell-property-form__label">
-                  <span className="sell-property-form__label-line">Phone Number<span className="sell-property-form__required">*</span></span>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    placeholder="+971 50 123 4567"
-                    className="sell-property-form__input"
-                    required
-                  />
-                </label>
-                <label className="sell-property-form__label">
-                  Preferred Contact Method
-                  <CustomSelect
-                    name="preferredContact"
-                    value={formData.preferredContact}
-                    onChange={handleChange}
-                    options={CONTACT_METHODS}
-                  />
-                </label>
-              </div>
-              <label className="sell-property-form__checkbox-wrap">
-                <input
-                  type="checkbox"
-                  name="agreeTerms"
-                  checked={formData.agreeTerms}
-                  onChange={handleChange}
-                  className="sell-property-form__checkbox"
-                />
-                <span className="sell-property-form__checkbox-label">
-                  <span className="sell-property-form__checkbox-line">I agree to the <a href="#terms" className="sell-property-form__terms-link">Terms & Conditions</a></span>
-                  <span className="sell-property-form__checkbox-sub">and confirm that all information provided is accurate and complete.</span>
-                </span>
-              </label>
-            </section>
+              </section>
             </Reveal>
 
             <Reveal delay={320}>
-            <div className="sell-property-form__actions">
-              <button type="submit" className="sell-property-form__submit">
-                <Check size={20} aria-hidden />
-                Submit Property
-              </button>
-              <button type="button" className="sell-property-form__draft" onClick={handleSaveDraft}>
-                <Save size={18} aria-hidden />
-                Save as draft
-              </button>
-            </div>
+              <div className="sell-property-form__actions">
+                <button type="submit" className="sell-property-form__submit">
+                  <Check size={20} aria-hidden />
+                  {t('sell.submitProperty')}
+                </button>
+                <button type="button" className="sell-property-form__draft" onClick={handleSaveDraft}>
+                  <Save size={18} aria-hidden />
+                  {t('sell.saveDraft')}
+                </button>
+              </div>
             </Reveal>
           </form>
         </div>
       </main>
-
     </div>
   )
 }
