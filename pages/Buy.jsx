@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { MapPin, SlidersHorizontal } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import CustomSelect from '../components/CustomSelect'
+import Reveal from '../components/Reveal'
 import '../styles/Buy.css'
 import { ALL_LOCATIONS } from '../data/properties'
 import { fetchProducts } from '../data/products'
@@ -203,13 +204,14 @@ function Buy() {
     <div className="buy-page">
       <div className="buy-page__header">
         <div className="buy-page__header-inner">
-          <div>
-            {/* <p className="buy-page__eyebrow">Buy</p> */}
-            <h1 className="buy-page__title">Buy Properties</h1>
-            <p className="buy-page__subtitle">
-              Find your ideal property from verified listings
-            </p>
-          </div>
+          <Reveal>
+            <div>
+              <h1 className="buy-page__title">Buy Properties</h1>
+              <p className="buy-page__subtitle">
+                Find your ideal property from verified listings
+              </p>
+            </div>
+          </Reveal>
           {/* <div className="buy-page__badge">
             <MapPin size={18} aria-hidden />
             <span>Property Listings</span>
@@ -220,7 +222,9 @@ function Buy() {
       <div className="buy-page__content">
         <div className="buy-page__layout">
           <aside className="buy-filters">
-            <div className="buy-filters__header">
+            <Reveal delay={60}>
+              <div className="buy-filters__reveal">
+                <div className="buy-filters__header">
               <h2 className="buy-filters__title">Filters</h2>
               <button type="button" className="buy-filters__reset" onClick={handleReset}>
                 Reset
@@ -333,10 +337,13 @@ function Buy() {
                 <span>Apply Filters</span>
               </button>
             </form>
+              </div>
+            </Reveal>
           </aside>
 
           <section className="buy-results">
-            <div className="buy-results__header">
+            <Reveal>
+              <div className="buy-results__header">
               <p className="buy-results__count">
                 {loading
                   ? 'Loading properties...'
@@ -360,14 +367,16 @@ function Buy() {
                   className="buy-results__sort-dropdown"
                 />
               </div>
-            </div>
+              </div>
+            </Reveal>
 
             {error && <p className="buy-results__error">{error}</p>}
 
             {!loading && !error && sortedProperties.length > 0 && (
               <div className="buy-results__grid">
-                {paginatedProducts.map((product) => (
-                  <article key={product.id} className="property-card">
+                {paginatedProducts.map((product, i) => (
+                  <Reveal key={product.id} delay={i * 70}>
+                    <article className="property-card">
                     <div className="property-card__image-wrap">
                       <img
                         src={product.thumbnail || product.image}
@@ -400,13 +409,15 @@ function Buy() {
                         View Details
                       </button>
                     </div>
-                  </article>
+                    </article>
+                  </Reveal>
                 ))}
               </div>
             )}
 
             {sortedProperties.length > 0 && (
-              <div className="buy-results__pagination">
+              <Reveal delay={40}>
+                <div className="buy-results__pagination">
                 {Array.from({ length: totalPages }, (_, i) => {
                   const page = i + 1
                   return (
@@ -421,7 +432,8 @@ function Buy() {
                     </button>
                   )
                 })}
-              </div>
+                </div>
+              </Reveal>
             )}
           </section>
         </div>

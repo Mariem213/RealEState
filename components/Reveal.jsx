@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import '../styles/Reveal.css'
 
 export default function Reveal({ children, className = '', delay = 0 }) {
   const ref = useRef(null)

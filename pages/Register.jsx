@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { User, Eye, EyeOff } from 'lucide-react'
+import Reveal from '../components/Reveal'
 import '../styles/Register.css'
 
 const AUTH_BG_URL = '../../auth-bg.jpg'
@@ -16,6 +17,7 @@ function Register() {
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.35)), url(${AUTH_BG_URL})`,
       }}
     >
+      <Reveal delay={40}>
       <div className="register-card">
         <div className="register-card__icon">
           <User size={36} aria-hidden />
@@ -86,6 +88,7 @@ function Register() {
           </button>
         </form>
       </div>
+      </Reveal>
     </div>
   )
 }

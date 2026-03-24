@@ -628,6 +628,16 @@
 	gap: 1.25rem;
 }
 
+.buy-results__grid > .landing-reveal {
+	min-width: 0;
+	display: flex;
+}
+
+.buy-results__grid > .landing-reveal > .property-card {
+	flex: 1;
+	width: 100%;
+}
+
 .buy-results__grid .property-card {
 	animation: buy-card-fade 0.3s ease forwards;
 }

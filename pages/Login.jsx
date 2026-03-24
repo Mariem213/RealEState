@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { User, Eye, EyeOff } from 'lucide-react'
+import Reveal from '../components/Reveal'
 import '../styles/Login.css'
 
 const AUTH_BG_URL = '../../auth-bg.jpg'
@@ -15,6 +16,7 @@ function Login() {
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.35)), url(${AUTH_BG_URL})`,
       }}
     >
+      <Reveal>
       <div className="login-card">
         <div className="login-card__icon">
           <User size={36} aria-hidden />
@@ -66,6 +68,7 @@ function Login() {
           </button>
         </form>
       </div>
+      </Reveal>
     </div>
   )
 }

@@ -11,6 +11,7 @@ import {
 } from 'lucide-react'
 import CustomSelect from '../components/CustomSelect'
 import NumberStepper from '../components/NumberStepper'
+import Reveal from '../components/Reveal'
 import '../styles/SellProperty.css'
 
 const PROPERTY_TYPES = ['Apartment', 'Villa', 'Townhouse', 'Penthouse', 'Land', 'Commercial', 'Other']
@@ -113,23 +114,26 @@ function SellProperty() {
   return (
     <div className="sell-property-page">
       <section className="sell-property-hero">
-        <div className="sell-property-hero__inner">
-          <h1 className="sell-property-hero__title">Sell Your Property</h1>
-          <p className="sell-property-hero__subtitle">
-            List your property and reach serious buyers
-          </p>
-          <p className="sell-property-hero__desc">
-            Complete the form below to submit your property listing. Our team will review your
-            submission and publish it to thousands of potential buyers actively searching for
-            properties like yours.
-          </p>
-        </div>
+        <Reveal>
+          <div className="sell-property-hero__inner">
+            <h1 className="sell-property-hero__title">Sell Your Property</h1>
+            <p className="sell-property-hero__subtitle">
+              List your property and reach serious buyers
+            </p>
+            <p className="sell-property-hero__desc">
+              Complete the form below to submit your property listing. Our team will review your
+              submission and publish it to thousands of potential buyers actively searching for
+              properties like yours.
+            </p>
+          </div>
+        </Reveal>
       </section>
 
       <main className="sell-property-main">
         <div className="sell-property-card">
           <form className="sell-property-form" onSubmit={handleSubmit}>
             {/* Section 1: Property Basic Information */}
+            <Reveal delay={0}>
             <section className="sell-property-section">
               <h2 className="sell-property-section__title">
                 <span className="sell-property-section__badge">1</span>
@@ -199,8 +203,10 @@ function SellProperty() {
                 </label>
               </div>
             </section>
+            </Reveal>
 
             {/* Section 2: Property Specifications */}
+            <Reveal delay={55}>
             <section className="sell-property-section">
               <h2 className="sell-property-section__title">
                 <span className="sell-property-section__badge">2</span>
@@ -276,8 +282,10 @@ function SellProperty() {
                 </label>
               </div>
             </section>
+            </Reveal>
 
             {/* Section 3: Pricing */}
+            <Reveal delay={110}>
             <section className="sell-property-section">
               <h2 className="sell-property-section__title">
                 <span className="sell-property-section__badge">3</span>
@@ -322,8 +330,10 @@ function SellProperty() {
                 </button>
               </div>
             </section>
+            </Reveal>
 
             {/* Section 4: Property Description */}
+            <Reveal delay={165}>
             <section className="sell-property-section">
               <h2 className="sell-property-section__title">
                 <span className="sell-property-section__badge">4</span>
@@ -341,8 +351,10 @@ function SellProperty() {
                 />
               </label>
             </section>
+            </Reveal>
 
             {/* Section 5: Property Images */}
+            <Reveal delay={220}>
             <section className="sell-property-section">
               <h2 className="sell-property-section__title">
                 <span className="sell-property-section__badge">5</span>
@@ -407,8 +419,10 @@ function SellProperty() {
                 </div>
               )}
             </section>
+            </Reveal>
 
             {/* Section 6: Contact Information */}
+            <Reveal delay={275}>
             <section className="sell-property-section">
               <h2 className="sell-property-section__title">
                 <span className="sell-property-section__badge">6</span>
@@ -477,7 +491,9 @@ function SellProperty() {
                 </span>
               </label>
             </section>
+            </Reveal>
 
+            <Reveal delay={320}>
             <div className="sell-property-form__actions">
               <button type="submit" className="sell-property-form__submit">
                 <Check size={20} aria-hidden />
@@ -488,6 +504,7 @@ function SellProperty() {
                 Save as draft
               </button>
             </div>
+            </Reveal>
           </form>
         </div>
       </main>

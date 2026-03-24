@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { CircleDollarSign, User, TrendingUp, Send } from 'lucide-react'
 import CustomSelect from '../components/CustomSelect'
+import Reveal from '../components/Reveal'
 import '../styles/InvestmentApplication.css'
 
 const INVESTOR_TYPES = ['Individual', 'Institutional', 'Family Office', 'Other']
@@ -36,23 +37,28 @@ function InvestmentApplication() {
   return (
     <div className="investment-application-page">
       <main className="investment-application-main">
-        <div className="investment-application-header">
-          <div className="investment-application-header__icon">
-            <CircleDollarSign size={40} aria-hidden />
+        <Reveal>
+          <div className="investment-application-header">
+            <div className="investment-application-header__icon">
+              <CircleDollarSign size={40} aria-hidden />
+            </div>
+            <h1 className="investment-application-header__title">Investment Application</h1>
+            <p className="investment-application-header__desc">
+              Tell us about your investment goals and preferences. Our team will review your application and get back to you within 24 hours.
+            </p>
           </div>
-          <h1 className="investment-application-header__title">Investment Application</h1>
-          <p className="investment-application-header__desc">
-            Tell us about your investment goals and preferences. Our team will review your application and get back to you within 24 hours.
-          </p>
-        </div>
+        </Reveal>
 
         <div className="investment-application-card">
-          <div className="investment-application-card__header">
-            <h2 className="investment-application-card__header-title">Investment Details</h2>
-            <p className="investment-application-card__header-sub">Please fill out all required fields marked with *</p>
-          </div>
+          <Reveal>
+            <div className="investment-application-card__header">
+              <h2 className="investment-application-card__header-title">Investment Details</h2>
+              <p className="investment-application-card__header-sub">Please fill out all required fields marked with *</p>
+            </div>
+          </Reveal>
 
           <form className="investment-application-form" onSubmit={handleSubmit}>
+            <Reveal delay={60}>
             <section className="investment-application-section">
               <h3 className="investment-application-section__title">
                 <User size={20} aria-hidden />
@@ -128,7 +134,9 @@ function InvestmentApplication() {
                 </label>
               </div>
             </section>
+            </Reveal>
 
+            <Reveal delay={120}>
             <section className="investment-application-section">
               <h3 className="investment-application-section__title">
                 <TrendingUp size={20} aria-hidden />
@@ -204,15 +212,18 @@ function InvestmentApplication() {
                 </label>
               </div>
             </section>
+            </Reveal>
 
-            <button type="submit" className="investment-application-form__submit">
-              <Send size={20} aria-hidden />
-              Send Form
-            </button>
+            <Reveal delay={180}>
+              <button type="submit" className="investment-application-form__submit">
+                <Send size={20} aria-hidden />
+                Send Form
+              </button>
 
-            <p className="investment-application-form__footer">
-              By submitting this form, you agree to our terms and conditions. We'll review your application within 24 hours.
-            </p>
+              <p className="investment-application-form__footer">
+                By submitting this form, you agree to our terms and conditions. We&apos;ll review your application within 24 hours.
+              </p>
+            </Reveal>
           </form>
         </div>
       </main>

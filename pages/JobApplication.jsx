@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Briefcase, User, Send } from 'lucide-react'
+import Reveal from '../components/Reveal'
 import '../styles/JobApplication.css'
 
 function JobApplication() {
@@ -31,23 +32,28 @@ function JobApplication() {
   return (
     <div className="job-application-page">
       <main className="job-application-main">
-        <div className="job-application-header">
-          <div className="job-application-header__icon">
-            <Briefcase size={40} aria-hidden />
+        <Reveal>
+          <div className="job-application-header">
+            <div className="job-application-header__icon">
+              <Briefcase size={40} aria-hidden />
+            </div>
+            <h1 className="job-application-header__title">Job Application</h1>
+            <p className="job-application-header__desc">
+              Tell us about your investment goals and preferences. Our team will review your application and get back to you within 24 hours.
+            </p>
           </div>
-          <h1 className="job-application-header__title">Job Application</h1>
-          <p className="job-application-header__desc">
-            Tell us about your investment goals and preferences. Our team will review your application and get back to you within 24 hours.
-          </p>
-        </div>
+        </Reveal>
 
         <div className="job-application-card">
-          <div className="job-application-card__header">
-            <h2 className="job-application-card__header-title">Job Details</h2>
-            <p className="job-application-card__header-sub">Please fill out all required fields marked with *</p>
-          </div>
+          <Reveal>
+            <div className="job-application-card__header">
+              <h2 className="job-application-card__header-title">Job Details</h2>
+              <p className="job-application-card__header-sub">Please fill out all required fields marked with *</p>
+            </div>
+          </Reveal>
 
           <form className="job-application-form" onSubmit={handleSubmit}>
+            <Reveal delay={80}>
             <section className="job-application-section">
               <h3 className="job-application-section__title">
                 <User size={20} aria-hidden />
@@ -167,15 +173,18 @@ function JobApplication() {
                 </label>
               </div>
             </section>
+            </Reveal>
 
-            <button type="submit" className="job-application-form__submit">
-              <Send size={20} aria-hidden />
-              Send Form
-            </button>
+            <Reveal delay={140}>
+              <button type="submit" className="job-application-form__submit">
+                <Send size={20} aria-hidden />
+                Send Form
+              </button>
 
-            <p className="job-application-form__footer">
-              By submitting this form, you agree to our terms and conditions. We'll review your application within 24 hours.
-            </p>
+              <p className="job-application-form__footer">
+                By submitting this form, you agree to our terms and conditions. We&apos;ll review your application within 24 hours.
+              </p>
+            </Reveal>
           </form>
         </div>
       </main>
