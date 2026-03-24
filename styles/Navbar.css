@@ -242,6 +242,53 @@
   background: #2c4872;
 }
 
+.navbar__user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(280px, 50vw);
+}
+
+.navbar__user-avatar {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(26, 54, 93, 0.1);
+  color: #1a365d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar__user-name {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #2c4872;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.navbar__logout {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1a365d;
+  background: transparent;
+  border: 1px solid #1a365d;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s, color 0.2s;
+}
+
+.navbar__logout:hover {
+  background: rgba(26, 54, 93, 0.08);
+  color: #2c4872;
+}
+
 /* ----- Responsive: mobile menu ----- */
 @media (max-width: 768px) {
   .navbar__toggle {
@@ -307,8 +354,19 @@
   }
 
   .navbar__signup,
-  .navbar__login {
+  .navbar__login,
+  .navbar__logout {
     padding: 8px 12px;
     font-size: 0.8125rem;
+  }
+
+  .navbar__user {
+    max-width: none;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .navbar__user-name {
+    max-width: 140px;
   }
 }

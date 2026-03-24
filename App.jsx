@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import ProtectedRoute from './components/ProtectedRoute'
+import { AuthProvider } from './context/AuthContext'
 import Index from './pages/Index'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -23,11 +25,46 @@ function AppContent() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Register />} />
-          <Route path="/careers" element={<JobApplication />} />
-          <Route path="/investment" element={<InvestmentApplication />} />
-          <Route path="/sell" element={<SellProperty />} />
-          <Route path="/buy" element={<Buy />} />
-          <Route path="/buy/:id" element={<PropertyDetail />} />
+          <Route
+            path="/careers"
+            element={
+              <ProtectedRoute>
+                <JobApplication />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/investment"
+            element={
+              <ProtectedRoute>
+                <InvestmentApplication />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/sell"
+            element={
+              <ProtectedRoute>
+                <SellProperty />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/buy"
+            element={
+              <ProtectedRoute>
+                <Buy />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/buy/:id"
+            element={
+              <ProtectedRoute>
+                <PropertyDetail />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/" element={<Index />} />
         </Routes>
       </main>
@@ -39,7 +76,9 @@ function AppContent() {
 function App() {
   return (
     <BrowserRouter>
-      <AppContent />
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
     </BrowserRouter>
   )
 }

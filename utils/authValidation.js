@@ -24,3 +24,11 @@ export function validatePasswordMatch(password, repeat) {
   if (password !== r) return 'Passwords do not match.'
   return ''
 }
+
+export function validateUsername(value) {
+  const v = (value ?? '').trim()
+  if (!v) return 'Username is required.'
+  if (v.length < 2) return 'Username must be at least 2 characters.'
+  if (v.length > 40) return 'Username must be 40 characters or fewer.'
+  return ''
+}

@@ -119,3 +119,12 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+.protected-route-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40vh;
+  font-size: 0.9375rem;
+  color: #6b7280;
+}

@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Building2 } from 'lucide-react'
+import { Building2, UserRound } from 'lucide-react'
+import { useAuth } from '../context/AuthContext'
 import '../styles/Navbar.css'
 
-const navLinks = [
+const allNavLinks = [
   { to: '/', label: 'Home' },
   { to: '/buy', label: 'Buy' },
   { to: '/sell', label: 'Sell' },
@@ -11,10 +12,21 @@ const navLinks = [
   { to: '/careers', label: 'Careers' },
 ]
 
+function displayNameFromUser(user) {
+  if (!user) return ''
+  if (user.displayName?.trim()) return user.displayName.trim()
+  const email = user.email?.trim()
+  if (email) return email.split('@')[0] || email
+  return 'User'
+}
+
 function Navbar() {
+  const { user, signOut } = useAuth()
   const [menuOpen, setMenuOpen] = useState(false)
   const [lang, setLang] = useState('EN')
   const location = useLocation()
+
+  const navLinks = user ? allNavLinks : allNavLinks.filter((l) => l.to === '/')
 
   const isActive = (path) => {
     if (path === '/') return location.pathname === '/'
@@ -82,12 +94,35 @@ function Navbar() {
             </button>
           </div>
           <div className="navbar__auth">
-            <Link to="/signup" className="navbar__signup" onClick={() => setMenuOpen(false)}>
-              Sign up
-            </Link>
-            <Link to="/login" className="navbar__login" onClick={() => setMenuOpen(false)}>
-              Login
-            </Link>
+            {user ? (
+              <div className="navbar__user">
+                <span className="navbar__user-avatar" aria-hidden>
+                  <UserRound size={20} strokeWidth={2} />
+                </span>
+                <span className="navbar__user-name" title={user.email ?? ''}>
+                  {displayNameFromUser(user)}
+                </span>
+                <button
+                  type="button"
+                  className="navbar__logout"
+                  onClick={() => {
+                    setMenuOpen(false)
+                    signOut()
+                  }}
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <>
+                <Link to="/signup" className="navbar__signup" onClick={() => setMenuOpen(false)}>
+                  Sign up
+                </Link>
+                <Link to="/login" className="navbar__login" onClick={() => setMenuOpen(false)}>
+                  Login
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
