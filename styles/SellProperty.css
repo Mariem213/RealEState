@@ -145,7 +145,8 @@
   background: #fff;
   border-radius: 12px;
   box-shadow: var(--sell-card-shadow);
-  overflow: hidden;
+  /* visible so CustomSelect panels are not clipped */
+  overflow: visible;
   padding: 24px 16px 32px;
 }
 
@@ -169,6 +170,22 @@
   display: flex;
   flex-direction: column;
   gap: 0;
+}
+
+/* Reveal uses transform → stacking contexts; later blocks (esp. submit) sat on top of open lists */
+.sell-property-form > .landing-reveal {
+  position: relative;
+  z-index: 1;
+}
+
+.sell-property-form > .landing-reveal:has(.custom-select--open) {
+  z-index: 50;
+}
+
+/* Paired selects in one row: later column no longer paints over the open panel */
+.sell-property-form .custom-select.custom-select--open {
+  position: relative;
+  z-index: 15;
 }
 
 .sell-property-section {

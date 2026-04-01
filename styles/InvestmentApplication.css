@@ -113,7 +113,8 @@
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
+  /* overflow: visible so CustomSelect panels are not clipped (hidden overflow traps popovers) */
+  overflow: visible;
   width: 100%;
   max-width: 720px;
   margin: 0 auto;
@@ -166,6 +167,20 @@
 }
 
 /* Form */
+/* Reveal uses transform → stacking context; submit is in a later Reveal and was covering dropdowns */
+.investment-application-form > .landing-reveal {
+  position: relative;
+}
+
+.investment-application-form > .landing-reveal:nth-child(3) {
+  z-index: 1;
+}
+
+.investment-application-form > .landing-reveal:nth-child(1),
+.investment-application-form > .landing-reveal:nth-child(2) {
+  z-index: 2;
+}
+
 .investment-application-form {
   padding: 24px 20px 28px;
 }

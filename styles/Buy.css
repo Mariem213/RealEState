@@ -175,6 +175,12 @@
 	gap: 0.5rem;
 }
 
+/* Open dropdowns stack above fields that come later in the form (and the paired min/max selects) */
+.buy-filters .custom-select.custom-select--open {
+	position: relative;
+	z-index: 15;
+}
+
 .buy-filters__label {
 	font-size: 0.875rem;
 	font-weight: 500;
@@ -420,7 +426,22 @@
 
 .buy-results {
 	/* min-width: 0; */
+	position: relative;
+	z-index: 1;
 	width: 75% !important;
+}
+
+/*
+ * Sort lives inside a Reveal (transform → stacking context). z-index on .buy-results__header
+ * could not beat the following .buy-results__grid; lift the reveal when the sort list is open.
+ */
+.buy-results > .landing-reveal {
+	position: relative;
+	z-index: 1;
+}
+
+.buy-results > .landing-reveal:has(.custom-select--open) {
+	z-index: 50;
 }
 
 .buy-results__header {
@@ -429,6 +450,8 @@
 	align-items: center;
 	margin-bottom: 1rem;
 	gap: 1rem;
+	position: relative;
+	z-index: 1;
 }
 
 @media (max-width: 640px) {
@@ -842,6 +865,9 @@
 }
 
 .buy-filters {
+	position: relative;
+	/* Above .buy-results where stacked layouts overlap (e.g. filter dropdown over product list) */
+	z-index: 2;
 	background: #ffffff;
 	border: 1px solid #f1f5f9; /* بوردر فاتح جداً */
 	border-radius: 24px; /* كيرف كبير زي الصورة */
