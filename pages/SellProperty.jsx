@@ -1,6 +1,7 @@
 import { useState, useRef, useMemo } from 'react'
 import { CloudUpload, Check, Save } from 'lucide-react'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
+import { jsPDF } from 'jspdf'
 import CustomSelect from '../components/CustomSelect'
 import NumberStepper from '../components/NumberStepper'
 import Reveal from '../components/Reveal'
@@ -17,6 +18,41 @@ const CONTACT_METHODS = ['Email', 'Call', 'Both']
 const MAX_IMAGES = 7
 const MAX_FILE_SIZE_MB = 10
 const ACCEPTED_TYPES = ['image/jpeg', 'image/jpg', 'image/png']
+
+function getSubmitErrorMessage(error) {
+  const code = error?.code ?? ''
+  if (code === 'permission-denied') {
+    return 'You do not have permission to submit this request right now. Please contact support.'
+  }
+  if (code === 'unavailable' || code === 'deadline-exceeded') {
+    return 'Network issue while sending your request. Please check your connection and try again.'
+  }
+  return 'Unable to send your request right now. Please try again.'
+}
+
+const INITIAL_FORM_DATA = {
+  propertyTitle: '',
+  propertyType: '',
+  location: '',
+  fullAddress: '',
+  propertyStatus: 'For Sale',
+  bedrooms: 0,
+  bathrooms: 0,
+  area: 0,
+  floorNumber: 0,
+  parking: 'Yes',
+  furnished: 'Yes',
+  yearBuilt: '2024',
+  askingPrice: '0',
+  paymentOptions: 'Cash',
+  priceNegotiable: false,
+  description: '',
+  fullName: '',
+  email: '',
+  phone: '',
+  preferredContact: 'Call',
+  agreeTerms: false,
+}
 
 function SellProperty() {
   const { t, tSegments } = useLanguage()
@@ -67,33 +103,11 @@ function SellProperty() {
     [t],
   )
 
-  const [formData, setFormData] = useState({
-    propertyTitle: '',
-    propertyType: '',
-    location: '',
-    fullAddress: '',
-    propertyStatus: 'For Sale',
-    bedrooms: 0,
-    bathrooms: 0,
-    area: 0,
-    floorNumber: 0,
-    parking: 'Yes',
-    furnished: 'Yes',
-    yearBuilt: '2024',
-    askingPrice: '0',
-    paymentOptions: 'Cash',
-    priceNegotiable: false,
-    description: '',
-    fullName: '',
-    email: '',
-    phone: '',
-    preferredContact: 'Call',
-    agreeTerms: false,
-  })
+  const [formData, setFormData] = useState(INITIAL_FORM_DATA)
   const [images, setImages] = useState([])
   const [isDragging, setIsDragging] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitMessage, setSubmitMessage] = useState('')
+  const [submitState, setSubmitState] = useState({ type: '', message: '' })
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
@@ -148,19 +162,70 @@ function SellProperty() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
-    setSubmitMessage('')
+    setSubmitState({ type: '', message: '' })
     try {
-      await addDoc(collection(db, 'sellRequests'), {
+      const modernPayload = {
         ...formData,
         imagesCount: images.length,
         createdAt: serverTimestamp(),
         userId: user?.uid ?? null,
         userEmail: user?.email ?? null,
+      }
+
+      const modernPayloadNoUser = {
+        ...formData,
+        imagesCount: images.length,
+        createdAt: serverTimestamp(),
+      }
+
+      const legacyPayload = {
+        ...formData,
+        'Property Title': formData.propertyTitle,
+        'Property Type': formData.propertyType,
+        Location: formData.location,
+        'Asking Price': formData.askingPrice,
+        'Full Name': formData.fullName,
+        Phone: formData.phone,
+        Email: formData.email,
+        createdAt: serverTimestamp(),
+      }
+
+      const attempts = [
+        { collectionName: 'sell', payload: legacyPayload },
+        { collectionName: 'sellRequests', payload: modernPayload },
+        { collectionName: 'sell', payload: { ...legacyPayload, createdAt: undefined } },
+        { collectionName: 'sellRequests', payload: modernPayloadNoUser },
+      ]
+
+      let writeError = new Error('Unknown write failure')
+      for (const attempt of attempts) {
+        const payload = { ...attempt.payload }
+        if (payload.createdAt === undefined) delete payload.createdAt
+        try {
+          await addDoc(collection(db, attempt.collectionName), payload)
+          writeError = null
+          break
+        } catch (error) {
+          writeError = error
+        }
+      }
+
+      if (writeError) {
+        throw writeError
+      }
+
+      setFormData(INITIAL_FORM_DATA)
+      setImages([])
+      setSubmitState({
+        type: 'success',
+        message: 'Property request submitted successfully.',
       })
-      setSubmitMessage('Property request submitted successfully.')
     } catch (error) {
       console.error('Failed to submit sell request:', error)
-      setSubmitMessage('Failed to submit property request. Please try again.')
+      setSubmitState({
+        type: 'error',
+        message: getSubmitErrorMessage(error),
+      })
     } finally {
       setIsSubmitting(false)
     }
@@ -168,7 +233,54 @@ function SellProperty() {
 
   const handleSaveDraft = (e) => {
     e.preventDefault()
-    console.log('Draft saved:', { ...formData, images: images.length })
+    const doc = new jsPDF()
+    const generatedAt = new Date().toLocaleString()
+    const safeTitle = (formData.propertyTitle || 'sell-property-draft').trim().replace(/[\\/:*?"<>|]/g, '-')
+    const fileName = `${safeTitle || 'sell-property-draft'}.pdf`
+    const lines = [
+      'Sell Property Draft',
+      `Generated at: ${generatedAt}`,
+      '',
+      'Property Information',
+      `- Property title: ${formData.propertyTitle || '-'}`,
+      `- Property type: ${formData.propertyType || '-'}`,
+      `- Location: ${formData.location || '-'}`,
+      `- Full address: ${formData.fullAddress || '-'}`,
+      `- Property status: ${formData.propertyStatus || '-'}`,
+      '',
+      'Property Specifications',
+      `- Bedrooms: ${formData.bedrooms}`,
+      `- Bathrooms: ${formData.bathrooms}`,
+      `- Area (sqm): ${formData.area}`,
+      `- Floor number: ${formData.floorNumber}`,
+      `- Parking: ${formData.parking || '-'}`,
+      `- Furnished: ${formData.furnished || '-'}`,
+      `- Year built: ${formData.yearBuilt || '-'}`,
+      '',
+      'Price Details',
+      `- Asking price: ${formData.askingPrice || '-'}`,
+      `- Payment options: ${formData.paymentOptions || '-'}`,
+      `- Price negotiable: ${formData.priceNegotiable ? 'Yes' : 'No'}`,
+      '',
+      'Listing Description',
+      `- Description: ${formData.description || '-'}`,
+      `- Uploaded images: ${images.length}`,
+      '',
+      'Owner Contact',
+      `- Full name: ${formData.fullName || '-'}`,
+      `- Email: ${formData.email || '-'}`,
+      `- Phone: ${formData.phone || '-'}`,
+      `- Preferred contact method: ${formData.preferredContact || '-'}`,
+      `- Agreed to terms: ${formData.agreeTerms ? 'Yes' : 'No'}`,
+    ]
+
+    doc.setFontSize(12)
+    doc.text(lines, 14, 18, { maxWidth: 182, lineHeightFactor: 1.4 })
+    doc.save(fileName)
+    setSubmitState({
+      type: 'success',
+      message: 'Draft saved and downloaded as PDF.',
+    })
   }
 
   return (
@@ -585,9 +697,16 @@ function SellProperty() {
                   {t('sell.saveDraft')}
                 </button>
               </div>
-              {submitMessage ? (
-                <p className="sell-property-upload__hint" style={{ marginTop: '12px' }}>
-                  {submitMessage}
+              {submitState.message ? (
+                <p
+                  className="sell-property-upload__hint"
+                  style={{
+                    marginTop: '12px',
+                    color: submitState.type === 'error' ? '#dc2626' : '#15803d',
+                  }}
+                  role="status"
+                >
+                  {submitState.message}
                 </p>
               ) : null}
             </Reveal>

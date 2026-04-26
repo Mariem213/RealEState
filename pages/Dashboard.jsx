@@ -71,6 +71,10 @@ export default function Dashboard() {
     sell: 0,
     jobs: 0,
   })
+  const [jobCollectionCounts, setJobCollectionCounts] = useState({
+    jobs: 0,
+    jobApplications: 0,
+  })
   const pieSlices = buildPieSlices(PIE_SEGMENTS, 100, 100, 78)
 
   useEffect(() => {
@@ -81,12 +85,26 @@ export default function Dashboard() {
       onSnapshot(query(collection(db, 'sellRequests'), orderBy('createdAt', 'desc')), (s) =>
         setCounts((p) => ({ ...p, sell: s.size })),
       ),
-      onSnapshot(query(collection(db, 'jobApplications'), orderBy('createdAt', 'desc')), (s) =>
-        setCounts((p) => ({ ...p, jobs: s.size })),
+      onSnapshot(
+        collection(db, 'jobs'),
+        (s) => setJobCollectionCounts((prev) => ({ ...prev, jobs: s.size })),
+        () => setJobCollectionCounts((prev) => ({ ...prev, jobs: 0 })),
+      ),
+      onSnapshot(
+        collection(db, 'jobApplications'),
+        (s) => setJobCollectionCounts((prev) => ({ ...prev, jobApplications: s.size })),
+        () => setJobCollectionCounts((prev) => ({ ...prev, jobApplications: 0 })),
       ),
     ]
     return () => unsubs.forEach((u) => u())
   }, [])
+
+  useEffect(() => {
+    setCounts((prev) => ({
+      ...prev,
+      jobs: jobCollectionCounts.jobs + jobCollectionCounts.jobApplications,
+    }))
+  }, [jobCollectionCounts.jobApplications, jobCollectionCounts.jobs])
 
   const metrics = useMemo(
     () => [

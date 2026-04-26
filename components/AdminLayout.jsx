@@ -23,7 +23,7 @@ function displayAdminName(user) {
   return 'Admin'
 }
 
-export default function AdminLayout({ title, subtitle, children }) {
+export default function AdminLayout({ title, subtitle, headerAction = null, children }) {
   const { user, signOut } = useAuth()
   const { locale, setLocale, t } = useLanguage()
   const location = useLocation()
@@ -123,8 +123,11 @@ export default function AdminLayout({ title, subtitle, children }) {
 
         <div className="dashboard__content">
           <header className="dashboard__heading">
-            <h1 className="dashboard__title">{title}</h1>
-            <p className="dashboard__subtitle">{subtitle}</p>
+            <div className="dashboard__heading-main">
+              <h1 className="dashboard__title">{title}</h1>
+              <p className="dashboard__subtitle">{subtitle}</p>
+            </div>
+            {headerAction ? <div className="dashboard__heading-action">{headerAction}</div> : null}
           </header>
           {children}
         </div>
