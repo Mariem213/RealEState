@@ -71,6 +71,10 @@ export default function Dashboard() {
     sell: 0,
     jobs: 0,
   })
+  const [sellCollectionCounts, setSellCollectionCounts] = useState({
+    sell: 0,
+    sellRequests: 0,
+  })
   const [jobCollectionCounts, setJobCollectionCounts] = useState({
     jobs: 0,
     jobApplications: 0,
@@ -82,8 +86,15 @@ export default function Dashboard() {
       onSnapshot(collection(db, 'investments'), (s) =>
         setCounts((p) => ({ ...p, investment: s.size })),
       ),
-      onSnapshot(query(collection(db, 'sellRequests'), orderBy('createdAt', 'desc')), (s) =>
-        setCounts((p) => ({ ...p, sell: s.size })),
+      onSnapshot(
+        collection(db, 'sell'),
+        (s) => setSellCollectionCounts((prev) => ({ ...prev, sell: s.size })),
+        () => setSellCollectionCounts((prev) => ({ ...prev, sell: 0 })),
+      ),
+      onSnapshot(
+        collection(db, 'sellRequests'),
+        (s) => setSellCollectionCounts((prev) => ({ ...prev, sellRequests: s.size })),
+        () => setSellCollectionCounts((prev) => ({ ...prev, sellRequests: 0 })),
       ),
       onSnapshot(
         collection(db, 'jobs'),
@@ -98,6 +109,13 @@ export default function Dashboard() {
     ]
     return () => unsubs.forEach((u) => u())
   }, [])
+
+  useEffect(() => {
+    setCounts((prev) => ({
+      ...prev,
+      sell: sellCollectionCounts.sell + sellCollectionCounts.sellRequests,
+    }))
+  }, [sellCollectionCounts.sell, sellCollectionCounts.sellRequests])
 
   useEffect(() => {
     setCounts((prev) => ({

@@ -1147,6 +1147,34 @@
   transform: translateY(-1px);
 }
 
+.dashboard__btn--view {
+  margin-right: 8px;
+  padding: 6px 12px;
+  background: #fff;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+.dashboard__btn--view:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  transform: translateY(-1px);
+}
+
+.dashboard__btn--delete {
+  margin-right: 8px;
+  padding: 6px 12px;
+  background: #fee2e2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+.dashboard__btn--delete:hover:not(:disabled) {
+  background: #fecaca;
+  border-color: #fca5a5;
+  transform: translateY(-1px);
+}
+
 @media (max-width: 700px) {
   .admin-modal {
     padding: 18px;

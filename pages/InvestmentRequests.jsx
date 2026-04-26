@@ -131,7 +131,7 @@ export default function InvestmentRequests() {
                       <button
                         type="button"
                         onClick={() => setSelectedRequest(request)}
-                        style={{ marginRight: '8px', padding: '6px 10px', border: '1px solid #cbd5e1', borderRadius: '8px', cursor: 'pointer' }}
+                        className="dashboard__btn dashboard__btn--view"
                       >
                         View
                       </button>
@@ -139,7 +139,7 @@ export default function InvestmentRequests() {
                         type="button"
                         onClick={() => handleDelete(request)}
                         disabled={deletingId === request.id}
-                        style={{ padding: '6px 10px', border: '1px solid #fecaca', borderRadius: '8px', background: '#fee2e2', color: '#b91c1c', cursor: 'pointer' }}
+                        className="dashboard__btn dashboard__btn--delete"
                       >
                         {deletingId === request.id ? 'Deleting...' : 'Delete'}
                       </button>
