@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
+import { collection, deleteDoc, doc, onSnapshot, orderBy, query } from 'firebase/firestore'
 import { jsPDF } from 'jspdf'
 import { useLanguage } from '../context/LanguageContext'
 import AdminLayout from '../components/AdminLayout'
+import { db } from '../firebase'
 import '../styles/Dashboard.css'
 
 const SELL_REQUESTS_LOCAL_KEY = 'sellRequestsLocal'
@@ -35,6 +37,27 @@ function safeFileName(value, fallback) {
   return (value || fallback).trim().replace(/[\\/:*?"<>|]/g, '-')
 }
 
+function getMappedField(request, modernKey, legacyKey) {
+  return request?.[modernKey] ?? request?.[legacyKey] ?? ''
+}
+
+function normalizeSellRequestDoc(docSnapshot, sourceCollection) {
+  const data = docSnapshot.data() ?? {}
+  return {
+    id: docSnapshot.id,
+    propertyTitle: getMappedField(data, 'propertyTitle', 'Property Title'),
+    propertyType: getMappedField(data, 'propertyType', 'Property Type'),
+    fullName: getMappedField(data, 'fullName', 'Full Name'),
+    phone: getMappedField(data, 'phone', 'Phone'),
+    email: getMappedField(data, 'email', 'Email'),
+    askingPrice: getMappedField(data, 'askingPrice', 'Asking Price'),
+    location: getMappedField(data, 'location', 'Location'),
+    createdAt: data.createdAt ?? null,
+    localId: data.localId || '',
+    sourceCollection,
+  }
+}
+
 function readLocalSellRequests() {
   try {
     const raw = localStorage.getItem(SELL_REQUESTS_LOCAL_KEY)
@@ -50,31 +73,106 @@ function saveLocalSellRequests(requests) {
   localStorage.setItem(SELL_REQUESTS_LOCAL_KEY, JSON.stringify(requests))
 }
 
+function mergeAndSortRequests(remoteList) {
+  const localList = readLocalSellRequests().map((item) => ({
+    ...item,
+    localId: item.id || '',
+    sourceCollection: 'local',
+  }))
+  const makeFingerprint = (item) => {
+    const createdMs = item?.createdAt?.toDate
+      ? item.createdAt.toDate().getTime()
+      : new Date(item?.createdAt || 0).getTime()
+    const createdSlot = Number.isFinite(createdMs) ? Math.floor(createdMs / 60000) : 0
+    return [
+      String(item?.propertyTitle || '').trim().toLowerCase(),
+      String(item?.fullName || '').trim().toLowerCase(),
+      String(item?.phone || '').trim().toLowerCase(),
+      String(item?.askingPrice ?? ''),
+      String(item?.location || '').trim().toLowerCase(),
+      String(createdSlot),
+    ].join('|')
+  }
+
+  const localByKey = new Map()
+  for (const item of localList) {
+    const key = item.localId || makeFingerprint(item)
+    localByKey.set(key, item)
+  }
+
+  const mergedMap = new Map(localByKey)
+  for (const remoteItem of remoteList) {
+    const key = remoteItem.localId || makeFingerprint(remoteItem)
+    const existing = mergedMap.get(key)
+    mergedMap.set(key, existing ? { ...existing, ...remoteItem } : remoteItem)
+  }
+
+  const merged = Array.from(mergedMap.values())
+  merged.sort((a, b) => {
+    const first = new Date(a.createdAt || 0).getTime()
+    const second = new Date(b.createdAt || 0).getTime()
+    return second - first
+  })
+  return merged
+}
+
 export default function SellRequests() {
   const { locale, t } = useLanguage()
   const [requests, setRequests] = useState([])
-  const loading = false
-  const error = ''
+  const [remoteRequests, setRemoteRequests] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
   const [selectedRequest, setSelectedRequest] = useState(null)
   const [deletingId, setDeletingId] = useState('')
 
   useEffect(() => {
-    const syncLocal = () => {
-      const localRequests = readLocalSellRequests()
-      const sorted = [...localRequests].sort((a, b) => {
-        const first = new Date(a.createdAt || 0).getTime()
-        const second = new Date(b.createdAt || 0).getTime()
-        return second - first
-      })
-      setRequests(sorted)
+    const primaryQuery = query(collection(db, 'sell'), orderBy('createdAt', 'desc'))
+    let fallbackUnsub = null
+    const primaryUnsub = onSnapshot(
+      primaryQuery,
+      (snapshot) => {
+        const mapped = snapshot.docs.map((item) => normalizeSellRequestDoc(item, 'sell'))
+        setRemoteRequests(mapped)
+        setRequests(mergeAndSortRequests(mapped))
+        setError('')
+        setLoading(false)
+      },
+      () => {
+        const fallbackQuery = query(collection(db, 'sellRequests'), orderBy('createdAt', 'desc'))
+        fallbackUnsub = onSnapshot(
+          fallbackQuery,
+          (snapshot) => {
+            const mapped = snapshot.docs.map((item) => normalizeSellRequestDoc(item, 'sellRequests'))
+            setRemoteRequests(mapped)
+            setRequests(mergeAndSortRequests(mapped))
+            setError('')
+            setLoading(false)
+          },
+          () => {
+            setRemoteRequests([])
+            setRequests(mergeAndSortRequests([]))
+            setError('')
+            setLoading(false)
+          },
+        )
+      },
+    )
+
+    return () => {
+      primaryUnsub()
+      if (fallbackUnsub) fallbackUnsub()
     }
-    syncLocal()
-    const handleStorage = () => syncLocal()
+  }, [])
+
+  useEffect(() => {
+    const handleStorage = () => {
+      setRequests(mergeAndSortRequests(remoteRequests))
+    }
     window.addEventListener('storage', handleStorage)
     return () => {
       window.removeEventListener('storage', handleStorage)
     }
-  }, [])
+  }, [remoteRequests])
 
   async function handleDelete(request) {
     const confirmed = window.confirm(`Delete request for ${request.propertyTitle || 'this property'}?`)
@@ -82,9 +180,13 @@ export default function SellRequests() {
 
     try {
       setDeletingId(request.id)
-      const updated = readLocalSellRequests().filter((item) => item.id !== request.id)
-      saveLocalSellRequests(updated)
-      setRequests(updated)
+      if (request.sourceCollection === 'local') {
+        const updated = readLocalSellRequests().filter((item) => item.id !== request.id)
+        saveLocalSellRequests(updated)
+        setRequests(mergeAndSortRequests(remoteRequests))
+      } else {
+        await deleteDoc(doc(db, request.sourceCollection || 'sell', request.id))
+      }
     } catch {
       window.alert('Unable to delete this request right now. Please try again later.')
     } finally {
@@ -120,7 +222,6 @@ export default function SellRequests() {
 
   function handleDownloadAll() {
     if (requests.length === 0) return
-
     const doc = new jsPDF()
     const pageHeight = doc.internal.pageSize.getHeight()
     const marginX = 14
@@ -128,7 +229,6 @@ export default function SellRequests() {
     const marginBottom = 18
     const lineHeight = 7
     let y = marginTop
-
     const writeLine = (text = '') => {
       if (y > pageHeight - marginBottom) {
         doc.addPage()
@@ -137,7 +237,6 @@ export default function SellRequests() {
       doc.text(text, marginX, y)
       y += lineHeight
     }
-
     doc.setFontSize(17)
     writeLine('Sell Request')
     doc.setFontSize(11)
@@ -145,7 +244,6 @@ export default function SellRequests() {
     writeLine(`Generated at: ${new Date().toLocaleString()}`)
     writeLine(`Total records: ${requests.length}`)
     writeLine('')
-
     requests.forEach((request, index) => {
       writeLine(`Record ${index + 1}`)
       buildRecordLines(request, locale).forEach((line) => {
@@ -154,7 +252,6 @@ export default function SellRequests() {
       })
       writeLine('')
     })
-
     doc.save(`sell-requests-${new Date().toISOString().slice(0, 10)}.pdf`)
   }
 
@@ -164,11 +261,7 @@ export default function SellRequests() {
       subtitle={t('admin.sell.subtitle')}
       headerAction={
         !loading && !error && requests.length > 0 ? (
-          <button
-            type="button"
-            onClick={handleDownloadAll}
-            className="dashboard__btn dashboard__btn--download-all"
-          >
+          <button type="button" onClick={handleDownloadAll} className="dashboard__btn dashboard__btn--download-all">
             Download All
           </button>
         ) : null
@@ -193,18 +286,14 @@ export default function SellRequests() {
               </thead>
               <tbody>
                 {requests.map((request) => (
-                  <tr key={request.id}>
+                  <tr key={`${request.sourceCollection || 'mixed'}-${request.id}`}>
                     <td style={{ padding: '12px', borderBottom: '1px solid #f1f5f9' }}>{request.propertyTitle || '-'}</td>
                     <td style={{ padding: '12px', borderBottom: '1px solid #f1f5f9' }}>{request.fullName || '-'} ({request.phone || '-'})</td>
                     <td style={{ padding: '12px', borderBottom: '1px solid #f1f5f9' }}>{request.askingPrice || '-'}</td>
                     <td style={{ padding: '12px', borderBottom: '1px solid #f1f5f9' }}>{request.location || '-'}</td>
                     <td style={{ padding: '12px', borderBottom: '1px solid #f1f5f9' }}>{formatCreatedAt(request.createdAt, locale)}</td>
                     <td style={{ padding: '12px', borderBottom: '1px solid #f1f5f9', whiteSpace: 'nowrap' }}>
-                      <button
-                        type="button"
-                        onClick={() => setSelectedRequest(request)}
-                        className="dashboard__btn dashboard__btn--view"
-                      >
+                      <button type="button" onClick={() => setSelectedRequest(request)} className="dashboard__btn dashboard__btn--view">
                         View
                       </button>
                       <button
@@ -215,11 +304,7 @@ export default function SellRequests() {
                       >
                         {deletingId === request.id ? 'Deleting...' : 'Delete'}
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => handleDownloadOne(request)}
-                        className="dashboard__btn dashboard__btn--download"
-                      >
+                      <button type="button" onClick={() => handleDownloadOne(request)} className="dashboard__btn dashboard__btn--download">
                         Download
                       </button>
                     </td>
@@ -234,15 +319,12 @@ export default function SellRequests() {
         <div className="admin-modal__overlay" onClick={() => setSelectedRequest(null)}>
           <div className="admin-modal" onClick={(event) => event.stopPropagation()}>
             <div className="admin-modal__header">
-              <div className="admin-modal__avatar">
-                {(selectedRequest.propertyTitle?.[0] || 'P').toUpperCase()}
-              </div>
+              <div className="admin-modal__avatar">{(selectedRequest.propertyTitle?.[0] || 'P').toUpperCase()}</div>
               <div>
                 <h3 className="admin-modal__title">Sell Request Details</h3>
                 <p className="admin-modal__subtitle">{selectedRequest.propertyTitle || '-'}</p>
               </div>
             </div>
-
             <div className="admin-modal__grid">
               <RequestDetail label="Property Type" value={selectedRequest.propertyType} />
               <RequestDetail label="Owner Name" value={selectedRequest.fullName} />
@@ -252,7 +334,6 @@ export default function SellRequests() {
               <RequestDetail label="Location" value={selectedRequest.location} />
               <RequestDetail label="Submitted" value={formatCreatedAt(selectedRequest.createdAt, locale)} />
             </div>
-
             <div className="admin-modal__actions">
               <button type="button" onClick={() => setSelectedRequest(null)} className="admin-modal__close-btn">
                 Close

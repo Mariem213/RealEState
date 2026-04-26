@@ -1,11 +1,13 @@
 import { useState, useRef, useMemo } from 'react'
 import { CloudUpload, Check, Save } from 'lucide-react'
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { jsPDF } from 'jspdf'
 import CustomSelect from '../components/CustomSelect'
 import NumberStepper from '../components/NumberStepper'
 import Reveal from '../components/Reveal'
 import { useLanguage } from '../context/LanguageContext'
 import { useAuth } from '../context/AuthContext'
+import { db } from '../firebase'
 import '../styles/SellProperty.css'
 
 const PROPERTY_TYPES = ['Apartment', 'Villa', 'Townhouse', 'Penthouse', 'Land', 'Commercial', 'Other']
@@ -202,11 +204,49 @@ function SellProperty() {
       const existing = readLocalSellRequests()
       saveLocalSellRequests([localRecord, ...existing])
 
+      let cloudSaved = false
+      const cloudPayload = {
+        ...formData,
+        imagesCount: imageUrls.length,
+        createdAt: serverTimestamp(),
+        userId: user?.uid ?? null,
+        userEmail: user?.email ?? null,
+        localId: localRecord.id,
+      }
+      const legacyPayload = {
+        ...formData,
+        'Property Title': formData.propertyTitle,
+        'Property Type': formData.propertyType,
+        Location: formData.location,
+        'Asking Price': formData.askingPrice,
+        'Full Name': formData.fullName,
+        Phone: formData.phone,
+        Email: formData.email,
+        imagesCount: imageUrls.length,
+        createdAt: serverTimestamp(),
+        localId: localRecord.id,
+      }
+      const attempts = [
+        { collectionName: 'sell', payload: legacyPayload },
+        { collectionName: 'sellRequests', payload: cloudPayload },
+      ]
+      for (const attempt of attempts) {
+        try {
+          await addDoc(collection(db, attempt.collectionName), attempt.payload)
+          cloudSaved = true
+          break
+        } catch {
+          // Keep trying next compatible collection name.
+        }
+      }
+
       setFormData(INITIAL_FORM_DATA)
       setImages([])
       setSubmitState({
         type: 'success',
-        message: 'Property request saved locally successfully.',
+        message: cloudSaved
+          ? 'Property request submitted to database and saved locally.'
+          : 'Saved locally. Database save failed, but your data is kept on this device.',
       })
     } catch (error) {
       console.error('Failed to submit sell request:', error)

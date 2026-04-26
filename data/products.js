@@ -62,6 +62,7 @@ function normalizeSellRequest(doc) {
     ownerEmail: item.email || item.Email || '',
     fullAddress: item.fullAddress || '',
     raw: item,
+    localId: item.localId || '',
     source: 'sellRequests',
     createdAt: item.createdAt ?? null,
   }
@@ -105,6 +106,7 @@ function normalizeLocalSellRequest(item, index) {
     ownerEmail: item.email || item.Email || '',
     fullAddress: item.fullAddress || '',
     raw: item,
+    localId: item.id || '',
     source: 'sellRequests',
     createdAt: item.createdAt ?? null,
   }
@@ -121,6 +123,21 @@ function fetchLocalSellRequestProducts() {
   } catch {
     return []
   }
+}
+
+function requestFingerprint(item) {
+  const createdMs = item?.createdAt?.toDate
+    ? item.createdAt.toDate().getTime()
+    : new Date(item?.createdAt || 0).getTime()
+  const createdSlot = Number.isFinite(createdMs) ? Math.floor(createdMs / 60000) : 0
+  return [
+    String(item?.name || '').trim().toLowerCase(),
+    String(item?.postedBy || '').trim().toLowerCase(),
+    String(item?.ownerPhone || '').trim().toLowerCase(),
+    String(item?.price ?? ''),
+    String(item?.location || '').trim().toLowerCase(),
+    String(createdSlot),
+  ].join('|')
 }
 
 async function fetchSellRequestProducts() {
@@ -152,6 +169,38 @@ export async function fetchProducts() {
   const staticProducts = data.products ?? []
   const submittedSellProducts = await fetchSellRequestProducts()
   const localSellProducts = fetchLocalSellRequestProducts()
-  return [...localSellProducts, ...submittedSellProducts, ...staticProducts]
+  const byKey = new Map()
+
+  for (const localItem of localSellProducts) {
+    const key = localItem.localId || requestFingerprint(localItem)
+    byKey.set(key, localItem)
+  }
+
+  for (const remoteItem of submittedSellProducts) {
+    const key = remoteItem.localId || requestFingerprint(remoteItem)
+    const existing = byKey.get(key)
+    if (!existing) {
+      byKey.set(key, remoteItem)
+      continue
+    }
+
+    const merged = {
+      ...remoteItem,
+      thumbnail:
+        remoteItem.thumbnail && !remoteItem.thumbnail.includes('pexels-photo-439391')
+          ? remoteItem.thumbnail
+          : existing.thumbnail || remoteItem.thumbnail,
+      shortDescription:
+        remoteItem.shortDescription && remoteItem.shortDescription !== 'Submitted by property owner.'
+          ? remoteItem.shortDescription
+          : existing.shortDescription || remoteItem.shortDescription,
+      area: remoteItem.area || existing.area,
+      fullAddress: remoteItem.fullAddress || existing.fullAddress,
+    }
+    byKey.set(key, merged)
+  }
+
+  const mergedSellProducts = Array.from(byKey.values())
+  return [...mergedSellProducts, ...staticProducts]
 }
 
