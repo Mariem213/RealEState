@@ -72,6 +72,12 @@ function CustomSelect({
     close()
   }
 
+  useEffect(() => {
+    if (isOpen) {
+      close()
+    }
+  }, [value])
+
   return (
     <div
       ref={containerRef}
@@ -114,7 +120,11 @@ function CustomSelect({
             aria-selected={value === opt.value}
             className={`custom-select__option ${value === opt.value ? 'custom-select__option--selected' : ''} ${i === highlightIndex ? 'custom-select__option--highlight' : ''}`}
             onMouseEnter={() => setHighlightIndex(i)}
-            onClick={() => handleSelect(opt.value)}
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              handleSelect(opt.value)
+            }}
           >
             {opt.label}
           </div>
