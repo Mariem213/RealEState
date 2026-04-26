@@ -207,6 +207,7 @@ function PropertyDetail() {
       : listing
         ? productShortDescription(listing, locale)
         : propertyDescription(property, locale)
+  const ownerName = listing?.postedBy || ''
 
   return (
     <div className="landing-page property-detail-page">
@@ -332,6 +333,11 @@ function PropertyDetail() {
               {t('propertyDetail.aboutTitle')}
             </h2>
             <p className="property-detail__section-body">{description}</p>
+            {ownerName ? (
+              <p className="property-detail__section-body">
+                {t('propertyDetail.postedBy', { name: ownerName })}
+              </p>
+            ) : null}
           </section>
         </Reveal>
       </div>

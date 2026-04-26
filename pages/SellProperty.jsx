@@ -1,13 +1,11 @@
 import { useState, useRef, useMemo } from 'react'
 import { CloudUpload, Check, Save } from 'lucide-react'
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { jsPDF } from 'jspdf'
 import CustomSelect from '../components/CustomSelect'
 import NumberStepper from '../components/NumberStepper'
 import Reveal from '../components/Reveal'
 import { useLanguage } from '../context/LanguageContext'
 import { useAuth } from '../context/AuthContext'
-import { db } from '../firebase'
 import '../styles/SellProperty.css'
 
 const PROPERTY_TYPES = ['Apartment', 'Villa', 'Townhouse', 'Penthouse', 'Land', 'Commercial', 'Other']
@@ -18,16 +16,38 @@ const CONTACT_METHODS = ['Email', 'Call', 'Both']
 const MAX_IMAGES = 7
 const MAX_FILE_SIZE_MB = 10
 const ACCEPTED_TYPES = ['image/jpeg', 'image/jpg', 'image/png']
+const SELL_REQUESTS_LOCAL_KEY = 'sellRequestsLocal'
 
 function getSubmitErrorMessage(error) {
-  const code = error?.code ?? ''
-  if (code === 'permission-denied') {
-    return 'You do not have permission to submit this request right now. Please contact support.'
-  }
-  if (code === 'unavailable' || code === 'deadline-exceeded') {
-    return 'Network issue while sending your request. Please check your connection and try again.'
+  const message = error?.message ?? ''
+  if (message.toLowerCase().includes('quota')) {
+    return 'Local storage is full. Please remove old requests or use fewer images.'
   }
   return 'Unable to send your request right now. Please try again.'
+}
+
+function readLocalSellRequests() {
+  try {
+    const raw = localStorage.getItem(SELL_REQUESTS_LOCAL_KEY)
+    if (!raw) return []
+    const parsed = JSON.parse(raw)
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
+}
+
+function saveLocalSellRequests(requests) {
+  localStorage.setItem(SELL_REQUESTS_LOCAL_KEY, JSON.stringify(requests))
+}
+
+function fileToDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = () => reject(new Error('Failed to read image file.'))
+    reader.readAsDataURL(file)
+  })
 }
 
 const INITIAL_FORM_DATA = {
@@ -164,61 +184,29 @@ function SellProperty() {
     setIsSubmitting(true)
     setSubmitState({ type: '', message: '' })
     try {
-      const modernPayload = {
+      setSubmitState({
+        type: 'progress',
+        message: images.length ? 'Preparing images...' : 'Saving request...',
+      })
+      const imageUrls = await Promise.all(images.map((file) => fileToDataUrl(file)))
+      const localRecord = {
+        id: `local-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
         ...formData,
-        imagesCount: images.length,
-        createdAt: serverTimestamp(),
+        imagesCount: imageUrls.length,
+        imageUrls,
+        createdAt: new Date().toISOString(),
+        source: 'local',
         userId: user?.uid ?? null,
         userEmail: user?.email ?? null,
       }
-
-      const modernPayloadNoUser = {
-        ...formData,
-        imagesCount: images.length,
-        createdAt: serverTimestamp(),
-      }
-
-      const legacyPayload = {
-        ...formData,
-        'Property Title': formData.propertyTitle,
-        'Property Type': formData.propertyType,
-        Location: formData.location,
-        'Asking Price': formData.askingPrice,
-        'Full Name': formData.fullName,
-        Phone: formData.phone,
-        Email: formData.email,
-        createdAt: serverTimestamp(),
-      }
-
-      const attempts = [
-        { collectionName: 'sell', payload: legacyPayload },
-        { collectionName: 'sellRequests', payload: modernPayload },
-        { collectionName: 'sell', payload: { ...legacyPayload, createdAt: undefined } },
-        { collectionName: 'sellRequests', payload: modernPayloadNoUser },
-      ]
-
-      let writeError = new Error('Unknown write failure')
-      for (const attempt of attempts) {
-        const payload = { ...attempt.payload }
-        if (payload.createdAt === undefined) delete payload.createdAt
-        try {
-          await addDoc(collection(db, attempt.collectionName), payload)
-          writeError = null
-          break
-        } catch (error) {
-          writeError = error
-        }
-      }
-
-      if (writeError) {
-        throw writeError
-      }
+      const existing = readLocalSellRequests()
+      saveLocalSellRequests([localRecord, ...existing])
 
       setFormData(INITIAL_FORM_DATA)
       setImages([])
       setSubmitState({
         type: 'success',
-        message: 'Property request submitted successfully.',
+        message: 'Property request saved locally successfully.',
       })
     } catch (error) {
       console.error('Failed to submit sell request:', error)

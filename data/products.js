@@ -1,9 +1,157 @@
+import { collection, getDocs, orderBy, query } from 'firebase/firestore'
+import { db } from '../firebase'
+
+const SELL_REQUESTS_LOCAL_KEY = 'sellRequestsLocal'
+
+function parsePrice(value) {
+  if (typeof value === 'number') return Number.isFinite(value) ? value : 0
+  const numeric = Number.parseFloat(String(value ?? '').replace(/[^0-9.]/g, ''))
+  return Number.isFinite(numeric) ? numeric : 0
+}
+
+function firstImageUrl(value) {
+  if (!value) return ''
+  if (typeof value === 'string') return value
+  if (typeof value === 'object') {
+    return (
+      value.url ||
+      value.downloadURL ||
+      value.downloadUrl ||
+      value.src ||
+      ''
+    )
+  }
+  return ''
+}
+
+function normalizeSellRequest(doc) {
+  const item = doc.data() ?? {}
+  const imageFromArray =
+    (Array.isArray(item.imageUrls) && firstImageUrl(item.imageUrls[0])) ||
+    (Array.isArray(item.images) && firstImageUrl(item.images[0])) ||
+    ''
+  const productType = item.propertyType || item['Property Type'] || 'Apartment'
+  const location = item.location || item.Location || 'Unknown'
+  const title = item.propertyTitle || item['Property Title'] || 'Property Listing'
+  const description = item.description || 'Submitted by property owner.'
+  const price = parsePrice(item.askingPrice ?? item['Asking Price'])
+  const area =
+    typeof item.area === 'number'
+      ? item.area
+      : Number.parseInt(String(item.area ?? ''), 10) || 0
+
+  return {
+    id: `sell-${doc.id}`,
+    name: title,
+    category: 'Residential',
+    price,
+    status: item.propertyStatus || 'For Sale',
+    thumbnail:
+      firstImageUrl(item.thumbnail) ||
+      firstImageUrl(item.imageUrl) ||
+      firstImageUrl(item.image) ||
+      imageFromArray ||
+      'https://images.pexels.com/photos/439391/pexels-photo-439391.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    shortDescription: description,
+    propertyId: `sell-${doc.id}`,
+    location,
+    type: productType,
+    area,
+    postedBy: item.fullName || item['Full Name'] || item.userEmail || '',
+    ownerPhone: item.phone || item.Phone || '',
+    ownerEmail: item.email || item.Email || '',
+    fullAddress: item.fullAddress || '',
+    raw: item,
+    source: 'sellRequests',
+    createdAt: item.createdAt ?? null,
+  }
+}
+
+function normalizeLocalSellRequest(item, index) {
+  const imageFromArray =
+    (Array.isArray(item.imageUrls) && firstImageUrl(item.imageUrls[0])) ||
+    (Array.isArray(item.images) && firstImageUrl(item.images[0])) ||
+    ''
+  const productType = item.propertyType || item['Property Type'] || 'Apartment'
+  const location = item.location || item.Location || 'Unknown'
+  const title = item.propertyTitle || item['Property Title'] || 'Property Listing'
+  const description = item.description || 'Submitted by property owner.'
+  const price = parsePrice(item.askingPrice ?? item['Asking Price'])
+  const area =
+    typeof item.area === 'number'
+      ? item.area
+      : Number.parseInt(String(item.area ?? ''), 10) || 0
+  const rawId = item.id || `local-${index}`
+
+  return {
+    id: `sell-local-${rawId}`,
+    name: title,
+    category: 'Residential',
+    price,
+    status: item.propertyStatus || 'For Sale',
+    thumbnail:
+      firstImageUrl(item.thumbnail) ||
+      firstImageUrl(item.imageUrl) ||
+      firstImageUrl(item.image) ||
+      imageFromArray ||
+      'https://images.pexels.com/photos/439391/pexels-photo-439391.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    shortDescription: description,
+    propertyId: `sell-local-${rawId}`,
+    location,
+    type: productType,
+    area,
+    postedBy: item.fullName || item['Full Name'] || item.userEmail || '',
+    ownerPhone: item.phone || item.Phone || '',
+    ownerEmail: item.email || item.Email || '',
+    fullAddress: item.fullAddress || '',
+    raw: item,
+    source: 'sellRequests',
+    createdAt: item.createdAt ?? null,
+  }
+}
+
+function fetchLocalSellRequestProducts() {
+  if (typeof window === 'undefined') return []
+  try {
+    const raw = localStorage.getItem(SELL_REQUESTS_LOCAL_KEY)
+    if (!raw) return []
+    const parsed = JSON.parse(raw)
+    if (!Array.isArray(parsed)) return []
+    return parsed.map(normalizeLocalSellRequest)
+  } catch {
+    return []
+  }
+}
+
+async function fetchSellRequestProducts() {
+  const collections = ['sellRequests', 'sell']
+  const merged = []
+  for (const name of collections) {
+    try {
+      const snapshot = await getDocs(query(collection(db, name), orderBy('createdAt', 'desc')))
+      merged.push(...snapshot.docs.map(normalizeSellRequest))
+      continue
+    } catch {
+      try {
+        const fallbackSnapshot = await getDocs(collection(db, name))
+        merged.push(...fallbackSnapshot.docs.map(normalizeSellRequest))
+      } catch {
+        // Try the next collection name for backward compatibility.
+      }
+    }
+  }
+  return merged
+}
+
 export async function fetchProducts() {
   const response = await fetch('/products.json', { cache: 'no-store' })
   if (!response.ok) {
     throw new Error('Failed to load products')
   }
   const data = await response.json()
-  return data.products ?? []
+  const staticProducts = data.products ?? []
+  const submittedSellProducts = await fetchSellRequestProducts()
+  const localSellProducts = fetchLocalSellRequestProducts()
+  return [...localSellProducts, ...submittedSellProducts, ...staticProducts]
 }
 

@@ -362,6 +362,8 @@
     "applyFilters": "تطبيق التصفية",
     "loading": "جاري تحميل العقارات...",
     "showingCount": "عرض {count} عقار",
+    "userSubmitted": "مضاف من المستخدم",
+    "postedBy": "تمت الإضافة بواسطة: {name}",
     "loadError": "تعذر تحميل العقارات. حاول لاحقاً.",
     "sortLabel": "ترتيب حسب السعر",
     "sortLowHigh": "من الأقل للأعلى",
@@ -395,6 +397,7 @@
     "areaSqm": "{area} م²",
     "highlights": "أبرز المزايا",
     "aboutTitle": "عن هذا العقار",
+    "postedBy": "تمت الإضافة بواسطة: {name}",
     "priceFormat": {
       "million": "{n} مليون ريال",
       "thousand": "{n} ألف ريال",

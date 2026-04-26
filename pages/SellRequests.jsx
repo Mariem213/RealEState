@@ -1,36 +1,25 @@
 import { useEffect, useState } from 'react'
-import { collection, deleteDoc, doc, onSnapshot, orderBy, query } from 'firebase/firestore'
 import { jsPDF } from 'jspdf'
-import { db } from '../firebase'
 import { useLanguage } from '../context/LanguageContext'
 import AdminLayout from '../components/AdminLayout'
 import '../styles/Dashboard.css'
 
+const SELL_REQUESTS_LOCAL_KEY = 'sellRequestsLocal'
+
 function formatCreatedAt(value, locale) {
-  if (!value?.toDate) return '-'
+  if (!value) return '-'
+  if (value?.toDate) {
+    return new Intl.DateTimeFormat(locale === 'ar' ? 'ar-SA' : 'en-US', {
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    }).format(value.toDate())
+  }
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return '-'
   return new Intl.DateTimeFormat(locale === 'ar' ? 'ar-SA' : 'en-US', {
     dateStyle: 'medium',
     timeStyle: 'short',
-  }).format(value.toDate())
-}
-
-function getMappedField(request, modernKey, legacyKey) {
-  return request[modernKey] ?? request[legacyKey] ?? ''
-}
-
-function normalizeSellRequest(doc) {
-  const data = doc.data()
-  return {
-    id: doc.id,
-    propertyTitle: getMappedField(data, 'propertyTitle', 'Property Title'),
-    propertyType: getMappedField(data, 'propertyType', 'Property Type'),
-    fullName: getMappedField(data, 'fullName', 'Full Name'),
-    phone: getMappedField(data, 'phone', 'Phone'),
-    email: getMappedField(data, 'email', 'Email'),
-    askingPrice: getMappedField(data, 'askingPrice', 'Asking Price'),
-    location: getMappedField(data, 'location', 'Location'),
-    createdAt: data.createdAt ?? null,
-  }
+  }).format(date)
 }
 
 function RequestDetail({ label, value }) {
@@ -46,46 +35,44 @@ function safeFileName(value, fallback) {
   return (value || fallback).trim().replace(/[\\/:*?"<>|]/g, '-')
 }
 
+function readLocalSellRequests() {
+  try {
+    const raw = localStorage.getItem(SELL_REQUESTS_LOCAL_KEY)
+    if (!raw) return []
+    const parsed = JSON.parse(raw)
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
+}
+
+function saveLocalSellRequests(requests) {
+  localStorage.setItem(SELL_REQUESTS_LOCAL_KEY, JSON.stringify(requests))
+}
+
 export default function SellRequests() {
   const { locale, t } = useLanguage()
   const [requests, setRequests] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
-  const [activeCollection, setActiveCollection] = useState('sell')
+  const loading = false
+  const error = ''
   const [selectedRequest, setSelectedRequest] = useState(null)
   const [deletingId, setDeletingId] = useState('')
 
   useEffect(() => {
-    let fallbackUnsub = null
-    const primaryQuery = query(collection(db, 'sell'), orderBy('createdAt', 'desc'))
-    const primaryUnsub = onSnapshot(
-      primaryQuery,
-      (snapshot) => {
-        setRequests(snapshot.docs.map(normalizeSellRequest))
-        setActiveCollection('sell')
-        setError('')
-        setLoading(false)
-      },
-      () => {
-        const fallbackQuery = query(collection(db, 'sellRequests'), orderBy('createdAt', 'desc'))
-        fallbackUnsub = onSnapshot(
-          fallbackQuery,
-          (fallbackSnapshot) => {
-            setRequests(fallbackSnapshot.docs.map(normalizeSellRequest))
-            setActiveCollection('sellRequests')
-            setError('')
-            setLoading(false)
-          },
-          () => {
-            setError('Unable to load sell requests right now. Please try again later.')
-            setLoading(false)
-          },
-        )
-      },
-    )
+    const syncLocal = () => {
+      const localRequests = readLocalSellRequests()
+      const sorted = [...localRequests].sort((a, b) => {
+        const first = new Date(a.createdAt || 0).getTime()
+        const second = new Date(b.createdAt || 0).getTime()
+        return second - first
+      })
+      setRequests(sorted)
+    }
+    syncLocal()
+    const handleStorage = () => syncLocal()
+    window.addEventListener('storage', handleStorage)
     return () => {
-      primaryUnsub()
-      if (fallbackUnsub) fallbackUnsub()
+      window.removeEventListener('storage', handleStorage)
     }
   }, [])
 
@@ -95,7 +82,9 @@ export default function SellRequests() {
 
     try {
       setDeletingId(request.id)
-      await deleteDoc(doc(db, activeCollection, request.id))
+      const updated = readLocalSellRequests().filter((item) => item.id !== request.id)
+      saveLocalSellRequests(updated)
+      setRequests(updated)
     } catch {
       window.alert('Unable to delete this request right now. Please try again later.')
     } finally {

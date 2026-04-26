@@ -424,7 +424,17 @@ function Buy() {
                           className="property-card__image"
                           loading="lazy"
                         />
-                        {product.tag && <span className="property-card__tag">{product.tag}</span>}
+                        {(product.source === 'sellRequests' || product.tag) && (
+                          <span
+                            className={`property-card__tag ${
+                              product.source === 'sellRequests' ? 'property-card__tag--user' : ''
+                            }`}
+                          >
+                            {product.source === 'sellRequests'
+                              ? t('buy.userSubmitted')
+                              : product.tag}
+                          </span>
+                        )}
                       </div>
                       <div className="property-card__body">
                         <h3 className="property-card__title">{productDisplayName(product, locale)}</h3>

@@ -362,6 +362,8 @@
     "applyFilters": "Apply Filters",
     "loading": "Loading properties...",
     "showingCount": "Showing {count} properties",
+    "userSubmitted": "User Submitted",
+    "postedBy": "Posted by: {name}",
     "loadError": "Unable to load properties. Please try again later.",
     "sortLabel": "Sort by price",
     "sortLowHigh": "Low to High",
@@ -395,6 +397,7 @@
     "areaSqm": "{area} m²",
     "highlights": "Highlights",
     "aboutTitle": "About this property",
+    "postedBy": "Posted by: {name}",
     "priceFormat": {
       "million": "{n}M SAR",
       "thousand": "{n}K SAR",
