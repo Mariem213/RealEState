@@ -13,13 +13,16 @@ import SellProperty from './pages/SellProperty'
 import Buy from './pages/Buy'
 import PropertyDetail from './pages/PropertyDetail'
 import Dashboard from './pages/Dashboard'
+import InvestmentRequests from './pages/InvestmentRequests'
+import SellRequests from './pages/SellRequests'
+import JobApplicationsAdmin from './pages/JobApplicationsAdmin'
 
 const AUTH_PATHS = ['/login', '/signup']
 
 function AppContent() {
   const location = useLocation()
   const hideNavbar =
-    AUTH_PATHS.includes(location.pathname) || location.pathname === '/admin'
+    AUTH_PATHS.includes(location.pathname) || location.pathname.startsWith('/admin')
 
   return (
     <div className="app-layout">
@@ -74,6 +77,30 @@ function AppContent() {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/investment-requests"
+            element={
+              <ProtectedRoute>
+                <InvestmentRequests />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/sell-requests"
+            element={
+              <ProtectedRoute>
+                <SellRequests />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/job-applications"
+            element={
+              <ProtectedRoute>
+                <JobApplicationsAdmin />
               </ProtectedRoute>
             }
           />

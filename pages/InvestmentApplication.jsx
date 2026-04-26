@@ -1,8 +1,11 @@
 import { useMemo, useState } from 'react'
 import { CircleDollarSign, User, TrendingUp, Send } from 'lucide-react'
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import CustomSelect from '../components/CustomSelect'
 import Reveal from '../components/Reveal'
 import { useLanguage } from '../context/LanguageContext'
+import { useAuth } from '../context/AuthContext'
+import { db } from '../firebase'
 import '../styles/InvestmentApplication.css'
 
 const INVESTOR_TYPES = ['Individual', 'Institutional', 'Family Office', 'Other']
@@ -11,8 +14,20 @@ const OPPORTUNITY_TYPES = ['Residential', 'Commercial', 'Mixed-Use', 'Land', 'De
 const INVESTMENT_METHODS = ['Direct', 'Fund', 'Syndication', 'REIT', 'Other']
 const TICKET_SIZES = ['Under 500K SAR', '500K - 1M SAR', '1M - 5M SAR', '5M - 10M SAR', '10M+ SAR']
 
+function getSubmitErrorMessage(error) {
+  const code = error?.code ?? ''
+  if (code === 'permission-denied') {
+    return 'You do not have permission to submit this request right now. Please contact support.'
+  }
+  if (code === 'unavailable' || code === 'deadline-exceeded') {
+    return 'Network issue while sending your request. Please check your connection and try again.'
+  }
+  return 'Unable to send your request right now. Please try again.'
+}
+
 function InvestmentApplication() {
   const { t, tSegments } = useLanguage()
+  const { user } = useAuth()
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -25,6 +40,8 @@ function InvestmentApplication() {
     investmentMethod: '',
     ticketSize: '',
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitState, setSubmitState] = useState({ type: '', message: '' })
 
   const investorTypeOptions = useMemo(
     () =>
@@ -76,9 +93,99 @@ function InvestmentApplication() {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('Investment application submitted:', formData)
+    setIsSubmitting(true)
+    setSubmitState({ type: '', message: '' })
+
+    try {
+      const modernPayload = {
+        ...formData,
+        createdAt: serverTimestamp(),
+        userId: user?.uid ?? null,
+        userEmail: user?.email ?? null,
+      }
+
+      const modernPayloadNoUser = {
+        ...formData,
+        createdAt: serverTimestamp(),
+      }
+
+      const legacyPayload = {
+        'First Name': formData.firstName,
+        'Last Name': formData.lastName,
+        Company: formData.company,
+        Email: formData.email,
+        Expertise: formData.expertise,
+        'Investor Type': formData.investorType,
+        'Preferred Investment Method': formData.investmentMethod,
+        Tel: formData.tel,
+        'Ticket size (SAR)': formData.ticketSize,
+        'What type of opportunity are you looking for?': formData.opportunityType,
+        createdAt: serverTimestamp(),
+      }
+
+      const legacyPayloadNoTimestamp = {
+        ...formData,
+        'First Name': formData.firstName,
+        'Last Name': formData.lastName,
+        Company: formData.company,
+        Email: formData.email,
+        Expertise: formData.expertise,
+        'Investor Type': formData.investorType,
+        'Preferred Investment Method': formData.investmentMethod,
+        Tel: formData.tel,
+        'Ticket size (SAR)': formData.ticketSize,
+        'What type of opportunity are you looking for?': formData.opportunityType,
+      }
+
+      const attempts = [
+        { collectionName: 'investments', payload: legacyPayload },
+        { collectionName: 'investmentRequests', payload: modernPayload },
+        { collectionName: 'investments', payload: legacyPayloadNoTimestamp },
+        { collectionName: 'investmentRequests', payload: modernPayloadNoUser },
+      ]
+
+      let writeError = new Error('Unknown write failure')
+      for (const attempt of attempts) {
+        try {
+          await addDoc(collection(db, attempt.collectionName), attempt.payload)
+          writeError = null
+          break
+        } catch (error) {
+          writeError = error
+        }
+      }
+
+      if (writeError) {
+        throw writeError
+      }
+
+      setFormData({
+        firstName: '',
+        lastName: '',
+        company: '',
+        tel: '',
+        email: '',
+        investorType: '',
+        expertise: '',
+        opportunityType: '',
+        investmentMethod: '',
+        ticketSize: '',
+      })
+      setSubmitState({
+        type: 'success',
+        message: 'Your investment request was sent successfully.',
+      })
+    } catch (error) {
+      console.error('Failed to send investment request:', error)
+      setSubmitState({
+        type: 'error',
+        message: getSubmitErrorMessage(error),
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -274,10 +381,20 @@ function InvestmentApplication() {
             </Reveal>
 
             <Reveal delay={180}>
-              <button type="submit" className="investment-application-form__submit">
+              <button type="submit" className="investment-application-form__submit" disabled={isSubmitting}>
                 <Send size={20} aria-hidden />
-                {t('common.sendForm')}
+                {isSubmitting ? 'Sending...' : t('common.sendForm')}
               </button>
+
+              {submitState.message ? (
+                <p
+                  className="investment-application-form__footer"
+                  style={{ color: submitState.type === 'error' ? '#dc2626' : '#15803d', marginBottom: '10px' }}
+                  role="status"
+                >
+                  {submitState.message}
+                </p>
+              ) : null}
 
               <p className="investment-application-form__footer">{t('common.formFooterLegal')}</p>
             </Reveal>

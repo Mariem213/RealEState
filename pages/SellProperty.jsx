@@ -1,9 +1,12 @@
 import { useState, useRef, useMemo } from 'react'
 import { CloudUpload, Check, Save } from 'lucide-react'
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import CustomSelect from '../components/CustomSelect'
 import NumberStepper from '../components/NumberStepper'
 import Reveal from '../components/Reveal'
 import { useLanguage } from '../context/LanguageContext'
+import { useAuth } from '../context/AuthContext'
+import { db } from '../firebase'
 import '../styles/SellProperty.css'
 
 const PROPERTY_TYPES = ['Apartment', 'Villa', 'Townhouse', 'Penthouse', 'Land', 'Commercial', 'Other']
@@ -17,6 +20,7 @@ const ACCEPTED_TYPES = ['image/jpeg', 'image/jpg', 'image/png']
 
 function SellProperty() {
   const { t, tSegments } = useLanguage()
+  const { user } = useAuth()
   const fileInputRef = useRef(null)
 
   const propertyTypeOptions = useMemo(
@@ -88,6 +92,8 @@ function SellProperty() {
   })
   const [images, setImages] = useState([])
   const [isDragging, setIsDragging] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitMessage, setSubmitMessage] = useState('')
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
@@ -139,9 +145,25 @@ function SellProperty() {
     setImages((prev) => prev.filter((_, i) => i !== index))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('Property submitted:', { ...formData, images: images.length })
+    setIsSubmitting(true)
+    setSubmitMessage('')
+    try {
+      await addDoc(collection(db, 'sellRequests'), {
+        ...formData,
+        imagesCount: images.length,
+        createdAt: serverTimestamp(),
+        userId: user?.uid ?? null,
+        userEmail: user?.email ?? null,
+      })
+      setSubmitMessage('Property request submitted successfully.')
+    } catch (error) {
+      console.error('Failed to submit sell request:', error)
+      setSubmitMessage('Failed to submit property request. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleSaveDraft = (e) => {
@@ -554,15 +576,20 @@ function SellProperty() {
 
             <Reveal delay={320}>
               <div className="sell-property-form__actions">
-                <button type="submit" className="sell-property-form__submit">
+                <button type="submit" className="sell-property-form__submit" disabled={isSubmitting}>
                   <Check size={20} aria-hidden />
-                  {t('sell.submitProperty')}
+                  {isSubmitting ? 'Submitting...' : t('sell.submitProperty')}
                 </button>
                 <button type="button" className="sell-property-form__draft" onClick={handleSaveDraft}>
                   <Save size={18} aria-hidden />
                   {t('sell.saveDraft')}
                 </button>
               </div>
+              {submitMessage ? (
+                <p className="sell-property-upload__hint" style={{ marginTop: '12px' }}>
+                  {submitMessage}
+                </p>
+              ) : null}
             </Reveal>
           </form>
         </div>

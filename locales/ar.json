@@ -154,11 +154,12 @@
     "subtitle": "راقب أداء منصتك العقارية ونشاط المستخدمين.",
     "sidebar": {
       "dashboard": "لوحة التحكم",
-      "home": "الرئيسية",
+      "backToHome": "العودة للرئيسية",
       "buyRequests": "طلبات الشراء",
       "sellRequests": "طلبات البيع",
       "investmentRequests": "طلبات الاستثمار",
-      "jobApplications": "طلبات التوظيف"
+      "jobApplications": "طلبات التوظيف",
+      "logout": "تسجيل الخروج"
     },
     "metrics": {
       "totalProperties": "إجمالي العقارات",
@@ -235,6 +236,73 @@
       "badgeApproved": "موافق",
       "badgeReview": "مراجعة",
       "badgeRejected": "مرفوض"
+    }
+  },
+  "admin": {
+    "common": {
+      "panelTitle": "لوحة الإدارة"
+    },
+    "table": {
+      "name": "الاسم",
+      "company": "الشركة",
+      "contact": "التواصل",
+      "preferences": "التفضيلات",
+      "submitted": "تاريخ الإرسال",
+      "property": "العقار",
+      "owner": "المالك",
+      "price": "السعر",
+      "location": "الموقع",
+      "address": "العنوان",
+      "cv": "السيرة الذاتية"
+    },
+    "investment": {
+      "title": "طلبات الاستثمار",
+      "subtitle": "جميع نماذج الاستثمار المرسلة.",
+      "loading": "جاري تحميل طلبات الاستثمار...",
+      "empty": "لا توجد طلبات حالياً.",
+      "errors": {
+        "loadFailed": "تعذر تحميل طلبات الاستثمار."
+      }
+    },
+    "sell": {
+      "title": "طلبات البيع",
+      "subtitle": "جميع نماذج بيع العقارات المرسلة.",
+      "empty": "لا توجد طلبات بيع حالياً."
+    },
+    "jobs": {
+      "title": "طلبات التوظيف",
+      "subtitle": "جميع نماذج التوظيف المرسلة.",
+      "empty": "لا توجد طلبات توظيف حالياً."
+    },
+    "locations": {
+      "waterfront": "الواجهة المائية",
+      "businessDistrict": "منطقة الأعمال",
+      "suburbs": "الضواحي",
+      "downtown": "وسط المدينة",
+      "marina": "حي المارينا"
+    },
+    "recentProperties": {
+      "item1": {
+        "title": "شقة حديثة",
+        "sub": "وسط المدينة · 450 ألف دولار"
+      },
+      "item2": {
+        "title": "منزل عائلي",
+        "sub": "الضواحي · 680 ألف دولار"
+      },
+      "item3": {
+        "title": "مساحة مكتبية",
+        "sub": "منطقة الأعمال · 1.2 مليون دولار"
+      }
+    },
+    "recentApplications": {
+      "item2Role": "مدير عقارات",
+      "item3Name": "ليزا رودريغيز"
+    },
+    "links": {
+      "viewInvestmentRequests": "عرض طلبات الاستثمار",
+      "viewSellRequests": "عرض طلبات البيع",
+      "viewJobApplications": "عرض طلبات التوظيف"
     }
   },
   "auth": {

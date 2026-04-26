@@ -154,11 +154,12 @@
     "subtitle": "Monitor your real estate platform performance and user activity.",
     "sidebar": {
       "dashboard": "Dashboard",
-      "home": "Home",
+      "backToHome": "Back to Home",
       "buyRequests": "Buy Requests",
       "sellRequests": "Sell Requests",
       "investmentRequests": "Investment Requests",
-      "jobApplications": "Job Applications"
+      "jobApplications": "Job Application Requests",
+      "logout": "Logout"
     },
     "metrics": {
       "totalProperties": "Total Properties",
@@ -235,6 +236,73 @@
       "badgeApproved": "Approved",
       "badgeReview": "Review",
       "badgeRejected": "Rejected"
+    }
+  },
+  "admin": {
+    "common": {
+      "panelTitle": "Admin Panel"
+    },
+    "table": {
+      "name": "Name",
+      "company": "Company",
+      "contact": "Contact",
+      "preferences": "Preferences",
+      "submitted": "Submitted",
+      "property": "Property",
+      "owner": "Owner",
+      "price": "Price",
+      "location": "Location",
+      "address": "Address",
+      "cv": "CV"
+    },
+    "investment": {
+      "title": "Investment Requests",
+      "subtitle": "All submitted investment forms.",
+      "loading": "Loading investment requests...",
+      "empty": "No requests yet.",
+      "errors": {
+        "loadFailed": "Failed to load investment requests."
+      }
+    },
+    "sell": {
+      "title": "Sell Requests",
+      "subtitle": "All submitted property selling forms.",
+      "empty": "No sell requests yet."
+    },
+    "jobs": {
+      "title": "Job Applications",
+      "subtitle": "All submitted job application forms.",
+      "empty": "No job applications yet."
+    },
+    "locations": {
+      "waterfront": "Waterfront",
+      "businessDistrict": "Business District",
+      "suburbs": "Suburbs",
+      "downtown": "Downtown",
+      "marina": "Marina District"
+    },
+    "recentProperties": {
+      "item1": {
+        "title": "Modern Apartment",
+        "sub": "Downtown · $450K"
+      },
+      "item2": {
+        "title": "Family House",
+        "sub": "Suburbs · $680K"
+      },
+      "item3": {
+        "title": "Office Space",
+        "sub": "Business District · $1.2M"
+      }
+    },
+    "recentApplications": {
+      "item2Role": "Property Manager",
+      "item3Name": "Liza Rodriguez"
+    },
+    "links": {
+      "viewInvestmentRequests": "View Investment Requests",
+      "viewSellRequests": "View Sell Requests",
+      "viewJobApplications": "View Job Applications"
     }
   },
   "auth": {
