@@ -253,13 +253,28 @@
       "price": "Price",
       "location": "Location",
       "address": "Address",
-      "cv": "CV"
+      "cv": "CV",
+      "actions": "Actions"
+    },
+    "actions": {
+      "view": "View",
+      "delete": "Delete",
+      "deleting": "Deleting...",
+      "close": "Close",
+      "download": "Download",
+      "downloadAll": "Download All",
+      "thisUser": "this user",
+      "thisProperty": "this property",
+      "confirmDeleteRequest": "Delete request for {name}?",
+      "confirmDeleteApplication": "Delete application for {name}?",
+      "deleteFailed": "Unable to delete this request right now. Please try again later."
     },
     "investment": {
       "title": "Investment Requests",
       "subtitle": "All submitted investment forms.",
       "loading": "Loading investment requests...",
       "empty": "No requests yet.",
+      "detailsTitle": "Investment Request Details",
       "errors": {
         "loadFailed": "Failed to load investment requests."
       }
@@ -267,11 +282,15 @@
     "sell": {
       "title": "Sell Requests",
       "subtitle": "All submitted property selling forms.",
+      "loading": "Loading sell requests...",
+      "detailsTitle": "Sell Request Details",
       "empty": "No sell requests yet."
     },
     "jobs": {
       "title": "Job Applications",
       "subtitle": "All submitted job application forms.",
+      "loading": "Loading job applications...",
+      "detailsTitle": "Job Application Details",
       "empty": "No job applications yet."
     },
     "locations": {

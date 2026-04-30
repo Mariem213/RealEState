@@ -175,7 +175,11 @@ export default function SellRequests() {
   }, [remoteRequests])
 
   async function handleDelete(request) {
-    const confirmed = window.confirm(`Delete request for ${request.propertyTitle || 'this property'}?`)
+    const confirmed = window.confirm(
+      t('admin.actions.confirmDeleteRequest', {
+        name: request.propertyTitle || t('admin.actions.thisProperty'),
+      }),
+    )
     if (!confirmed) return
 
     try {
@@ -188,10 +192,17 @@ export default function SellRequests() {
         await deleteDoc(doc(db, request.sourceCollection || 'sell', request.id))
       }
     } catch {
-      window.alert('Unable to delete this request right now. Please try again later.')
+      window.alert(t('admin.actions.deleteFailed'))
     } finally {
       setDeletingId('')
     }
+  }
+
+  function propertyTypeLabel(value) {
+    if (!value) return '-'
+    const key = `home.propertyTypes.${value}`
+    const resolved = t(key)
+    return resolved === key ? value : resolved
   }
 
   function buildRecordLines(request, localeValue) {
@@ -262,13 +273,13 @@ export default function SellRequests() {
       headerAction={
         !loading && !error && requests.length > 0 ? (
           <button type="button" onClick={handleDownloadAll} className="dashboard__btn dashboard__btn--download-all">
-            Download All
+            {t('admin.actions.downloadAll')}
           </button>
         ) : null
       }
     >
       <section className="dashboard__card">
-        {loading ? <p className="dashboard__subtitle">Loading sell requests...</p> : null}
+        {loading ? <p className="dashboard__subtitle">{t('admin.sell.loading')}</p> : null}
         {error ? <p className="dashboard__subtitle" style={{ color: '#b91c1c' }}>{error}</p> : null}
         {!loading && !error && requests.length === 0 ? <p className="dashboard__subtitle">{t('admin.sell.empty')}</p> : null}
         {!loading && !error && requests.length > 0 ? (
@@ -281,7 +292,7 @@ export default function SellRequests() {
                   <th style={{ textAlign: 'left', padding: '12px', borderBottom: '1px solid #e5e7eb' }}>{t('admin.table.price')}</th>
                   <th style={{ textAlign: 'left', padding: '12px', borderBottom: '1px solid #e5e7eb' }}>{t('admin.table.location')}</th>
                   <th style={{ textAlign: 'left', padding: '12px', borderBottom: '1px solid #e5e7eb' }}>{t('admin.table.submitted')}</th>
-                  <th style={{ textAlign: 'left', padding: '12px', borderBottom: '1px solid #e5e7eb' }}>Actions</th>
+                  <th style={{ textAlign: 'left', padding: '12px', borderBottom: '1px solid #e5e7eb' }}>{t('admin.table.actions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -294,7 +305,7 @@ export default function SellRequests() {
                     <td style={{ padding: '12px', borderBottom: '1px solid #f1f5f9' }}>{formatCreatedAt(request.createdAt, locale)}</td>
                     <td style={{ padding: '12px', borderBottom: '1px solid #f1f5f9', whiteSpace: 'nowrap' }}>
                       <button type="button" onClick={() => setSelectedRequest(request)} className="dashboard__btn dashboard__btn--view">
-                        View
+                        {t('admin.actions.view')}
                       </button>
                       <button
                         type="button"
@@ -302,10 +313,10 @@ export default function SellRequests() {
                         disabled={deletingId === request.id}
                         className="dashboard__btn dashboard__btn--delete"
                       >
-                        {deletingId === request.id ? 'Deleting...' : 'Delete'}
+                        {deletingId === request.id ? t('admin.actions.deleting') : t('admin.actions.delete')}
                       </button>
                       <button type="button" onClick={() => handleDownloadOne(request)} className="dashboard__btn dashboard__btn--download">
-                        Download
+                        {t('admin.actions.download')}
                       </button>
                     </td>
                   </tr>
@@ -321,22 +332,22 @@ export default function SellRequests() {
             <div className="admin-modal__header">
               <div className="admin-modal__avatar">{(selectedRequest.propertyTitle?.[0] || 'P').toUpperCase()}</div>
               <div>
-                <h3 className="admin-modal__title">Sell Request Details</h3>
+                <h3 className="admin-modal__title">{t('admin.sell.detailsTitle')}</h3>
                 <p className="admin-modal__subtitle">{selectedRequest.propertyTitle || '-'}</p>
               </div>
             </div>
             <div className="admin-modal__grid">
-              <RequestDetail label="Property Type" value={selectedRequest.propertyType} />
-              <RequestDetail label="Owner Name" value={selectedRequest.fullName} />
-              <RequestDetail label="Phone" value={selectedRequest.phone} />
-              <RequestDetail label="Email" value={selectedRequest.email} />
-              <RequestDetail label="Price" value={selectedRequest.askingPrice} />
-              <RequestDetail label="Location" value={selectedRequest.location} />
-              <RequestDetail label="Submitted" value={formatCreatedAt(selectedRequest.createdAt, locale)} />
+              <RequestDetail label={t('sell.propertyType')} value={propertyTypeLabel(selectedRequest.propertyType)} />
+              <RequestDetail label={t('admin.table.owner')} value={selectedRequest.fullName} />
+              <RequestDetail label={t('sell.phone')} value={selectedRequest.phone} />
+              <RequestDetail label={t('sell.email')} value={selectedRequest.email} />
+              <RequestDetail label={t('admin.table.price')} value={selectedRequest.askingPrice} />
+              <RequestDetail label={t('admin.table.location')} value={selectedRequest.location} />
+              <RequestDetail label={t('admin.table.submitted')} value={formatCreatedAt(selectedRequest.createdAt, locale)} />
             </div>
             <div className="admin-modal__actions">
               <button type="button" onClick={() => setSelectedRequest(null)} className="admin-modal__close-btn">
-                Close
+                {t('admin.actions.close')}
               </button>
             </div>
           </div>

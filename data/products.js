@@ -32,8 +32,11 @@ function normalizeSellRequest(doc) {
     ''
   const productType = item.propertyType || item['Property Type'] || 'Apartment'
   const location = item.location || item.Location || 'Unknown'
+  const locationAr = item.locationAr || item.LocationAr || ''
   const title = item.propertyTitle || item['Property Title'] || 'Property Listing'
+  const titleAr = item.propertyTitleAr || item['Property Title Ar'] || ''
   const description = item.description || 'Submitted by property owner.'
+  const descriptionAr = item.descriptionAr || item['Description Ar'] || ''
   const price = parsePrice(item.askingPrice ?? item['Asking Price'])
   const area =
     typeof item.area === 'number'
@@ -43,6 +46,7 @@ function normalizeSellRequest(doc) {
   return {
     id: `sell-${doc.id}`,
     name: title,
+    nameAr: titleAr,
     category: 'Residential',
     price,
     status: item.propertyStatus || 'For Sale',
@@ -53,8 +57,10 @@ function normalizeSellRequest(doc) {
       imageFromArray ||
       'https://images.pexels.com/photos/439391/pexels-photo-439391.jpeg?auto=compress&cs=tinysrgb&w=1200',
     shortDescription: description,
+    shortDescriptionAr: descriptionAr,
     propertyId: `sell-${doc.id}`,
     location,
+    locationAr,
     type: productType,
     area,
     postedBy: item.fullName || item['Full Name'] || item.userEmail || '',
@@ -75,8 +81,11 @@ function normalizeLocalSellRequest(item, index) {
     ''
   const productType = item.propertyType || item['Property Type'] || 'Apartment'
   const location = item.location || item.Location || 'Unknown'
+  const locationAr = item.locationAr || item.LocationAr || ''
   const title = item.propertyTitle || item['Property Title'] || 'Property Listing'
+  const titleAr = item.propertyTitleAr || item['Property Title Ar'] || ''
   const description = item.description || 'Submitted by property owner.'
+  const descriptionAr = item.descriptionAr || item['Description Ar'] || ''
   const price = parsePrice(item.askingPrice ?? item['Asking Price'])
   const area =
     typeof item.area === 'number'
@@ -87,6 +96,7 @@ function normalizeLocalSellRequest(item, index) {
   return {
     id: `sell-local-${rawId}`,
     name: title,
+    nameAr: titleAr,
     category: 'Residential',
     price,
     status: item.propertyStatus || 'For Sale',
@@ -97,8 +107,10 @@ function normalizeLocalSellRequest(item, index) {
       imageFromArray ||
       'https://images.pexels.com/photos/439391/pexels-photo-439391.jpeg?auto=compress&cs=tinysrgb&w=1200',
     shortDescription: description,
+    shortDescriptionAr: descriptionAr,
     propertyId: `sell-local-${rawId}`,
     location,
+    locationAr,
     type: productType,
     area,
     postedBy: item.fullName || item['Full Name'] || item.userEmail || '',

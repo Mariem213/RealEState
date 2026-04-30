@@ -88,14 +88,16 @@ export default function JobApplicationsAdmin() {
 
   async function handleDelete(request) {
     const fullName = `${request.firstName || ''} ${request.lastName || ''}`.trim()
-    const confirmed = window.confirm(`Delete application for ${fullName || 'this user'}?`)
+    const confirmed = window.confirm(
+      t('admin.actions.confirmDeleteApplication', { name: fullName || t('admin.actions.thisUser') }),
+    )
     if (!confirmed) return
 
     try {
       setDeletingId(request.id)
       await deleteDoc(doc(db, activeCollection, request.id))
     } catch {
-      window.alert('Unable to delete this application right now. Please try again later.')
+      window.alert(t('admin.actions.deleteFailed'))
     } finally {
       setDeletingId('')
     }
@@ -104,7 +106,7 @@ export default function JobApplicationsAdmin() {
   return (
     <AdminLayout title={t('admin.jobs.title')} subtitle={t('admin.jobs.subtitle')}>
       <section className="dashboard__card">
-        {loading ? <p className="dashboard__subtitle">Loading job applications...</p> : null}
+        {loading ? <p className="dashboard__subtitle">{t('admin.jobs.loading')}</p> : null}
         {error ? <p className="dashboard__subtitle" style={{ color: '#b91c1c' }}>{error}</p> : null}
         {!loading && !error && requests.length === 0 ? <p className="dashboard__subtitle">{t('admin.jobs.empty')}</p> : null}
         {!loading && !error && requests.length > 0 ? (
@@ -117,7 +119,7 @@ export default function JobApplicationsAdmin() {
                   <th style={{ textAlign: 'left', padding: '12px', borderBottom: '1px solid #e5e7eb' }}>{t('admin.table.address')}</th>
                   <th style={{ textAlign: 'left', padding: '12px', borderBottom: '1px solid #e5e7eb' }}>{t('admin.table.cv')}</th>
                   <th style={{ textAlign: 'left', padding: '12px', borderBottom: '1px solid #e5e7eb' }}>{t('admin.table.submitted')}</th>
-                  <th style={{ textAlign: 'left', padding: '12px', borderBottom: '1px solid #e5e7eb' }}>Actions</th>
+                  <th style={{ textAlign: 'left', padding: '12px', borderBottom: '1px solid #e5e7eb' }}>{t('admin.table.actions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -134,7 +136,7 @@ export default function JobApplicationsAdmin() {
                         onClick={() => setSelectedRequest(request)}
                         className="dashboard__btn dashboard__btn--view"
                       >
-                        View
+                        {t('admin.actions.view')}
                       </button>
                       <button
                         type="button"
@@ -142,7 +144,7 @@ export default function JobApplicationsAdmin() {
                         disabled={deletingId === request.id}
                         className="dashboard__btn dashboard__btn--delete"
                       >
-                        {deletingId === request.id ? 'Deleting...' : 'Delete'}
+                        {deletingId === request.id ? t('admin.actions.deleting') : t('admin.actions.delete')}
                       </button>
                     </td>
                   </tr>
@@ -160,7 +162,7 @@ export default function JobApplicationsAdmin() {
                 {(selectedRequest.firstName?.[0] || 'U').toUpperCase()}
               </div>
               <div>
-                <h3 className="admin-modal__title">Job Application Details</h3>
+                <h3 className="admin-modal__title">{t('admin.jobs.detailsTitle')}</h3>
                 <p className="admin-modal__subtitle">
                   {selectedRequest.firstName || '-'} {selectedRequest.lastName || '-'}
                 </p>
@@ -168,18 +170,18 @@ export default function JobApplicationsAdmin() {
             </div>
 
             <div className="admin-modal__grid">
-              <RequestDetail label="Company" value={selectedRequest.company} />
-              <RequestDetail label="Email" value={selectedRequest.email} />
-              <RequestDetail label="Phone" value={selectedRequest.tel} />
-              <RequestDetail label="Address" value={selectedRequest.address} />
-              <RequestDetail label="Pincode" value={selectedRequest.pincode} />
-              <RequestDetail label="CV" value={selectedRequest.cvName} />
-              <RequestDetail label="Submitted" value={formatCreatedAt(selectedRequest.createdAt, locale)} />
+              <RequestDetail label={t('job.company')} value={selectedRequest.company} />
+              <RequestDetail label={t('job.email')} value={selectedRequest.email} />
+              <RequestDetail label={t('job.tel')} value={selectedRequest.tel} />
+              <RequestDetail label={t('job.address')} value={selectedRequest.address} />
+              <RequestDetail label={t('job.pincode')} value={selectedRequest.pincode} />
+              <RequestDetail label={t('admin.table.cv')} value={selectedRequest.cvName} />
+              <RequestDetail label={t('admin.table.submitted')} value={formatCreatedAt(selectedRequest.createdAt, locale)} />
             </div>
 
             <div className="admin-modal__actions">
               <button type="button" onClick={() => setSelectedRequest(null)} className="admin-modal__close-btn">
-                Close
+                {t('admin.actions.close')}
               </button>
             </div>
           </div>
